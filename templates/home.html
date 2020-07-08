@@ -1,0 +1,363 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Green Office</title>
+    <!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico' %}"/>
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->	
+        <link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->	
+        <link rel="stylesheet" type="text/css" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<!--===============================================================================================-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		
+</head>
+<body>
+	<div class="loader">
+		<img src="/static/images/loading.gif">
+
+	</div>
+    <div class="limiter">
+		<div class="container-login100">
+            <div class="wrap-home100">
+				<div class="login100-form-title" style="background-image: url(/static/images/bg-01.jpg);">
+					
+				</div>
+
+				<form class="login100-form validate-form" method="POST">
+					{% csrf_token %}
+					<div class="wrap-input100 m-b-26" data-validate="Username is required">
+						<span ><b>ชื่อ :</b> {{ Profile.Fullname }}    <b>สังกัด :</b> {{ Profile.Dept }}</span>
+						<!-- <span class="input100"></span> -->
+						<!-- <input class="input100" type="text" id="StaffID" name="StaffID" placeholder="Enter username">
+						<span class="focus-input100"></span> -->
+					</div>
+
+					<div class="flex-sb-m w-full">
+						<div class="contact100-form-checkbox">
+							<span>วัตถุประสงค์</span>
+							<p>ตามเกณฑ์การประเมินสำนักงานสีเขียว หมวดที่ 2 การสื่อสารและสร้างจิตสำนึก</p>
+							<p>ข้อย่อยที่ 2.1 การอบรมให้ความรู้และประเมินความเข้าใจ</p>
+							<p>ชุดความรู้สำนักงานสีเขียว ผลิตสื่อโดยวิทยากร ดร.มนูญ ใจซื่อ รฝ.วธ.(ภ.4)</p>
+							<p>โดยท่านต้องทำแบบทดสอบ PRE และ POST TEST โดย POST TEST ต้องผ่านเกณฑ์ 70% หรือมากกว่า 14 คะแนนขึ้นไป</p>
+							<p>โดยขอให้พนักงานในสังกัดสำนักงานใหญ่ทุกคนในทุกสายงานร่วมอบรมผ่านระบบนี้และทำแบบทดสอบเพื่อให้ผ่านเกณฑ์การประเมินฯ </br>ทั้งนี้หลักสูตรที่สายงานได้ดำเนินการไปล่วงหน้าแล้วนั้น สามารถนำข้อมูลมาตอบใช้ในการตรวจขอการรับรองได้</p>
+							<p class="text-danger">กรณีที่ท่านสอบ POST-TEST ไม่ผ่านท่านสามารถสอบใหม่ได้จนกว่าจะผ่านเกณฑ์ที่กำหนด</p>
+						</div>
+					</div>
+
+					<div class="container">
+						<h4>จำนวนพนักงานและลูกจ้างที่ผ่านการอบรม Green Office online สนญ. </h4>
+						<h6>(โดยจำนวนรวมพนักงานและลูกจ้างของแต่สายงาน ได้มีการสำรวจเมื่อเดือนมกราคม 2563 ตามเอกสาร ฝสส. 85/2563)</h6>
+						<div class="row">
+							<div class="col-sm">
+							<label>สาย ส. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.CSR.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.CSR.percent }}%; height: 20px" aria-valuenow="{{ Graph.CSR.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.CSR.Passstaff }}/{{ Graph.CSR.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<label>สาย ท. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.HR.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.HR.percent }}%; height: 20px" aria-valuenow="{{ Graph.HR.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.HR.Passstaff }}/{{ Graph.HR.totalstaff }}</div>
+									
+								</div>
+							</div>
+							<div class="col-sm">
+								<label>สาย กบ. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.kb.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.kb.percent }}%; height: 20px" aria-valuenow="{{ Graph.kb.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.kb.Passstaff }}/{{ Graph.kb.totalstaff }}</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm">
+								<label>สาย อ. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.ort.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width: {{ Graph.ort.Passstaff }}%; height: 20px" aria-valuenow="{{ Graph.ort.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.ort.Passstaff }}/{{ Graph.ort.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<label>สาย ทส. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.digi.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.digi.percent }}%; height: 20px" aria-valuenow="{{ Graph.digi.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.digi.Passstaff }}/{{ Graph.digi.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<label>สาย ธ. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.bu.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.bu.percent }}%; height: 20px" aria-valuenow="{{ Graph.bu.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.bu.Passstaff }}/{{ Graph.bu.totalstaff }}</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm">
+								<label>สาย บ. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.ser.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.ser.percent }}%; height: 20px"  aria-valuenow="{{ Graph.ser.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.ser.Passstaff }}/{{ Graph.ser.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<label>สาย ป. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.act.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.act.percent }}%; height: 20px" aria-valuenow="{{ Graph.act.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.act.Passstaff }}/{{ Graph.act.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<label>สาย ย. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.sta.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.sta.percent }}%; height: 20px" aria-valuenow="{{ Graph.sta.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.sta.Passstaff }}/{{ Graph.sta.totalstaff }}</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm">
+								<label>สาย ว. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.pla.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.pla.percent }}%; height: 20px" aria-valuenow="{{ Graph.pla.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.pla.Passstaff }}/{{ Graph.pla.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<label>สาย วศ. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.en.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.en.percent }}%; height: 20px" aria-valuenow="{{ Graph.en.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.en.Passstaff }}/{{ Graph.en.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<label>สาย สตภ. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.audit.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.audit.percent }}%; height: 20px" aria-valuenow="{{ Graph.audit.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.audit.Passstaff }}/{{ Graph.audit.totalstaff }}</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm">
+								<label>สาย สวก. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.inh.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.inh.percent }}%; height: 20px" aria-valuenow="{{ Graph.inh.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.inh.Passstaff }}/{{ Graph.inh.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								<label>สาย สกม. ผู้ทำแบบทดสอบคิดเป็น {{ Graph.law.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.law.percent }}%; height: 20px" aria-valuenow="{{ Graph.law.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.law.Passstaff }}/{{ Graph.law.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col-sm">
+								
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<label>สาย ภ.1 ผู้ทำแบบทดสอบคิดเป็น {{ Graph.p1.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.p1.percent }}%; height: 20px" aria-valuenow="{{ Graph.p1.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.p1.Passstaff }}/{{ Graph.p1.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col">
+								<label>สาย ภ.2 ผู้ทำแบบทดสอบคิดเป็น {{ Graph.p2.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.p2.percent }}%; height: 20px" aria-valuenow="{{ Graph.p2.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.p2.Passstaff }}/{{ Graph.p2.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col">
+								<label>สาย ภ.3 ผู้ทำแบบทดสอบคิดเป็น {{ Graph.p3.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.p3.percent }}%; height: 20px" aria-valuenow="{{ Graph.p3.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.p3.Passstaff }}/{{ Graph.p3.totalstaff }}</div>
+								</div>
+							</div>
+							<div class="col">
+								<label>สาย ภ.4 ผู้ทำแบบทดสอบคิดเป็น {{ Graph.p4.percent }}% </label>
+								<div class="progress md-progress" style="height: 20px">
+									<div class="progress-bar" role="progressbar" style="width:{{ Graph.p4.percent }}%; height: 20px" aria-valuenow="{{ Graph.p4.Passstaff }}" aria-valuemin="0" aria-valuemax="100">{{ Graph.p4.Passstaff }}/{{ Graph.p4.totalstaff }}</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					{% if Profile.PreScore == 0 and Profile.RegionCode == '9900' %}
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" type="submit">
+							เริ่มทำแบบทดสอบก่อนเรียน PRE-Test
+						</button>
+					</div>
+					{% elif Profile.Vdo_pass == 'no' and Profile.RegionCode == '9900' %}
+						<div class="container-login100-form-btn">
+							<a href="{% url 'vdogreenoffice' %}" class="login100-form-btn">เริ่มดูวีดีโอ ความรู้สำนักงานสีเขียว</a>
+						</div>
+					{% elif Profile.Vdo_pass == 'PS' and Profile.PostScore == 0 and Profile.RegionCode == '9900' %}
+						<div class="container-login100-form-btn">
+							<a href="{% url 'posttest' %}" class="login100-form-btn">เริ่มทำแบบทดสอบหลังเรียน Post-Test</a>
+						</div>
+
+					{% else %}
+						<div class="container">
+							{% if Profile.PostScore <= 14 and Profile.RegionCode == '9900' %}
+							<div class="container-login100-form-btn">
+								<a href="{% url 'posttest' %}" class="login100-form-btn">เริ่มทำแบบทดสอบหลังเรียน Post-Test</a>
+							</div>
+							{% else %}
+							<div class="panel-group">
+								<div class="panel panel-success">
+									<div class="panel-heading">คะแนนแบบทดสอบ ชุดความรู้สำนักงานสีเขียว</div>
+									<div class="panel-body"><h5><label>คะแนนแบบทดสอบก่อนเรียน Pre Test : {{ Profile.PreScore }}</label></h5></div>
+									<div class="panel-body"><h5><label>คะแนนแบบทดสอบหลังเรียน Post Test : {{ Profile.PostScore }}</label></h5></div>
+									
+								</div>
+							</div>
+							{% endif %}
+							<h4>ท่านสามารถศึกษาข้อมูลเพิ่มเติมได้</h4>
+							<br/>
+							<table class="table">
+								<tr>
+									<td> ตอนที่ 1 ความสำคัญการสำนักงานสีเขียว</td>
+									{% if Profile.St_1 == False %}
+										<td> <a href="{% url 'vdoT1' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT1' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 2 หมวดที่ 1 การกำหนดนโยบาย วางแผนการดำเนินงาน  และการปรับปรุงอย่างต่อเนื่อง</td>
+									{% if Profile.St_2 == False %}
+										<td> <a href="{% url 'vdoT2' %}"><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT2' %}"><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 3 หมวดที่ 2 การสื่อสารและสร้างจิตสำนึก</td>
+									{% if Profile.St_3 == False %}
+										<td> <a href="{% url 'vdoT3' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT3' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 4 หมวดที่ 3 การใช้ทรัพยากรและพลังงาน</td>
+									{% if Profile.St_4 == False %}
+										<td> <a href="{% url 'vdoT4' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT4' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 5 หมวดที่ 4 การจัดการของเสีย</td>
+									{% if Profile.St_5 == False %}
+										<td> <a href="{% url 'vdoT5' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT5' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 6 หมวดที่ 5 สภาพแวดล้อมและความปลอดภัยในสำนักงาน</td>
+									{% if Profile.St_6 == False %}
+										<td> <a href="{% url 'vdoT6' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT6' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 7 หมวดที่ 6 การจัดซื้อ และจัดจ้าง</td>
+									{% if Profile.St_7 == False %}
+										<td> <a href="{% url 'vdoT7' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT7' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 8 การวิเคราะห์ Aspect การจัดทำโครงการ Green office ของ กฟภ.</td>
+									{% if Profile.St_8 == False %}
+										<td> <a href="{% url 'vdoT8' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT8' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 9  เทคนิคการคำนวณหาค่าก๊าซเรือนกระจก (หมวดที่ 3) และ การคำนวณปริมาณขยะทุกประเภท (หมวดที่ 4)</td>
+									{% if Profile.St_9 == False %}
+										<td> <a href="{% url 'vdoT9' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT9' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 10 วิธีการจัดทำแผนงาน/มาตรฐานการควบคุม และแก้ไขปัญหาสิ่งแวดล้อม/ทรัพยากรที่มีระดับนัยสำคัญ</td>
+									{% if Profile.St_10 == False %}
+										<td> <a href="{% url 'vdoT10' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT10' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 11 การจัดทำทะเบียนกฎหมาย/การเขียน CAR และข้อกำหนดต่างๆ/การจัดทำวาระและสรุปการทบทวนฝ่ายบริหาร</td>
+									{% if Profile.St_11 == False %}
+										<td> <a href="{% url 'vdoT11' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT11' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+								<tr>
+									<td> ตอนที่ 12 การจัดทำทะเบียนสินค้าที่เป็นมิตรกับสิ่งแวดล้อม และการคิดคำนวณร้อยละของการใช้สินค้าที่เป็นมิตรกับสิ่งแวดล้อมและข้อตกลงด้านสิ่งแวดล้อม</td>
+									{% if Profile.St_12 == False %}
+										<td> <a href="{% url 'vdoT12' %}" ><img src="{% static 'images/youtube.png' %}"></a> </td>
+									{% else %}
+										<td> <a href="{% url 'vdoT12' %}" ><img src="{% static 'images/correct.png' %}"></a> </td>
+									{% endif %}
+								</tr>
+							</table>
+
+
+						</div>
+					{% endif %}
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<p> ติดต่อสอบถามเพิ่มเติม หรือ แจ้งปัญหาการใช้งานได้ที่ กพส. ชลชนินทร์ (9915), ปกป้อง (9917)  </p>
+	</div>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'js/main.js' %}"></script>
+	<script>
+		window.addEventListener("load", function () {
+			const loader = document.querySelector(".loader");
+			loader.className += " hidden"; // class "loader hidden"
+		});
+	</script>
+     
+</body>
+</html>
