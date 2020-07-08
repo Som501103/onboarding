@@ -25,7 +25,7 @@ SECRET_KEY = '(@#p@xgkm*+(8o3c-#yi4q=!r+7hqk6%7$_b&)fo&ocauo8qt&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*','https://pea-onboarding.herokuapp.com/']
 
 
 # Application definition
@@ -79,10 +79,15 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd2kmf6hcskcqkh',
+        'USER': 'kavcedctqwzapn',
+        'PASSWORD': '2d2b3e360203e042fcbe19b7f88ec6704ea731f6037de0608e3e3465a36ab686',
+        'HOST': 'ec2-34-224-229-81.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation
