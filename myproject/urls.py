@@ -22,4 +22,5 @@ from elearning import views
 urlpatterns = [
     url(r'^$', views.login, name='login'),
     url(r'^admin/', admin.site.urls),
+    url('home/', views.home, name='home'),
 ]
