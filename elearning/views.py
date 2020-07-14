@@ -57,9 +57,7 @@ def login(request):
                         Organization = RegionCode,
                     )
                     Staff_save.save()
-                else:
-                    print(pretest)
-                return redirect('home')
+                    return redirect('home')
         else:
                 mgs = {
                     'massage' : 'รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง....'
