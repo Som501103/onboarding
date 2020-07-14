@@ -58,8 +58,6 @@ def login(request):
                     )
                     Staff_save.save()
                 else:
-                    Staff_score = Staff.objects.get(StaffID = Emp_id)
-                    pretest = Staff_score.Score_PreTest
                     print(pretest)
                 return redirect('home')
         else:
