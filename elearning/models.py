@@ -6,6 +6,14 @@ class Course(models.Model):
     Date_Created = models.DateTimeField(auto_now_add=True, null=True)
     CourseStatus = models.CharField(null=True,max_length=2,default='OFF')
 
+class Sub_Course(models.Model):
+    Title = models.CharField(max_length=100)
+    ConstructorName = models.CharField(max_length=100)
+    ConstructorPosition = models.CharField(max_length=100)
+    Document = models.URLField(max_length=300)
+    Date_Created = models.DateField(auto_now_add=True, null=True)
+    Link_Course = models.ForeignKey(Course,related_name='Sub_Courses',on_delete = models.CASCADE,null= True)
+
 class Course_Pretest(models.Model):
     TestTitle = models.CharField(max_length=300)
     Test1 = models.CharField(max_length=200)

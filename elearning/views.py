@@ -125,3 +125,24 @@ def idm(Emp_id):
     employeedata = dict(jsonconvert)
     print(employeedata['FirstName'])
     return employeedata
+
+def Course_main(request, PK_Course_D):
+    user_ID = request.session['Emp_id']
+    staff_info = idm(user_ID)
+    print(staff_info)
+    
+    return render(request, 'Course_main.html',{'PK_Course_D': PK_Course_D})
+
+def VDO(request, PK_Title):
+    user_ID = request.session['Emp_id']
+    
+    staff_info = idm(user_ID)
+    print(staff_info)
+    if request.method == 'POST':
+        Staff_update = Staff.objects.get(StaffID=user_ID)
+        Staff_update.Date_Vdo1_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        Staff_update.Vdo_pass1_1 = 1
+        # Staff_update.save()
+        return redirect('Course_main',PK_Course_D='1')
+    
+    return render(request, 'VDO.html',{'PK_Title': PK_Title})
