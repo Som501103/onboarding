@@ -57,8 +57,8 @@
 									<!-- <p class="product-price"><button type="button" class="btn btn-gradient-info btn-rounded btn-icon"><i class="mdi mdi-check-decagram"></i></button></p> -->
 									<p class="product-price">กบอ.</p>
 									<ul class="product-variation">
-									  <li><a href="#">Pre : 0</a></li>
-									  <li><a href="#">Post : 0</a></li>
+									  <li><a href="#">Pre : {{ Course_score.Pre_Score1 }}</a></li>
+									  <li><a href="#">Post : {{ Course_score.Post_Score1 }}</a></li>
 									</ul>
 									<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 1 %}" >เข้าเรียน</a></p>
 								  </div>
@@ -77,10 +77,10 @@
 									<p class="product-title">กฎหมายสำหรับพนักงานใหม่</p>
 									<p class="product-price">สกม.</p>
 									<ul class="product-variation">
-									  <li><a href="#">Pre : 0</a></li>
-									  <li><a href="#">Post : 0</a></li>
+									  <li><a href="#">Pre : {{ Course_score.Pre_Score2 }}</a></li>
+									  <li><a href="#">Post : {{ Course_score.Post_Score1 }}</a></li>
 									</ul>
-									<p class="text-center product-description"><a class="btn btn-gradient-info" href="#" >เข้าเรียน</a></p>
+									<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 2 %}" >เข้าเรียน</a></p>
 									
 								  </div>
 								</div>
@@ -98,10 +98,10 @@
 									  <p class="product-title">เส้นทางความก้าวหน้าในสายงานอาชีพและIDP</p>
 									  <p class="product-price">กพค.</p>
 									  <ul class="product-variation">
-										  <li><a href="#">Pre : 0</a></li>
-										  <li><a href="#">Post : 0</a></li>
+										  <li><a href="#">Pre : {{ Course_score.Pre_Score3 }}</a></li>
+										  <li><a href="#">Post : {{ Course_score.Post_Score3 }}</a></li>
 									  </ul>
-									  <p class="text-center product-description"><a class="btn btn-gradient-info" href="#" >เข้าเรียน</a></p>
+									  <p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 3 %}" >เข้าเรียน</a></p>
 									</div>
 								</div>
 							  </div>
@@ -118,10 +118,10 @@
 									  <p class="product-title">ทักษะการคิดเชิงนวัตกรรม   </br> Innovative Thinking</p>
 									  <p class="product-price">วศก.11 สวก.</p>
 									  <ul class="product-variation">
-										  <li><a href="#">Pre : 0</a></li>
-										  <li><a href="#">Post : 0</a></li>
+										  <li><a href="#">Pre : {{ Course_score.Pre_Score4 }}</a></li>
+										  <li><a href="#">Post : {{ Course_score.Post_Score4 }}</a></li>
 									  </ul>
-									  <p class="text-center product-description"><a class="btn btn-gradient-info" href="#" >เข้าเรียน</a></p>
+									  <p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 4 %}" >เข้าเรียน</a></p>
 									</div>
 								  </div>
 							  </div>
@@ -138,10 +138,10 @@
 									<p class="product-title">การบริหารองค์ความรู้ (KM)</p>
 									<p class="product-price">กพค.</p>
 									<ul class="product-variation">
-										<li><a href="#">Pre : 0</a></li>
-										<li><a href="#">Post : 0</a></li>
+										<li><a href="#">Pre : {{ Course_score.Pre_Score5 }}</a></li>
+										<li><a href="#">Post : {{ Course_score.Post_Score5 }}</a></li>
 									</ul>
-									<p class="text-center product-description"><a class="btn btn-gradient-info" href="#" >เข้าเรียน</a></p>
+									<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 5 %}" >เข้าเรียน</a></p>
 								  </div>
 								</div>
 							  </div>
@@ -158,10 +158,10 @@
 									<p class="product-title">การกำกับดูแลกิจการที่ดีของ กฟภ.</p>
 									<p class="product-price">กกท.</p>
 									<ul class="product-variation">
-										<li><a href="#">Pre : 0</a></li>
-										<li><a href="#">Post : 0</a></li>
+										<li><a href="#">Pre : {{ Course_score.Pre_Score6 }}</a></li>
+										<li><a href="#">Post : {{ Course_score.Post_Score6 }}</a></li>
 									</ul>
-									<p class="text-center product-description"><a class="btn btn-gradient-info" href="#" >เข้าเรียน</a></p>
+									<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 6 %" >เข้าเรียน</a></p>
 								  </div>
 								</div>
 							  </div>
@@ -178,10 +178,10 @@
 									<p class="product-title">TRUSTED</p>
 									<p class="product-price">คณะทำงานฯ</button></p>
 									<ul class="product-variation">
-										<li><a href="#">Pre : 0</a></li>
-										<li><a href="#">Post : 0</a></li>
+										<li><a href="#">Pre : {{ Course_score.Pre_Score7 }}</a></li>
+										<li><a href="#">Post : {{ Course_score.Post_Score7 }}</a></li>
 									</ul>
-									<p class="text-center product-description"><a class="btn btn-gradient-info" href="#" >เข้าเรียน</a></p>
+									<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 7 %}" >เข้าเรียน</a></p>
 								  </div>
 								</div>
 							  </div>
@@ -198,10 +198,10 @@
 									<p class="product-title">มุมมองด้านธุรกิจและ การปรับตัวในอนาคตของ PEA</p>
 									<p class="product-price">กธส.</p>
 									<ul class="product-variation">
-										<li><a href="#">Pre : 0</a></li>
-										<li><a href="#">Post : 0</a></li>
+										<li><a href="#">Pre : {{ Course_score.Pre_Score8 }}</a></li>
+										<li><a href="#">Post : {{ Course_score.Post_Score8 }}</a></li>
 									</ul>
-									<p class="text-center product-description"><a class="btn btn-gradient-info" href="#" >เข้าเรียน</a></p>
+									<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 8 %}" >เข้าเรียน</a></p>
 								  </div>
 								</div>
 							  </div>
@@ -218,10 +218,10 @@
 									<p class="product-title">INNOVATION HUB</p>
 									<p class="product-price">Hub</p>
 									<ul class="product-variation">
-										<li><a href="#">Pre : 0</a></li>
-										<li><a href="#">Post : 0</a></li>
+										<li><a href="#">Pre : {{ Course_score.Pre_Score9 }}</a></li>
+										<li><a href="#">Post : {{ Course_score.Post_Score9 }}</a></li>
 									</ul>
-									<p class="text-center product-description"><a class="btn btn-gradient-info" href="#" >เข้าเรียน</a></p>
+									<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 9 %}" >เข้าเรียน</a></p>
 								  </div>
 								</div>
 							  </div>
@@ -238,10 +238,10 @@
 									<p class="product-title">การปรับแนวคิดและการทำงานร่วมกันคนต่าง GEN</p>
 									<p class="product-price">กงบ.</p>
 									<ul class="product-variation">
-										<li><a href="#">Pre : 0</a></li>
-										<li><a href="#">Post : 0</a></li>
+										<li><a href="#">Pre : {{ Course_score.Pre_Score10 }}</a></li>
+										<li><a href="#">Post : {{ Course_score.Post_Score10 }}</a></li>
 									</ul>
-									<p class="text-center product-description"><a class="btn btn-gradient-info" href="#" >เข้าเรียน</a></p>
+									<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' 10 %}" >เข้าเรียน</a></p>
 								  </div>
 								</div>
 							  </div>

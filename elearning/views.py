@@ -3,9 +3,10 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.http import Http404
 import requests, xmltodict
-from .models import Staff, Check
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog
 import string
 from datetime import datetime
+from itertools import zip_longest
 # Create your views here.
 
 def login(request):
@@ -57,7 +58,12 @@ def login(request):
                         Organization = RegionCode,
                     )
                     Staff_save.save()
+
                     return redirect('home')
+                else:
+                    Staff_score = Staff.objects.get(StaffID = Emp_id)
+                    print(Staff_score)
+                return redirect('home')
         else:
                 mgs = {
                     'massage' : 'รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง....'
@@ -67,11 +73,25 @@ def login(request):
     return render(request,'login.html',{'mgs':mgs})
 
 def home(request):
-    user_ID = request.session['Emp_id']
-    staff_info = idm(user_ID)
-    print(staff_info)
+    Emp_id = request.session['Emp_id']
+    Fullname = request.session['Fullname']
+    Position = request.session['Position']
+    LevelCode = request.session['LevelCode']
+    Dept = request.session['Department']
+    RegionCode = request.session['RegionCode']
+    # Score = Staff_Score.objects.get(StaffID = Emp_id)
+    Course_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id))
+    print(Course_score)
 
-    return render(request, 'home.html',{'staff_info':staff_info})
+    Profile= {
+        'Emp_id' : Emp_id,
+        'Fullname' : Fullname,
+        'Position' : Position,
+        'LevelCode' : LevelCode,
+        'Dept' : Dept,
+        'RegionCode':RegionCode,
+        }
+    return render(request, 'home.html',{'Profile':Profile, 'Course_score':Course_score})
 
 def idm_login(Emp_id, Emp_pass):
     # Emp_passc = str(Emp_pass)
@@ -123,22 +143,90 @@ def idm(Emp_id):
     return employeedata
 
 def Course_main(request, PK_Course_D):
-    user_ID = request.session['Emp_id']
-    staff_info = idm(user_ID)
-    print(staff_info)
+    Emp_id = request.session['Emp_id']
+    Course_detail = Course.objects.get(id=PK_Course_D)
+    Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id))
+    if Course_detail.id == 1:
+        pre = Staff_score.Pre_Score1
+        post = Staff_score.Post_Score1
+    elif Course_detail.id == 2:
+        pre = Staff_score.Pre_Score2
+        post = Staff_score.Post_Score2
+    elif Course_detail.id == 3:
+        pre = Staff_score.Pre_Score3
+        post = Staff_score.Post_Score3
+    elif Course_detail.id == 4:
+        pre = Staff_score.Pre_Score4
+        post = Staff_score.Post_Score4
+    elif Course_detail.id == 5:
+        pre = Staff_score.Pre_Score5
+        post = Staff_score.Post_Score5
+    elif Course_detail.id == 6:
+        pre = Staff_score.Pre_Score6
+        post = Staff_score.Post_Score6
+    elif Course_detail.id == 7:
+        pre = Staff_score.Pre_Score7
+        post = Staff_score.Post_Score7
+    elif Course_detail.id == 8:
+        pre = Staff_score.Pre_Score8
+        post = Staff_score.Post_Score8
+    elif Course_detail.id == 9:
+        pre = Staff_score.Pre_Score9
+        post = Staff_score.Post_Score9
+    else:
+        pre = Staff_score.Pre_Score10
+        post = Staff_score.Post_Score10
+
+    Sub_course = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D))
+    # Sub_course_check = Sub_Course.objects.all().prefetch_related('SubCourse_Vdo').filter(Link_Course = Course.objects.get(id=PK_Course_D)).values()
+
+    Sub_course_check = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D))
+    combined_results = list(zip_longest(Sub_course, Sub_course_check))
+    # print(combined_results[0][0].Title)
+    # for x in combined_results:
+    #     print(x[0].id)
+
+    # print(Sub_course.query)
+    # print(Sub_course_check.query)
+    # print(Sub_course_check)
+    Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id))
+    vdo = Staff_Vdolog.objects.filter(Status = 'Done',Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)).count()
+    B_colour = check(Course_detail.Couse_Sub_Total,vdo)
+    # print(vdo)
+    # print(Course_detail.CourseName)
+    # print(Staff_score.Pre_Score1)
     
-    return render(request, 'Course_main.html',{'PK_Course_D': PK_Course_D})
+    return render(request, 'Course_main.html',{'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results})
 
 def VDO(request, PK_Title):
-    user_ID = request.session['Emp_id']
-    
-    staff_info = idm(user_ID)
-    print(staff_info)
+    Emp_id = request.session['Emp_id']
+    Sub_course = Sub_Course.objects.select_related('Link_Course').get(id = PK_Title )
+    print(Sub_course.Link_Course.id)
     if request.method == 'POST':
-        Staff_update = Staff.objects.get(StaffID=user_ID)
-        Staff_update.Date_Vdo1_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        Staff_update.Vdo_pass1_1 = 1
-        # Staff_update.save()
-        return redirect('Course_main',PK_Course_D='1')
+        check = Staff_Vdolog.objects.filter(Staff=Emp_id, Link_SubCourse = PK_Title).count()
+        if check == 0:
+            Staff_vdo_save = Staff_Vdolog(
+                            Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            Status = 'Done',
+                            Link_SubCourse = Sub_Course.objects.get(id = PK_Title),
+                            Link_course = Course.objects.get(id = Sub_course.Link_Course.id),
+                            Staff = Staff.objects.get(StaffID = Emp_id)
+                        )
+            Staff_vdo_save.save()
+        else:
+            Staff_vdo_update = Staff_Vdolog.objects.get(Staff=Emp_id, Link_SubCourse = PK_Title)
+            Staff_vdo_update.Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            Staff_vdo_update.Status = 'Done'
+            Staff_vdo_update.save()
+        
+        return redirect('Course_main',PK_Course_D=Sub_course.Link_Course.id)
     
-    return render(request, 'VDO.html',{'PK_Title': PK_Title})
+    return render(request, 'VDO.html',{'Sub_course': Sub_course})
+
+def check(Couse_Sub_Total,vdo):
+    if Couse_Sub_Total == vdo:
+        colour = 'Done'
+    else:
+        colour = 'False'
+    return colour
+
