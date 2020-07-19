@@ -7,6 +7,7 @@ from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Scor
 import string
 from datetime import datetime
 from itertools import zip_longest
+import re
 # Create your views here.
 
 def login(request):
@@ -80,9 +81,11 @@ def home(request):
     Dept = request.session['Department']
     RegionCode = request.session['RegionCode']
     # Score = Staff_Score.objects.get(StaffID = Emp_id)
-    Course_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id))
-    print(Course_score)
-
+    Course_all = Course.objects.all()
+    Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id))
+    combined_results = list(zip_longest(Course_all, Course_score))
+    print(combined_results)
+    
     Profile= {
         'Emp_id' : Emp_id,
         'Fullname' : Fullname,
@@ -91,7 +94,7 @@ def home(request):
         'Dept' : Dept,
         'RegionCode':RegionCode,
         }
-    return render(request, 'home.html',{'Profile':Profile, 'Course_score':Course_score})
+    return render(request, 'home.html',{'Profile':Profile, 'Course_all': Course_all ,'combined_results':combined_results,'Course_score':Course_score})
 
 def idm_login(Emp_id, Emp_pass):
     # Emp_passc = str(Emp_pass)
@@ -145,37 +148,14 @@ def idm(Emp_id):
 def Course_main(request, PK_Course_D):
     Emp_id = request.session['Emp_id']
     Course_detail = Course.objects.get(id=PK_Course_D)
-    Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id))
-    if Course_detail.id == 1:
-        pre = Staff_score.Pre_Score1
-        post = Staff_score.Post_Score1
-    elif Course_detail.id == 2:
-        pre = Staff_score.Pre_Score2
-        post = Staff_score.Post_Score2
-    elif Course_detail.id == 3:
-        pre = Staff_score.Pre_Score3
-        post = Staff_score.Post_Score3
-    elif Course_detail.id == 4:
-        pre = Staff_score.Pre_Score4
-        post = Staff_score.Post_Score4
-    elif Course_detail.id == 5:
-        pre = Staff_score.Pre_Score5
-        post = Staff_score.Post_Score5
-    elif Course_detail.id == 6:
-        pre = Staff_score.Pre_Score6
-        post = Staff_score.Post_Score6
-    elif Course_detail.id == 7:
-        pre = Staff_score.Pre_Score7
-        post = Staff_score.Post_Score7
-    elif Course_detail.id == 8:
-        pre = Staff_score.Pre_Score8
-        post = Staff_score.Post_Score8
-    elif Course_detail.id == 9:
-        pre = Staff_score.Pre_Score9
-        post = Staff_score.Post_Score9
+    Staff_score_check = Staff_Score.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D)).count
+    Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
+    if Staff_score_check == 0:
+        pre = 0
+        post = 0
     else:
-        pre = Staff_score.Pre_Score10
-        post = Staff_score.Post_Score10
+        pre = Staff_score.Pre_Score
+        post = Staff_score.Post_Score
 
     Sub_course = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D))
     # Sub_course_check = Sub_Course.objects.all().prefetch_related('SubCourse_Vdo').filter(Link_Course = Course.objects.get(id=PK_Course_D)).values()
@@ -189,7 +169,7 @@ def Course_main(request, PK_Course_D):
     # print(Sub_course.query)
     # print(Sub_course_check.query)
     # print(Sub_course_check)
-    Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id))
+    # Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id))
     vdo = Staff_Vdolog.objects.filter(Status = 'Done',Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)).count()
     B_colour = check(Course_detail.Couse_Sub_Total,vdo)
     # print(vdo)
@@ -230,3 +210,48 @@ def check(Couse_Sub_Total,vdo):
         colour = 'False'
     return colour
 
+def pretest(request, PK_Course_D):
+    Emp_id = request.session['Emp_id']
+    Course_item = Course.objects.get(id = PK_Course_D)
+    Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D))
+    print(Question)
+    if request.method == 'POST':
+        sum =0
+        for key, value in request.POST.items():
+                print(key)
+                print(text_num_split(key))
+                value = request.POST[key]
+                print(value)
+                if value == '1' :
+                    value = int(value)
+                    sum += value
+        print('total',sum)
+        
+        check_StaffID = Staff_Score.objects.filter(Staff = Emp_id, Link_course = Course.objects.get(id = PK_Course_D)).count
+        if check_StaffID == 0:
+                Staff_prescore_create = Staff_Score(
+                                                Pre_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                                Pre_Score = sum,
+                                                Staff = Staff.objects.get(StaffID = Emp_id),
+                                                Link_course = Course.objects.get(id = PK_Course_D)
+                                                    )
+                Staff_prescore_create.save()
+        else : 
+            Staff_prescore_update = Staff_Score.objects.get(Staff = Emp_id, Link_course = PK_Course_D)
+            Staff_prescore_update.Pre_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            Staff_prescore_update.Pre_Score = sum
+            Staff_prescore_update.save()
+
+        return redirect('Course_main',PK_Course_D)
+
+    return render(request, 'Pretest.html',{'Question': Question, 'Course_item':Course_item })
+
+def check_ans(key,value):
+    key_cut = key.split("dio")[1]
+    print(key_cut)
+    return key_cut
+
+def text_num_split(item):
+    for index, letter in enumerate(item, 0):
+        if letter.isdigit():
+            return [item[:index]]

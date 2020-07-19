@@ -19212,7 +19212,7 @@ footer {
       padding: 20px 25px;
       display: grid;
       position: relative;
-      grid-template-columns: 90% 10%;
+      grid-template-columns: 80% 20%;
       grid-template-rows: auto;
       grid-template-areas: "product-image product-image" "product-title product-price" "product-variation product-actual-price" "product-description product-description"; }
       .product-item-wrapper .product-item .card-body .action-holder {

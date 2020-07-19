@@ -25,4 +25,5 @@ urlpatterns = [
     url('home/', views.home, name='home'),
     path('Course_main/<int:PK_Course_D>/', views.Course_main, name='Course_main'),
     path('VDO/<int:PK_Title>/', views.VDO, name='VDO'),
+    path('Pretest/<int:PK_Course_D>/', views.pretest, name='pretest'),
 ]

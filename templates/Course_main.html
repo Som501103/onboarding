@@ -113,7 +113,7 @@
 										  </button>
 										  {% endif %}
 										</td>
-										<td><a href="#" class="btn btn-gradient-info">ทดสอบ</a></td>
+										<td><a href="{% url 'pretest' Course_detail.id %}" class="btn btn-gradient-info">ทดสอบ</a></td>
 									  </tr>
 									  {% for x in combined_results %}
 									  <tr>
@@ -182,7 +182,7 @@
 											<td>
 											{% if post == 0 or post <= 7 %}
 												<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
-													<i class="mdi mdi-check-circle "></i>
+												{{ post }}</i>
 												</button>
 											{% else %}
 											<button type="button" class="btn btn-gradient-success btn-rounded btn-icon">
