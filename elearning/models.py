@@ -7,6 +7,7 @@ class Course(models.Model):
     Course_Total_QS = models.IntegerField(null=True, default=0)
     Course_Pass_Score = models.IntegerField(null=True, default=0)
     Date_Created = models.DateTimeField(auto_now_add=True, null=True)
+    Cover_img = models.CharField(max_length=50,null=True)
     CourseStatus = models.CharField(null=True,max_length=3,default='OFF')
 
 class Sub_Course(models.Model):
