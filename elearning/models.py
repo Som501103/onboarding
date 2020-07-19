@@ -32,7 +32,7 @@ class Course_Pretest(models.Model):
 
 class Check(models.Model):
     StaffID = models.CharField(max_length=10, unique=True, primary_key=True)
-    Error_Detail = models.CharField(max_length=200, null=True)
+    Error_Detail = models.TextField(default='error',blank=True, null=True)
     Date_check = models.DateTimeField(auto_now_add=True, null=True)
 
 class Staff(models.Model):

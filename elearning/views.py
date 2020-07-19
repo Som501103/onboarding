@@ -8,7 +8,7 @@ import string
 from datetime import datetime
 from itertools import zip_longest
 import re
-import random
+
 # Create your views here.
 
 def login(request):
@@ -281,3 +281,20 @@ def text_num_split(item):
     for index, letter in enumerate(item, 0):
         if letter.isdigit():
             return [item[:index]]
+
+def errorstage(request):
+    mgs = {
+                    'massage' : ' '
+                }
+    if request.method == 'POST':
+        Emp_id = request.POST.get('Emp_ID')
+        detail = request.POST.get('detail')
+        Staff_error_create = Check(
+                            Date_check = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            StaffID = Emp_id,
+                            Error_Detail = detail
+                            )
+        Staff_error_create.save()
+        return redirect('login')
+    
+    return render(request,'errorstage.html',{'mgs':mgs})
