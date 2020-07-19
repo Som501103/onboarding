@@ -180,7 +180,7 @@
 										<td></td>
 											<td> Post-Test </td>
 											<td>
-											{% if post == 0 or post <= 7 %}
+											{% if post == 0 or post <= Course_detail.Course_Pass_Score %}
 												<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
 												{{ post }}</i>
 												</button>
@@ -192,8 +192,10 @@
 											</td>
 											{% if B_colour == 'False' %}
 											<td><a href="#" class="btn btn-gradient-secondary">ทดสอบ</a></td>
+											{% elif post <= Course_detail.Course_Pass_Score %}
+											<td><a href="{% url 'posttest' Course_detail.id %}" class="btn btn-gradient-danger">ทดสอบใหม่</a></td>
 											{% else %}
-											<td><a href="#" class="btn btn-gradient-info">ทดสอบ</a></td>
+											<td><a class="btn btn-gradient-info">ผ่านแล้ว</a></td>
 											{% endif %}
 									  </tr>
 									</tbody>

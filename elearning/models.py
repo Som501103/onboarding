@@ -5,6 +5,7 @@ class Course(models.Model):
     CourseBy = models.CharField(max_length=50)
     Couse_Sub_Total = models.IntegerField(null=True, default=0)
     Course_Total_QS = models.IntegerField(null=True, default=0)
+    Course_Pass_Score = models.IntegerField(null=True, default=0)
     Date_Created = models.DateTimeField(auto_now_add=True, null=True)
     CourseStatus = models.CharField(null=True,max_length=3,default='OFF')
 

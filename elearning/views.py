@@ -8,6 +8,7 @@ import string
 from datetime import datetime
 from itertools import zip_longest
 import re
+import random
 # Create your views here.
 
 def login(request):
@@ -213,19 +214,19 @@ def check(Couse_Sub_Total,vdo):
 def pretest(request, PK_Course_D):
     Emp_id = request.session['Emp_id']
     Course_item = Course.objects.get(id = PK_Course_D)
-    Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D))
-    print(Question)
+    Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
+    # print(Question)
     if request.method == 'POST':
         sum =0
         for key, value in request.POST.items():
-                print(key)
-                print(text_num_split(key))
+                # print(key)
+                # print(text_num_split(key))
                 value = request.POST[key]
-                print(value)
+                # print(value)
                 if value == '1' :
                     value = int(value)
                     sum += value
-        print('total',sum)
+        # print('total',sum)
         
         check_StaffID = Staff_Score.objects.filter(Staff = Emp_id, Link_course = Course.objects.get(id = PK_Course_D)).count
         if check_StaffID == 0:
@@ -246,9 +247,34 @@ def pretest(request, PK_Course_D):
 
     return render(request, 'Pretest.html',{'Question': Question, 'Course_item':Course_item })
 
+def posttest(request, PK_Course_D):
+    Emp_id = request.session['Emp_id']
+    Course_item = Course.objects.get(id = PK_Course_D)
+    Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
+    # print(Question)
+    if request.method == 'POST':
+        sum =0
+        for key, value in request.POST.items():
+                # print(key)
+                # print(text_num_split(key))
+                value = request.POST[key]
+                # print(value)
+                if value == '1' :
+                    value = int(value)
+                    sum += value
+        # print('total',sum)
+         
+        Staff_postscore_update = Staff_Score.objects.get(Staff = Emp_id, Link_course = PK_Course_D)
+        Staff_postscore_update.Post_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        Staff_postscore_update.Post_Score = sum
+        Staff_postscore_update.save()
+
+        return redirect('Course_main',PK_Course_D)
+    return render(request, 'Posttest.html',{'Question': Question, 'Course_item':Course_item })
+
 def check_ans(key,value):
     key_cut = key.split("dio")[1]
-    print(key_cut)
+    # print(key_cut)
     return key_cut
 
 def text_num_split(item):
