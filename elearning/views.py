@@ -190,11 +190,11 @@ def Course_main(request, PK_Course_D):
     Sub_course = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D))
     # Sub_course_check = Sub_Course.objects.all().prefetch_related('SubCourse_Vdo').filter(Link_Course = Course.objects.get(id=PK_Course_D)).values()
 
-    Sub_course_check = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D))
+    Sub_course_check = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id))
     combined_results = list(zip_longest(Sub_course, Sub_course_check))
     # print(combined_results[0][0].Title)
-    # for x in combined_results:
-    #     print(x[0].id)
+    for x in combined_results:
+        print(x)
 
     # print(Sub_course.query)
     # print(Sub_course_check.query)
