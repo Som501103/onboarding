@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.http import Http404
 import requests, xmltodict
-from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback
 import string
 from datetime import datetime
 from itertools import zip_longest
@@ -360,3 +360,26 @@ def virtualclass(request):
     }
     
     return render(request,'virtualclass.html',{'Profile':Profile})
+
+def feedback(request):
+    Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        detail = request.POST.get('detail')
+        feedback_staff_create = Feedback(
+                            Title = title,
+                            Detail = detail,
+                            Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            Staff = Staff.objects.get(StaffID = Emp_id)
+                            )
+        feedback_staff_create.save()
+        return redirect('home')
+    
+    return render(request,'feedback.html',{'Profile':Profile})

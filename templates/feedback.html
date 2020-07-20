@@ -31,30 +31,25 @@
 				  <div class="content-wrapper">
 					<div class="row">
 					  <div class="col-md-12">
-						<div class="col-12 grid-margin">
+						<div class="col-12 grid-margin stretch-card">
 							<div class="card">
-							  <div class="card-body">
-								<h4 class="card-title">บทเรียน {{ Sub_course.Title }}</h4>
-								<!-- https://drive.google.com/file/d/1-2DuLtzekmoTEm1qV8_xRRLMN6bwlTdS/preview -->
-								<div class="text-center table-responsive">
-									<iframe src="{{ Sub_course.URLGdrive }}" allow="autoplay" width="100%" height="480" referrerpolicy="no-referrer"></iframe>
-									<!-- <video controls >
-										<source src="https://drive.google.com/file/d/1-2DuLtzekmoTEm1qV8_xRRLMN6bwlTdS/preview" type="video/mp4" >
-									</video> -->
-									</br>
-									<p><i class="mdi mdi-account-card-details"></i> : {{ Sub_course.ConstructorName }} ({{ Sub_course.ConstructorPosition }})</p>
-									<p><i class="mdi mdi-phone-classic"></i> : {{ Sub_course.Tel }} | <i class="mdi mdi-email"></i> : {{ Sub_course.email }}</p>
-									<p><i class="mdi mdi-file-document"></i> : </p>
-									<p class="text-danger"><label>ปุ่ม บทถัดไป จะปรากฎขึ้นเมื่อการบรรยายใกล้จะจบ</label></p>
-									<form method="POST" onsubmit="return checkscore()">
-										{% csrf_token %}
-									<input type="hidden" name="TitalTime" id="TitalTime" value="{{ Sub_course.TotalTime }}"/>
-									<button class="btn btn-gradient-success btn-md" type="submit" id="POSTbutton" name="POSTbutton" style="visibility: hidden;">
-										เรียนบทถัดไป
-									</button>
+								<div class="card-body">
+									<h4 class="card-title">ติดต่อสอบถาม</h4>
+									<p class="card-description"> สามารถติดต่อสอบถามได้ที่ สำนักงานใหญ่ อาคาร LED ชั้น 18 ผบร. โทร 5864 , 5861  </p>
+									<form class="forms-sample" method="POST">
+									{% csrf_token %}
+									<h4 class="card-title">ข้อเสนอแนะ หรือ แจ้งปัญหาการใช้งาน</h4>
+									  <div class="form-group">
+										<label for="exampleInputName1">หัวข้อ</label>
+										<input type="text" class="form-control" id="title" name="title" placeholder="หัวข้อ">
+									  </div>
+									  <div class="form-group">
+										<label for="exampleTextarea1">รายละเอียด</label>
+										<textarea class="form-control" id="detail" name="detail" rows="4"></textarea>
+									  </div>
+									  <button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
 									</form>
 								</div>
-							  </div>
 							</div>
 						  </div>
 					  </div>
@@ -66,7 +61,7 @@
 					<div class="container">
 					  <div class="d-sm-flex justify-content-center justify-content-sm-between">
 						<span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2017 <a href="https://www.bootstrapdash.com/" target="_blank">BootstrapDash</a>. All rights reserved.</span>
-						<span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">ติดต่อสอบถาม ผบร. โทร 5863, 5864 <i class="mdi mdi-heart text-danger"></i></span>
+						<span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">ติดต่อสอบถาม ผบร. โทร 5864, 5861 <i class="mdi mdi-heart text-danger"></i></span>
 					  </div>
 					</div>
 				  </footer>
@@ -101,13 +96,39 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
-		
-		$(window).ready(function(){
-			var totaltime = document.getElementById('TitalTime').value;
-		    var C_time = (totaltime*60000);
-			// timevdo 35.52m
-			// 1m = 60000s
-			var time = window.setTimeout(function(){document.getElementById('POSTbutton').style.visibility='visible'},C_time);
+		$(function() {
+			var total = document.getElementById('Course_total').value;
+			console.log(total);
+
+			$("#submit").click(function() {  
+			for (i = 1; i <= total; i++) {
+					if($('input[type=radio][name=optradio'+i+']:checked').length == 0)
+					{
+						alert("ใจเย็นๆ ข้อ "+i+" ยังไม่ได้ตอบนะ");
+						document.getElementById("radio"+i+"_1").focus();
+						return false;
+						
+					}else{
+						var choose = document.querySelector('input[name = optradio'+i+']:checked').value;
+						console.log(choose);
+						if( choose == document.getElementById("ans"+i).value){
+							
+							document.getElementById("ch"+i).value = 1;
+						}else{
+							document.getElementById("ch"+i).value = 0;
+						}
+							
+					}
+			}
+
+			var x =confirm("ยืนยันการส่งแบบทดสอบก่อนเรียน (Pre-Test)");
+				if (x)
+					return true;
+				else
+					return false;
+			
+			
+			});
 		});
 	</script>
     

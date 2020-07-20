@@ -62,4 +62,9 @@ class Staff_Vdolog(models.Model):
     Link_course = models.ForeignKey(Course, related_name='Course_Vdo', on_delete=models.CASCADE,null= True)
     Staff = models.ForeignKey(Staff, related_name= 'Staff_Vdo', on_delete= models.CASCADE,null= True)
 
+class Feedback(models.Model):
+    Title = models.CharField(max_length=300)
+    Detail = models.TextField(default='detail',blank=True, null=True)
+    Date_Created = models.DateTimeField(auto_now_add=False, null= True)
+    Staff = models.ForeignKey(Staff, related_name= 'Staff_feedback', on_delete= models.CASCADE,null= True)
 
