@@ -171,11 +171,11 @@ def Course_main(request, PK_Course_D):
 
     Course_detail = Course.objects.get(id=PK_Course_D)
     Staff_score_check = Staff_Score.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D)).count
-    Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
     if Staff_score_check == 0:
         pre = 0
         post = 0
     else:
+        Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
         pre = Staff_score.Pre_Score
         post = Staff_score.Post_Score
 
