@@ -168,6 +168,15 @@ def Course_main(request, PK_Course_D):
         'Dept' : request.session['Department'],
         'RegionCode' : request.session['RegionCode']
     }
+    Staff_prescore_create = Staff_Score(
+                                                Pre_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                                Pre_Score = 0,
+                                                Post_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                                Post_Score = 0,
+                                                Staff = Staff.objects.get(StaffID = Emp_id),
+                                                Link_course = Course.objects.get(id = PK_Course_D)
+                                                    )
+    Staff_prescore_create.save()
 
     Course_detail = Course.objects.get(id=PK_Course_D)
     Staff_score_check = Staff_Score.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D)).count
