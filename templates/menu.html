@@ -3,8 +3,8 @@
     <nav class="navbar top-navbar col-lg-12 col-12 p-0">
       <div class="container">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <a class="navbar-brand brand-logo" href="{% url 'login' %}"><img src="/static/assets/images/logo.svg" alt="logo" /></a>
-          <a class="navbar-brand brand-logo-mini" href="{% url 'login' %}"><img src="/static/assets/images/logo-mini.svg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo" href="{% url 'home' %}"><img src="/static/assets/images/logo.svg" alt="logo" /></a>
+          <a class="navbar-brand brand-logo-mini" href="{% url 'home' %}"><img src="/static/assets/images/logo-mini.svg" alt="logo" /></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
           
@@ -49,7 +49,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../../pages/layout/rtl-layout.html">
+            <a class="nav-link" href="{% url 'virtualclass' %}">
               <i class="mdi mdi-file-document-box menu-icon"></i>
               <span class="menu-title">กำหนดการสอน Virtual Class</span>
             </a>

@@ -348,3 +348,15 @@ def errorstage(request):
         return redirect('login')
     
     return render(request,'errorstage.html',{'mgs':mgs})
+
+def virtualclass(request):
+    Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    
+    return render(request,'virtualclass.html',{'Profile':Profile})
