@@ -74,6 +74,18 @@ def login(request):
 
     return render(request,'login.html',{'mgs':mgs})
 
+def menu(request):
+    Profile ={
+        'Emp_id' : request.session['Emp_id'],
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    
+    return render(request,'menu.html',{'Profile':Profile})
+
 def home(request):
     Emp_id = request.session['Emp_id']
     Fullname = request.session['Fullname']
@@ -148,6 +160,15 @@ def idm(Emp_id):
 
 def Course_main(request, PK_Course_D):
     Emp_id = request.session['Emp_id']
+
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+
     Course_detail = Course.objects.get(id=PK_Course_D)
     Staff_score_check = Staff_Score.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D)).count
     Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
@@ -177,10 +198,17 @@ def Course_main(request, PK_Course_D):
     # print(Course_detail.CourseName)
     # print(Staff_score.Pre_Score1)
     
-    return render(request, 'Course_main.html',{'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results})
+    return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results})
 
 def VDO(request, PK_Title):
     Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
     Sub_course = Sub_Course.objects.select_related('Link_Course').get(id = PK_Title )
     print(Sub_course.Link_Course.id)
     if request.method == 'POST':
@@ -202,7 +230,7 @@ def VDO(request, PK_Title):
         
         return redirect('Course_main',PK_Course_D=Sub_course.Link_Course.id)
     
-    return render(request, 'VDO.html',{'Sub_course': Sub_course})
+    return render(request, 'VDO.html',{'Profile':Profile,'Sub_course': Sub_course})
 
 def check(Couse_Sub_Total,vdo):
     if Couse_Sub_Total == vdo:
@@ -213,6 +241,13 @@ def check(Couse_Sub_Total,vdo):
 
 def pretest(request, PK_Course_D):
     Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
     Course_item = Course.objects.get(id = PK_Course_D)
     Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
     # print(Question)
@@ -245,10 +280,17 @@ def pretest(request, PK_Course_D):
 
         return redirect('Course_main',PK_Course_D)
 
-    return render(request, 'Pretest.html',{'Question': Question, 'Course_item':Course_item })
+    return render(request, 'Pretest.html',{'Profile':Profile, 'Question': Question, 'Course_item':Course_item })
 
 def posttest(request, PK_Course_D):
     Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
     Course_item = Course.objects.get(id = PK_Course_D)
     Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
     # print(Question)
@@ -270,7 +312,7 @@ def posttest(request, PK_Course_D):
         Staff_postscore_update.save()
 
         return redirect('Course_main',PK_Course_D)
-    return render(request, 'Posttest.html',{'Question': Question, 'Course_item':Course_item })
+    return render(request, 'Posttest.html',{'Profile':Profile, 'Question': Question, 'Course_item':Course_item })
 
 def check_ans(key,value):
     key_cut = key.split("dio")[1]
