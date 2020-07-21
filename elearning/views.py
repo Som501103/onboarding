@@ -172,7 +172,12 @@ def Course_main(request, PK_Course_D):
 
     Course_detail = Course.objects.get(id=PK_Course_D)
     Staff_score_check = Staff_Score.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D)).count
-    if Staff_score_check == 0:
+    print(Staff_score_check)
+    if Staff_score_check() > 0:
+        Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
+        pre = Staff_score.Pre_Score
+        post = Staff_score.Post_Score
+    else:
         Staff_prescore_create = Staff_Score(
                     Pre_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     Pre_Score = 0,
@@ -182,10 +187,10 @@ def Course_main(request, PK_Course_D):
                     Link_course = Course.objects.get(id = PK_Course_D)
                     )
         Staff_prescore_create.save()
-    else:
         Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
         pre = Staff_score.Pre_Score
         post = Staff_score.Post_Score
+        
 
     Sub_course = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D))
     # Sub_course_check = Sub_Course.objects.all().prefetch_related('SubCourse_Vdo').filter(Link_Course = Course.objects.get(id=PK_Course_D)).values()
@@ -193,8 +198,8 @@ def Course_main(request, PK_Course_D):
     Sub_course_check = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id))
     combined_results = list(zip_longest(Sub_course, Sub_course_check))
     # print(combined_results[0][0].Title)
-    for x in combined_results:
-        print(x)
+    # for x in combined_results:
+    #     print(x)
 
     # print(Sub_course.query)
     # print(Sub_course_check.query)
