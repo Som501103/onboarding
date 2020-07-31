@@ -202,7 +202,11 @@ def Course_main(request, PK_Course_D):
     vdo = Staff_Vdolog.objects.filter(Status = 'Done',Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)).count()
     B_colour = check(Course_detail.Couse_Sub_Total,vdo)
     
-    Evaluate = len(Evaluate_t.objects.get(Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)))
+    Evaluate = Evaluate_t.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)).count()
+    if Evaluate ==1:
+        Evaluate = 1
+    else:
+        Evaluate = 0
     
     return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate})
 
