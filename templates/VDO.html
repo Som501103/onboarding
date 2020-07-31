@@ -44,7 +44,7 @@
 									</br>
 									<p><i class="mdi mdi-account-card-details"></i> : {{ Sub_course.ConstructorName }} ({{ Sub_course.ConstructorPosition }})</p>
 									<p><i class="mdi mdi-phone-classic"></i> : {{ Sub_course.Tel }} | <i class="mdi mdi-email"></i> : {{ Sub_course.email }}</p>
-									<p><i class="mdi mdi-file-document"></i> : <a href="{{ Sub_course.Document }}" target="_blank">เอกสารประกอบ</a></p>
+									<p><i class="mdi mdi-file-document"></i> : <a href="{{ Sub_course.Document }}" target="_blank">เอกสารประกอบบทเรียน</a></p>
 									<p class="text-danger"><label>ปุ่ม บทถัดไป จะปรากฎขึ้นเมื่อการบรรยายใกล้จะจบ</label></p>
 									<form method="POST" onsubmit="return checkscore()">
 										{% csrf_token %}
