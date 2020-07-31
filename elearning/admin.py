@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog, Feedback
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog, Feedback, Evaluate_t
 
 # Register your models here.
 admin.site.register(Staff)
@@ -10,3 +10,4 @@ admin.site.register(Course_Pretest)
 admin.site.register(Staff_Score)
 admin.site.register(Staff_Vdolog)
 admin.site.register(Feedback)
+admin.site.register(Evaluate_t)

@@ -194,11 +194,33 @@
 											
 											{% if B_colour == 'False' %}
 											<td><a href="#" class="btn btn-gradient-secondary">ทดสอบ</a></td>
+											{% elif post == 0 %}
+											<td><a href="{% url 'posttest' Course_detail.id %}" class="btn btn-gradient-info">ทดสอบ</a></td>
 											{% elif post <= Course_detail.Course_Pass_Score %}
 											<td><a href="{% url 'posttest' Course_detail.id %}" class="btn btn-gradient-danger">ทดสอบใหม่</a></td>
 											{% else %}
 											<td><a class="btn btn-gradient-info">ผ่านแล้ว</a></td>
 											{% endif %}
+									  </tr>
+									  <tr>
+										  <td>
+											{% if Evaluate.Status == 0 %}
+												<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
+													<i class="mdi mdi-check-circle "></i>
+												</button>
+											{% else %}
+												<button type="button" class="btn btn-gradient-primary btn-rounded btn-icon">
+													<i class="mdi mdi-check-circle "></i>
+												</button>
+											{% endif %}
+										  </td>
+										  <td>
+											<a href="{% url 'evaluate' Course_detail.id %}">แบบประเมินวิทยากร</a>
+										  </td>
+										  <td><a class="btn btn-gradient-primary" href="{% url 'evaluate' Course_detail.id %}">ประเมินวิทยากร</a></td>
+									  </tr>
+									  <tr>
+										  <td colspan="3" class="text-center"><a href="{% url 'home' %}" class="btn btn-gradient-primary">กลับหน้ารวมหลักสูตร</a></td>
 									  </tr>
 									</tbody>
 								  </table>

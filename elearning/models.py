@@ -68,3 +68,15 @@ class Feedback(models.Model):
     Date_Created = models.DateTimeField(auto_now_add=False, null= True)
     Staff = models.ForeignKey(Staff, related_name= 'Staff_feedback', on_delete= models.CASCADE,null= True)
 
+class Evaluate_t(models.Model):
+    No_1 = models.IntegerField(default=0)
+    No_2 = models.IntegerField(default=0)
+    No_3 = models.IntegerField(default=0)
+    No_4 = models.IntegerField(default=0)
+    No_5 = models.IntegerField(default=0)
+    No_6 = models.IntegerField(default=0)
+    No_7 = models.IntegerField(default=0)
+    Date_Created = models.DateTimeField(auto_now_add=True, null= True)
+    Status = models.BooleanField(default=False)
+    Link_course = models.ForeignKey(Course, related_name='Course_Eva', on_delete=models.CASCADE,null= True)
+    Staff = models.ForeignKey(Staff, related_name= 'Staff_Eva', on_delete= models.CASCADE,null= True)

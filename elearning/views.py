@@ -3,11 +3,12 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.http import Http404
 import requests, xmltodict
-from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t
 import string
 from datetime import datetime
 from itertools import zip_longest
 import re
+from django.db.models import Count
 
 # Create your views here.
 
@@ -172,7 +173,7 @@ def Course_main(request, PK_Course_D):
 
     Course_detail = Course.objects.get(id=PK_Course_D)
     Staff_score_check = Staff_Score.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D)).count
-    print(Staff_score_check)
+    # print(Staff_score_check)
     if Staff_score_check() > 0:
         Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
         pre = Staff_score.Pre_Score
@@ -197,21 +198,13 @@ def Course_main(request, PK_Course_D):
 
     Sub_course_check = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id))
     combined_results = list(zip_longest(Sub_course, Sub_course_check))
-    # print(combined_results[0][0].Title)
-    # for x in combined_results:
-    #     print(x)
-
-    # print(Sub_course.query)
-    # print(Sub_course_check.query)
-    # print(Sub_course_check)
-    # Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id))
+    
     vdo = Staff_Vdolog.objects.filter(Status = 'Done',Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)).count()
     B_colour = check(Course_detail.Couse_Sub_Total,vdo)
-    # print(vdo)
-    # print(Course_detail.CourseName)
-    # print(Staff_score.Pre_Score1)
     
-    return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results})
+    Evaluate = Evaluate_t.objects.get(Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D))
+    
+    return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate})
 
 def VDO(request, PK_Title):
     Emp_id = request.session['Emp_id']
@@ -324,7 +317,7 @@ def posttest(request, PK_Course_D):
         Staff_postscore_update.Post_Score = sum
         Staff_postscore_update.save()
 
-        return redirect('Course_main',PK_Course_D)
+        return redirect('evaluate',PK_Course_D)
     return render(request, 'Posttest.html',{'Profile':Profile, 'Question': Question, 'Course_item':Course_item })
 
 def check_ans(key,value):
@@ -388,3 +381,50 @@ def feedback(request):
         return redirect('home')
     
     return render(request,'feedback.html',{'Profile':Profile})
+
+def evaluate(request, PK_Course_D):
+    Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    Course_item = Course.objects.get(id = PK_Course_D)
+    Sub_Course_item = Sub_Course.objects.values('ConstructorName').filter(Link_Course = Course.objects.get(id = PK_Course_D)).annotate(dcount=Count('ConstructorName'))
+
+    if request.method == 'POST':
+        optradio1 = request.POST.get('optradio1')
+        print(optradio1)
+        optradio2 = request.POST.get('optradio2')
+        print(optradio2)
+        optradio3 = request.POST.get('optradio3')
+        print(optradio3)
+        optradio4 = request.POST.get('optradio4')
+        print(optradio4)
+        optradio5 = request.POST.get('optradio5')
+        print(optradio5)
+        optradio6 = request.POST.get('optradio6')
+        print(optradio6)
+        optradio7 = request.POST.get('optradio7')
+        print(optradio7)
+        eve_staff_create = Evaluate_t(
+                            No_1 = optradio1,
+                            No_2 = optradio2,
+                            No_3 = optradio3,
+                            No_4 = optradio4,
+                            No_5 = optradio5,
+                            No_6 = optradio6,
+                            No_7 = optradio7,
+                            Status = 1,
+                            Link_course = Course.objects.get(id = PK_Course_D),
+                            Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            Staff = Staff.objects.get(StaffID = Emp_id)
+                            )
+        eve_staff_create.save()
+        
+        return redirect('Course_main',PK_Course_D)
+
+    return render(request, 'evaluate.html',{'Profile':Profile, 'Course_item':Course_item, 'Sub_Course_item':Sub_Course_item })
+
