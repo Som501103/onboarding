@@ -203,7 +203,7 @@ def Course_main(request, PK_Course_D):
     B_colour = check(Course_detail.Couse_Sub_Total,vdo)
     
     Evaluate = Evaluate_t.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)).count()
-    if Evaluate ==1:
+    if Evaluate >=1:
         Evaluate = 1
     else:
         Evaluate = 0
