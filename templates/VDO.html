@@ -108,12 +108,13 @@
 		    var C_time = (totaltime*60000);
 			// timevdo 35.52m
 			// 1m = 60000s
-			var time = window.setTimeout(function(){document.getElementById('POSTbutton').style.visibility='visible'},C_time);
+			// var time = window.setTimeout(function(){document.getElementById('POSTbutton').style.visibility='visible'},C_time);
 		});
 	</script>
 	<script>
 		function startTimer(duration, display) {
 			var timer = duration, minutes, seconds;
+			var totaltime = document.getElementById('TitalTime').value;
 			setInterval(function () {
 				minutes = parseInt(timer / 60, 10);
 				seconds = parseInt(timer % 60, 10);
@@ -124,8 +125,12 @@
 				display.textContent = minutes + ":" + seconds;
 
 				if (--timer < 0) {
-					timer = duration;
+					timer = 0;
+					var time = document.getElementById('POSTbutton').style.visibility='visible';
 				}
+				// if (minutes == totaltime){
+				// 	var time = window.setTimeout(function(){document.getElementById('POSTbutton').style.visibility='visible'},C_time);
+				// }
 			}, 1000);
 		}
 
