@@ -39,19 +39,9 @@
 								<div class="table-responsive">
 								<form method="POST" >
 									{% csrf_token %}
-								  <table class="table">
-									<!-- <thead>
-									  <tr>
-										<th> # </th>
-										<th> บทเรียน </th>
-										<th> สถานะ </th>
-										<th> เข้าเรียน </th>
-									  </tr>
-									</thead> -->
-									<tbody>
 									{% for x in Question %}
-									  <tr>
-											<td>
+									<div class="row">
+										<div class="col-md-12">
 												ข้อ {{ forloop.counter }} {{ x.TestTitle }}
 												</br>
 												<div class="form-check form-check-primary">
@@ -76,14 +66,14 @@
 												</div>
 												<input type="hidden" id="ans{{ forloop.counter }}" name="ans{{ forloop.counter }}" value="{{ x.Test_ans }}"/>
 												<input type="hidden" id="ch{{ forloop.counter }}" name="ch{{ forloop.counter }}" value=""/>
-											</td>
-									  </tr>
+											</div>
+										</div>
 									{% endfor %}
-										<tr>
-											<td class="text-left"><input type="submit" class="btn btn-gradient-primary btn-rounded btn-fw" id="submit" value="ส่งคำตอบ"/></td>
-										</tr>
-									</tbody>
-								  </table>
+										<div class="row">
+											<div class="col-md-12">
+												<input type="submit" class="btn btn-gradient-primary btn-rounded btn-fw" id="submit" value="ส่งคำตอบ"/>
+											</div>
+										</div>
 								  </form>
 								</div>
 							  </div>

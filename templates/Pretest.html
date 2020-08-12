@@ -37,54 +37,42 @@
 								<h4 class="card-title">ทดสอบก่อนเรียน : {{ Course_item.CourseName }}</h4>
 								<input type="hidden" id="Course_total" name="Course_total" value="{{ Course_item.Course_Total_QS }}"/>
 								<div class="table-responsive">
-								<form method="POST" >
-									{% csrf_token %}
-								  <table class="table">
-									<!-- <thead>
-									  <tr>
-										<th> # </th>
-										<th> บทเรียน </th>
-										<th> สถานะ </th>
-										<th> เข้าเรียน </th>
-									  </tr>
-									</thead> -->
-									<tbody>
-									{% for x in Question %}
-									  <tr>
-											<td>
-												ข้อ {{ forloop.counter }} {{ x.TestTitle }}
-												</br>
-												<div class="form-check form-check-primary">
-													<label  class="form-check-label" for="radio{{ forloop.counter }}_1">
-														<input type="radio" class="form-check-input" id="radio{{ forloop.counter }}_1" name="optradio{{ forloop.counter }}" value="{{ x.Test1 }}" />{{ x.Test1 }}
-													</label>
-												</div>
-												<div class="form-check form-check-primary">
-													<label class="form-check-label" for="radio{{ forloop.counter }}_2">
-														<input type="radio" class="form-check-input" id="radio{{ forloop.counter }}_2" name="optradio{{ forloop.counter }}" value="{{ x.Test2 }}" />{{ x.Test2 }}
-													</label>
-												</div>
-												<div class="form-check form-check-primary">
-													<label class="form-check-label" for="radio{{ forloop.counter }}_3">
-														<input type="radio" class="form-check-input" id="radio{{ forloop.counter }}_3" name="optradio{{ forloop.counter }}" value="{{ x.Test3 }}" />{{ x.Test3 }}
-													</label>
-												</div>
-												<div class="form-check form-check-primary">
-													<label class="form-check-label" for="radio{{ forloop.counter }}_4">
-														<input type="radio" class="form-check-input" id="radio{{ forloop.counter }}_4" name="optradio{{ forloop.counter }}" value="{{ x.Test4 }}" />{{ x.Test4 }}
-													</label>
-												</div>
-												<input type="hidden" id="ans{{ forloop.counter }}" name="ans{{ forloop.counter }}" value="{{ x.Test_ans }}"/>
-												<input type="hidden" id="ch{{ forloop.counter }}" name="ch{{ forloop.counter }}" value=""/>
-											</td>
-									  </tr>
-									{% endfor %}
-										<tr>
-											<td class="text-left"><input type="submit" class="btn btn-gradient-primary btn-rounded btn-fw" id="submit" value="ส่งคำตอบ"/></td>
-										</tr>
-									</tbody>
-								  </table>
-								  </form>
+									<form method="POST" >
+										{% csrf_token %}
+										{% for x in Question %}
+										<div class="row">
+											<div class="col-md-12">
+												<p>ข้อ {{ forloop.counter }} {{ x.TestTitle }}</p>
+													<div class="form-check form-check-primary">
+														<label  class="form-check-label" for="radio{{ forloop.counter }}_1">
+															<input type="radio" class="form-check-input" id="radio{{ forloop.counter }}_1" name="optradio{{ forloop.counter }}" value="{{ x.Test1 }}" />{{ x.Test1 }}
+														</label>
+													</div>
+													<div class="form-check form-check-primary">
+														<label class="form-check-label" for="radio{{ forloop.counter }}_2">
+															<input type="radio" class="form-check-input" id="radio{{ forloop.counter }}_2" name="optradio{{ forloop.counter }}" value="{{ x.Test2 }}" />{{ x.Test2 }}
+														</label>
+													</div>
+													<div class="form-check form-check-primary">
+														<label class="form-check-label" for="radio{{ forloop.counter }}_3">
+															<input type="radio" class="form-check-input" id="radio{{ forloop.counter }}_3" name="optradio{{ forloop.counter }}" value="{{ x.Test3 }}" />{{ x.Test3 }}
+														</label>
+													</div>
+													<div class="form-check form-check-primary">
+														<label class="form-check-label" for="radio{{ forloop.counter }}_4">
+															<input type="radio" class="form-check-input" id="radio{{ forloop.counter }}_4" name="optradio{{ forloop.counter }}" value="{{ x.Test4 }}" />{{ x.Test4 }}
+														</label>
+													</div>
+													<input type="hidden" id="ans{{ forloop.counter }}" name="ans{{ forloop.counter }}" value="{{ x.Test_ans }}"/>
+													<input type="hidden" id="ch{{ forloop.counter }}" name="ch{{ forloop.counter }}" value=""/>
+											</div>
+										</div>
+										<br>
+										{% endfor %}
+										<div class="row">
+											<div class="col-md-12"><input type="submit" class="btn btn-gradient-primary btn-rounded btn-fw" id="submit" value="ส่งคำตอบ"/></div>
+										</div>
+									</form>
 								</div>
 							  </div>
 							</div>
