@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.http import Http404
 import requests, xmltodict
-from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class
 import string
 from datetime import datetime
 from itertools import zip_longest
@@ -95,10 +95,15 @@ def home(request):
     Dept = request.session['Department']
     RegionCode = request.session['RegionCode']
     # Score = Staff_Score.objects.get(StaffID = Emp_id)
-    Course_all = Course.objects.all()
+    close_check = len(Closed_class.objects.all().filter(StaffID = Emp_id, Status = True))
+    if close_check == 1:
+        Course_all = Course.objects.all().filter(id = 11)
+    elif close_check == 0 : 
+        Course_all = Course.objects.all().exclude(id=11)
+
     Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id))
     combined_results = list(zip_longest(Course_all, Course_score))
-    print(combined_results)
+    # print(combined_results)
     
     Profile= {
         'Emp_id' : Emp_id,
@@ -170,7 +175,6 @@ def Course_main(request, PK_Course_D):
         'RegionCode' : request.session['RegionCode']
     }
     
-
     Course_detail = Course.objects.get(id=PK_Course_D)
     Staff_score_check = Staff_Score.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D)).count
     # print(Staff_score_check)

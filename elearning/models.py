@@ -80,3 +80,9 @@ class Evaluate_t(models.Model):
     Status = models.BooleanField(default=False)
     Link_course = models.ForeignKey(Course, related_name='Course_Eva', on_delete=models.CASCADE,null= True)
     Staff = models.ForeignKey(Staff, related_name= 'Staff_Eva', on_delete= models.CASCADE,null= True)
+
+class Closed_class(models.Model):
+    StaffID = models.CharField(max_length=10)
+    Link_course = models.ForeignKey(Course, related_name='Course_Closed', on_delete=models.CASCADE,null= True)
+    Status = models.BooleanField(default=True, null=True)
+    Date_Created = models.DateTimeField(auto_now_add=True, null= True)
