@@ -52,21 +52,21 @@
 									  <span class="favorite-button"><i class="mdi mdi-heart-outline"></i></span>
 									</div>
 									<div class="product-img-outer">
-									  <img class="product_image" src="/static/assets/images/product_images_2/{{ Course_all.Cover_img }}" alt="prduct image">
+									  <img class="product_image" src="/static/assets/images/product_images_2/{{ Course_all.Link_course.Cover_img }}" alt="prduct image">
 									</div>
-									<p class="product-title">{{ Course_all.CourseName }}</p>
+									<p class="product-title">{{ Course_all.Link_course.CourseName }}</p>
 									<!-- <p class="product-price"><button type="button" class="btn btn-gradient-info btn-rounded btn-icon"><i class="mdi mdi-check-decagram"></i></button></p> -->
-									<p class="product-price">{{ Course_all.CourseBy }}</p>
+									<p class="product-price">{{ Course_all.Link_course.CourseBy }}</p>
 									{% for Course_score in Course_score %}
-										{% if Course_score.Link_course.id == Course_all.id %}
+										{% if Course_score.Link_course.id == Course_all.Link_course.id %}
 											<ul class="product-variation">
 											<li><a href="#">Pre : {{ Course_score.Pre_Score }}</a></li>
 											<li><a href="#">Post : {{ Course_score.Post_Score }}</a></li>
 											</ul>
 										{% endif %}
 									{% endfor %}
-									{% if Course_all.CourseStatus == 'ON' %}
-										<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' Course_all.id %}" >เข้าเรียน</a></p>
+									{% if Course_all.Link_course.CourseStatus == 'ON' %}
+										<p class="text-center product-description"><a class="btn btn-gradient-info" href="{% url 'Course_main' Course_all.Link_course.id %}" >เข้าเรียน</a></p>
 									{% else %}
 										<p class="text-center product-description"><a class="btn btn-gradient-secondary" >ยังไม่เปิด</a></p>
 									{% endif %}

@@ -96,10 +96,12 @@ def home(request):
     RegionCode = request.session['RegionCode']
     # Score = Staff_Score.objects.get(StaffID = Emp_id)
     close_check = len(Closed_class.objects.all().filter(StaffID = Emp_id, Status = True))
-    if close_check == 1:
-        Course_all = Course.objects.all().filter(id = 11)
-    elif close_check == 0 : 
-        Course_all = Course.objects.all().exclude(id=11)
+    Course_all = Closed_class.objects.select_related('Link_course').filter(StaffID = Emp_id, Status = True)
+    print(Course_all)
+    # if close_check == 1:
+    #     Course_all = Course.objects.all().filter(id = 11)
+    # elif close_check == 0 : 
+    #     Course_all = Course.objects.all().exclude(id=11)
 
     Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id))
     combined_results = list(zip_longest(Course_all, Course_score))

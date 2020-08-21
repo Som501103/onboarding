@@ -82,6 +82,7 @@ class Evaluate_t(models.Model):
     Staff = models.ForeignKey(Staff, related_name= 'Staff_Eva', on_delete= models.CASCADE,null= True)
 
 class Closed_class(models.Model):
+    id = models.AutoField(primary_key=True)
     StaffID = models.CharField(max_length=10)
     Link_course = models.ForeignKey(Course, related_name='Course_Closed', on_delete=models.CASCADE,null= True)
     Status = models.BooleanField(default=True, null=True)
