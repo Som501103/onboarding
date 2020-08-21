@@ -103,7 +103,7 @@ def home(request):
     # elif close_check == 0 : 
     #     Course_all = Course.objects.all().exclude(id=11)
 
-    Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id))
+    Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_course')
     combined_results = list(zip_longest(Course_all, Course_score))
     # print(combined_results)
     
