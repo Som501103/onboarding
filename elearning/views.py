@@ -419,6 +419,10 @@ def evaluate(request, PK_Course_D):
         print(optradio6)
         optradio7 = request.POST.get('optradio7')
         print(optradio7)
+        optradio8 = request.POST.get('optradio8')
+        print(optradio8)
+        optradio9 = request.POST.get('optradio9')
+        print(optradio9)
         eve_staff_create = Evaluate_t(
                             No_1 = optradio1,
                             No_2 = optradio2,
@@ -427,6 +431,8 @@ def evaluate(request, PK_Course_D):
                             No_5 = optradio5,
                             No_6 = optradio6,
                             No_7 = optradio7,
+                            No_8 = optradio8,
+                            No_9 = optradio9,
                             Status = 1,
                             Link_course = Course.objects.get(id = PK_Course_D),
                             Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),

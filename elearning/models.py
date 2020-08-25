@@ -76,6 +76,8 @@ class Evaluate_t(models.Model):
     No_5 = models.IntegerField(default=0)
     No_6 = models.IntegerField(default=0)
     No_7 = models.IntegerField(default=0)
+    No_8 = models.IntegerField(default=0)
+    No_9 = models.IntegerField(default=0)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
     Status = models.BooleanField(default=False)
     Link_course = models.ForeignKey(Course, related_name='Course_Eva', on_delete=models.CASCADE,null= True)

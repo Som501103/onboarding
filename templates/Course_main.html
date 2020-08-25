@@ -196,7 +196,7 @@
 											<td><a href="#" class="btn btn-gradient-secondary">ทดสอบ</a></td>
 											{% elif post == 0 %}
 											<td><a href="{% url 'posttest' Course_detail.id %}" class="btn btn-gradient-info">ทดสอบ</a></td>
-											{% elif post <= Course_detail.Course_Pass_Score %}
+											{% elif post < Course_detail.Course_Pass_Score %}
 											<td><a href="{% url 'posttest' Course_detail.id %}" class="btn btn-gradient-danger">ทดสอบใหม่</a></td>
 											{% else %}
 											<td><a class="btn btn-gradient-info">ผ่านแล้ว</a></td>
