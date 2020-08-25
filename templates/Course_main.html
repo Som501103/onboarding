@@ -176,7 +176,7 @@
 									  {% endfor %} -->
 									  <tr>
 											<td>
-											{% if post == 0 or post <= Course_detail.Course_Pass_Score %}
+											{% if post == 0 or post < Course_detail.Course_Pass_Score %}
 												<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
 												{{ post }}</i>
 												</button>
@@ -186,6 +186,7 @@
 											  </button>
 											{% endif %}
 											</td>
+											
 											{% if B_colour == 'False' %}
 											<td> Post-Test </td>
 											{% elif post <= Course_detail.Course_Pass_Score or B_colour == 'Done' %}
