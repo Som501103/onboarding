@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.http import Http404
 import requests, xmltodict
-from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test
 import string
 from datetime import datetime
 from itertools import zip_longest
@@ -202,11 +202,12 @@ def Course_main(request, PK_Course_D):
         post = Staff_score.Post_Score
         
 
-    Sub_course = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D))
+    Sub_course = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D)).order_by('id')
     # Sub_course_check = Sub_Course.objects.all().prefetch_related('SubCourse_Vdo').filter(Link_Course = Course.objects.get(id=PK_Course_D)).values()
 
-    Sub_course_check = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id))
+    Sub_course_check = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_SubCourse')
     combined_results = list(zip_longest(Sub_course, Sub_course_check))
+    print(combined_results)
     
     vdo = Staff_Vdolog.objects.filter(Status = 'Done',Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)).count()
     B_colour = check(Course_detail.Couse_Sub_Total,vdo)
@@ -510,3 +511,32 @@ def ihub_test(request):
 
         return redirect('evaluate',PK_Course_D)
     return render(request, 'ihub_test.html',{'Profile':Profile, 'Question': Question, 'Course_item':Course_item })
+
+def BU_test(request):
+    Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    PK_Course_D = 4
+    Course_item = Course.objects.get(id = PK_Course_D)
+    if request.method == 'POST':
+        no1 = request.POST.get('no1')
+        BU_test_ans = Bu_test(
+            no1 = no1,
+            Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            StaffID = Emp_id,
+            Status = '1'
+        )
+        BU_test_ans.save()
+
+        Staff_postscore_update = Staff_Score.objects.get(Staff = Emp_id, Link_course = PK_Course_D)
+        Staff_postscore_update.Post_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        Staff_postscore_update.Post_Score = '10'
+        Staff_postscore_update.save()
+
+        return redirect('evaluate',PK_Course_D)
+    return render(request, 'BU_test.html',{'Profile':Profile, 'Course_item':Course_item })

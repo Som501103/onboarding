@@ -124,3 +124,10 @@ class Hub_test(models.Model):
     Status = models.CharField(default=0, null=True, max_length =1)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
     # Status 0 notest  1 waiting 2 pass 3 false
+
+class Bu_test(models.Model):
+    id = models.AutoField(primary_key=True)
+    StaffID = models.CharField(max_length=10)
+    no1 = models.TextField(default='ข้อ1',blank=True, null=True)
+    Status = models.CharField(default=0, null=True, max_length =1)
+    Date_Created = models.DateTimeField(auto_now_add=True, null= True)
