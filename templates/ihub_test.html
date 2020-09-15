@@ -123,7 +123,7 @@
 										<label for="exampleTextarea4">10. ทำเลเงินในการวางตำแหน่งรูปภาพ จะอยู่ที่ใดของทำเลทอง</label>
 										<textarea class="form-control" id="no10" name="no10" rows="4" required></textarea>
 									  </div>
-									  <button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
+									  <button type="submit" class="btn btn-gradient-primary mr-2" onclick="check()">Submit</button>
 									</form>
 								</div>
 							</div>
@@ -172,31 +172,8 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script>
-		$(function() {
-			var total = document.getElementById('Course_total').value;
-			console.log(total);
-
-			$("#submit").click(function() {  
-			for (i = 1; i <= total; i++) {
-					if($('input[type=radio][name=optradio'+i+']:checked').length == 0)
-					{
-						alert("ใจเย็นๆ ข้อ "+i+" ยังไม่ได้ตอบนะ");
-						document.getElementById("radio"+i+"_1").focus();
-						return false;
-						
-					}else{
-						var choose = document.querySelector('input[name = optradio'+i+']:checked').value;
-						console.log(choose);
-						if( choose == document.getElementById("ans"+i).value){
-							
-							document.getElementById("ch"+i).value = 1;
-						}else{
-							document.getElementById("ch"+i).value = 0;
-						}
-							
-					}
-			}
-
+		function check() {
+			
 			var x =confirm("ยืนยันการส่งแบบทดสอบก่อนเรียน (Pre-Test)");
 				if (x)
 					return true;
@@ -204,7 +181,6 @@
 					return false;
 			
 			
-			});
-		});
+		};
 	</script>
     

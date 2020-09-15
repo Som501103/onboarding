@@ -217,7 +217,18 @@ def Course_main(request, PK_Course_D):
     else:
         Evaluate = 0
     
-    return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate})
+    if PK_Course_D == 9 :
+        check_Test = len(Hub_test.objects.filter(StaffID=Emp_id))
+        if check_Test == 1:
+            hub_score = Hub_test.objects.get(StaffID=Emp_id)
+            Hub_status_test = hub_score.Status
+            print(Hub_status_test)
+        else :
+            Hub_status_test = 0
+    else :
+        Hub_status_test = 0
+    
+    return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate,'Hub_status_test':Hub_status_test})
 
 def VDO(request, PK_Title):
     Emp_id = request.session['Emp_id']
@@ -462,11 +473,11 @@ def ihub_test(request):
     # print(Question)
     if request.method == 'POST':
         no1 = request.POST.get('no1')
-        no2_1 = request.POST.get('no2_1')
-        no2_2 = request.POST.get('no2_2')
-        no2_3 = request.POST.get('no2_3')
-        no2_4 = request.POST.get('no2_4')
-        no2_5 = request.POST.get('no2_5')
+        no2_1 = request.POST.get('no2_1_ans')
+        no2_2 = request.POST.get('no2_2_ans')
+        no2_3 = request.POST.get('no2_3_ans')
+        no2_4 = request.POST.get('no2_4_ans')
+        no2_5 = request.POST.get('no2_5_ans')
         no3 = request.POST.get('no3')
         no4 = request.POST.get('no4')
         no5 = request.POST.get('no5')
@@ -492,7 +503,8 @@ def ihub_test(request):
                             no9 = no9,
                             no10 = no10,
                             Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            StaffID = Staff.objects.get(StaffID = Emp_id)
+                            StaffID = Emp_id,
+                            Status = '1'
                             )
         Hub_test_create.save()
 

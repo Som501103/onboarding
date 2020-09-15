@@ -199,7 +199,7 @@
 									  {% endfor %} -->
 									  <tr>
 											
-											{% if Course_detail.id != 17 %}
+											{% if Course_detail.id != 9 %}
 											    <td>
 												{% if post == 0 or post < Course_detail.Course_Pass_Score %}
 													<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
@@ -248,8 +248,10 @@
 
 												{% if B_colour == 'False' %}
 												<td><a href="#" class="btn btn-gradient-secondary">ทดสอบ</a></td>
-												{% elif post == 0 %}
+												{% elif Hub_status_test == 0 %}
 												<td><a href="{% url 'ihub_test' %}" class="btn btn-gradient-info">ทดสอบ</a></td>
+												{% elif Hub_status_test == 1 %}
+												<td><a href="{% url 'ihub_test' %}" class="btn btn-gradient-info">รอตรวจ</a></td>
 												{% elif post < Course_detail.Course_Pass_Score %}
 												<td><a href="{% url 'ihub_test' %}" class="btn btn-gradient-danger">ทดสอบใหม่</a></td>
 												{% else %}

@@ -99,8 +99,6 @@ class Hub_test(models.Model):
     no2_1_Score = models.IntegerField(default=0,null=True)
     no2_2 = models.TextField(default='ข้อ2_2',blank=True, null=True)
     no2_2_Score = models.IntegerField(default=0,null=True)
-    no2_2 = models.TextField(default='ข้อ2_2',blank=True, null=True)
-    no2_2_Score = models.IntegerField(default=0,null=True)
     no2_3 = models.TextField(default='ข้อ2_3',blank=True, null=True)
     no2_3_Score = models.IntegerField(default=0,null=True)
     no2_4 = models.TextField(default='ข้อ2_4',blank=True, null=True)
@@ -123,5 +121,6 @@ class Hub_test(models.Model):
     no9_Score = models.IntegerField(default=0,null=True)
     no10 = models.TextField(default='ข้อ10',blank=True, null=True)
     no10_Score = models.IntegerField(default=0,null=True)
-    Status = models.BooleanField(default=False, null=True)
+    Status = models.CharField(default=0, null=True, max_length =1)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
+    # Status 0 notest  1 waiting 2 pass 3 false

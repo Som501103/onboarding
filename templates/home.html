@@ -60,7 +60,11 @@
 									{% for Course_score in Course_score %}
 										{% if Course_score.Link_course.id == Course_all.id %}
 											<ul class="product-variation">
-											<li><a href="#">Pre : {{ Course_score.Pre_Score }}</a></li>
+											{% if Course_all.id == 9  or Course_all.id == 4 %}
+												<li><a href="#">Pre : -</a></li>
+											{% else %}
+												<li><a href="#">Pre : {{ Course_score.Pre_Score }}</a></li>
+											{% endif %}
 											<li><a href="#">Post : {{ Course_score.Post_Score }}</a></li>
 											</ul>
 										{% endif %}
