@@ -25,6 +25,7 @@ urlpatterns = [
     url('home/', views.home, name='home'),
     url('menu/', views.menu, name='menu'),
     url('feedback/', views.feedback, name='feedback'),
+    url('ihub_test/', views.ihub_test, name='ihub_test'),
     url('virtualclass/', views.virtualclass, name='virtualclass'),
     path('Course_main/<int:PK_Course_D>/', views.Course_main, name='Course_main'),
     path('VDO/<int:PK_Title>/', views.VDO, name='VDO'),

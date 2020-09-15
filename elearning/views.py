@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.http import Http404
 import requests, xmltodict
-from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test
 import string
 from datetime import datetime
 from itertools import zip_longest
@@ -447,3 +447,54 @@ def evaluate(request, PK_Course_D):
 
     return render(request, 'evaluate.html',{'Profile':Profile, 'Course_item':Course_item, 'Sub_Course_item':Sub_Course_item })
 
+def ihub_test(request):
+    Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    PK_Course_D = 9
+    Course_item = Course.objects.get(id = PK_Course_D)
+    Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
+    # print(Question)
+    if request.method == 'POST':
+        no1 = request.POST.get('no1')
+        no2_1 = request.POST.get('no2_1')
+        no2_2 = request.POST.get('no2_2')
+        no2_3 = request.POST.get('no2_3')
+        no2_4 = request.POST.get('no2_4')
+        no2_5 = request.POST.get('no2_5')
+        no3 = request.POST.get('no3')
+        no4 = request.POST.get('no4')
+        no5 = request.POST.get('no5')
+        no6 = request.POST.get('no6')
+        no7 = request.POST.get('no7')
+        no8 = request.POST.get('no8')
+        no9 = request.POST.get('no9')
+        no10 = request.POST.get('no10')
+         
+        Hub_test_create = Hub_test(
+                            no1 = no1,
+                            no2_1 = no2_1,
+                            no2_2 = no2_2,
+                            no2_3 = no2_3,
+                            no2_4 = no2_4,
+                            no2_5 = no2_5,
+                            no3 = no3,
+                            no4 = no4,
+                            no5 = no5,
+                            no6 = no6,
+                            no7 = no7,
+                            no8 = no8,
+                            no9 = no9,
+                            no10 = no10,
+                            Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            StaffID = Staff.objects.get(StaffID = Emp_id)
+                            )
+        Hub_test_create.save()
+
+        return redirect('evaluate',PK_Course_D)
+    return render(request, 'ihub_test.html',{'Profile':Profile, 'Question': Question, 'Course_item':Course_item })
