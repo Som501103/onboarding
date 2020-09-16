@@ -136,24 +136,25 @@
 									  </tr>
 									  {% endif %}
 
-									  {% for x in combined_results %}
+									  {% for x in Sub_course %}
 									  <tr>
 										<td>
-											
-												{% if x.1.Status == "Done" %}
+											{% for v in Sub_course_check %}
+												{% if x.id == v.Link_SubCourse.id and v.Status == 'Done' %}
 													<button type="button" class="btn btn-gradient-success btn-rounded btn-icon">
 														<i class="mdi mdi-check-circle "></i>
 													</button>
 												{% else %}
-													<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
+													<!-- <button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
 														<i class="mdi mdi-check-circle "></i>
-													</button>
+													</button> -->
+												
 												{% endif %}
-											
+											{% endfor %}
 										</td>
-										<td><a href="{% url 'VDO' x.0.id %}" >{{ x.0.Title }} {{ x.0.id }}</a></td>
+										<td><a href="{% url 'VDO' x.id %}" >{{ x.Title }} {{ x.id }}</a></td>
 										
-										<td><a href="{% url 'VDO' x.0.id %}" class="btn btn-gradient-info">เข้าเรียน</a></td>
+										<td><a href="{% url 'VDO' x.id %}" class="btn btn-gradient-info">เข้าเรียน</a></td>
 										<!-- <td><a href="{% url 'VDO' 1 %}" class="btn btn-gradient-info">เข้าเรียน</a></td> -->
 									  {% endfor %}
 

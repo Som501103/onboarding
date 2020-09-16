@@ -208,7 +208,7 @@ def Course_main(request, PK_Course_D):
     Sub_course_check = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_SubCourse')
     # Sub_course_check_personal = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_SubCourse')
     combined_results = list(zip_longest(Sub_course, Sub_course_check))
-    # print(Sub_course_check[0].Link_SubCourse)
+    # print(combined_results)
     # queryset = Staff_Vdolog.objects.all().select_related('Link_course').filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id))
     # print(queryset.query)
     # sub = queryset[0]
@@ -217,16 +217,15 @@ def Course_main(request, PK_Course_D):
     # print(attendances)
     # select_pass_label = []
     # subcourse_check = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D))
-    # for i in subcourse_check:
-            # print(i.id)
-            # select_pass_label.append(i['id'],i['Title'])
-            # select_pass = Staff_Vdolog.objects.filter(Link_course = i.id,Staff = Staff.objects.get(StaffID = Emp_id))
-            # print (qs_SAIDI_PEAStation.query)
-            # for j in select_pass :
-                # print(j['population'],j['stationpea__Staion'])
-                # print (i.id,j['Link_SubCourse'])
-                # select_pass_label.append(i['id'],j['id'])
-   
+    # Sub_course_test = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D)).order_by('id')
+    # for t in Sub_course_test:
+    #     vdolog = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_SubCourse')
+    #     for v in vdolog :
+    #         if t.id == v.Link_SubCourse.id:
+    #          print('pass',v.Staff)
+    #         else:
+    #          print('join',t.id,v.Link_SubCourse.id)
+
     
     vdo = Staff_Vdolog.objects.filter(Status = 'Done',Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)).count()
     B_colour = check(Course_detail.Couse_Sub_Total,vdo)
@@ -242,7 +241,7 @@ def Course_main(request, PK_Course_D):
         if check_Test == 1:
             hub_score = Hub_test.objects.get(StaffID=Emp_id)
             Hub_status_test = hub_score.Status
-            print(Hub_status_test)
+            # print(Hub_status_test)
         else :
             Hub_status_test = 0
     else :
