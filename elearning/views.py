@@ -206,8 +206,27 @@ def Course_main(request, PK_Course_D):
     # Sub_course_check = Sub_Course.objects.all().prefetch_related('SubCourse_Vdo').filter(Link_Course = Course.objects.get(id=PK_Course_D)).values()
 
     Sub_course_check = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_SubCourse')
+    # Sub_course_check_personal = Staff_Vdolog.objects.all().filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_SubCourse')
     combined_results = list(zip_longest(Sub_course, Sub_course_check))
-    print(combined_results)
+    # print(Sub_course_check[0].Link_SubCourse)
+    # queryset = Staff_Vdolog.objects.all().select_related('Link_course').filter(Link_course = Course.objects.get(id=PK_Course_D),Staff = Staff.objects.get(StaffID = Emp_id))
+    # print(queryset.query)
+    # sub = queryset[0]
+    # all attendances for the student
+    # attendances = sub.Link_SubCourse.all()
+    # print(attendances)
+    # select_pass_label = []
+    # subcourse_check = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D))
+    # for i in subcourse_check:
+            # print(i.id)
+            # select_pass_label.append(i['id'],i['Title'])
+            # select_pass = Staff_Vdolog.objects.filter(Link_course = i.id,Staff = Staff.objects.get(StaffID = Emp_id))
+            # print (qs_SAIDI_PEAStation.query)
+            # for j in select_pass :
+                # print(j['population'],j['stationpea__Staion'])
+                # print (i.id,j['Link_SubCourse'])
+                # select_pass_label.append(i['id'],j['id'])
+   
     
     vdo = Staff_Vdolog.objects.filter(Status = 'Done',Staff = Staff.objects.get(StaffID = Emp_id),Link_course = Course.objects.get(id=PK_Course_D)).count()
     B_colour = check(Course_detail.Couse_Sub_Total,vdo)

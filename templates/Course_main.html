@@ -139,21 +139,49 @@
 									  {% for x in combined_results %}
 									  <tr>
 										<td>
-											{% if x.1.Status == 'Done' %}
-											<button type="button" class="btn btn-gradient-success btn-rounded btn-icon">
-												<i class="mdi mdi-check-circle "></i>
-											</button>
-											{% else %}
-											<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
-												<i class="mdi mdi-check-circle "></i>
-											</button>
-											{% endif %}
+											
+												{% if x.1.Status == "Done" %}
+													<button type="button" class="btn btn-gradient-success btn-rounded btn-icon">
+														<i class="mdi mdi-check-circle "></i>
+													</button>
+												{% else %}
+													<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
+														<i class="mdi mdi-check-circle "></i>
+													</button>
+												{% endif %}
+											
 										</td>
 										<td><a href="{% url 'VDO' x.0.id %}" >{{ x.0.Title }} {{ x.0.id }}</a></td>
 										
 										<td><a href="{% url 'VDO' x.0.id %}" class="btn btn-gradient-info">เข้าเรียน</a></td>
 										<!-- <td><a href="{% url 'VDO' 1 %}" class="btn btn-gradient-info">เข้าเรียน</a></td> -->
 									  {% endfor %}
+
+									  <!-- {% for k in Sub_course %}
+									  <tr>
+										{% for u in Sub_course_check %}
+										<td>
+										
+											{{ k.id }}{{ u.Link_SubCourse }}
+											{% if  u.Link_SubCourse  == k.id %}
+												<button type="button" class="btn btn-gradient-success btn-rounded btn-icon">
+													<i class="mdi mdi-check-circle ">{{ u.Status }}</i>
+												</button>
+											{% else %}
+												<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
+													<i class="mdi mdi-check-circle ">{{ u.Status }}</i>
+												</button>
+											{% endif %}
+										
+										</td>
+										{% endfor %}
+									  	<td><a href="{% url 'VDO' k.id %}" >{{ k.Title }} {{ k.id }}</a></td>
+										
+										  <td><a href="{% url 'VDO' k.id %}" class="btn btn-gradient-info">เข้าเรียน</a></td>
+									
+									  </tr>
+									  {% endfor %} -->
+									  
 
 									  <!-- {% for Sub_course in Sub_course %}
 									  <tr>
