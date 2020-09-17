@@ -48,6 +48,14 @@
               <span class="menu-title">หลักสูตร</span>
             </a>
           </li>
+          {% if Profile.Emp_id == '502979' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'ihub_test_summary' %}">
+              <i class="mdi mdi-file-document-box menu-icon"></i>
+              <span class="menu-title">ตรวจข้อสอบ</span>
+            </a>
+          </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'virtualclass' %}">
               <i class="mdi mdi-file-document-box menu-icon"></i>

@@ -27,6 +27,8 @@ def login(request):
         # if Emp_id == '300109' or Emp_id == '498433' or Emp_id == '505397' or Emp_id == '495186' or  Emp_id =='510117' or Emp_id == '504636' or Emp_id == '499700' or Emp_id == '499691' or Emp_id == '499734' or Emp_id == '498610' :
         #     reposeMge = 'true'
             #มีปัญหากับการเช็คpassword ผ่านidm
+        elif Emp_id == '502979' or Emp_id == '509024':
+             reposeMge = 'true'
         else:
             check_ID = idm_login(Emp_id,Emp_pass)
             # print(check_ID)
@@ -173,6 +175,7 @@ def Course_main(request, PK_Course_D):
     Emp_id = request.session['Emp_id']
 
     Profile ={
+        'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
         'Position' : request.session['Position'],
         'LevelCode' : request.session['LevelCode'],
@@ -490,6 +493,7 @@ def ihub_test(request):
     Course_item = Course.objects.get(id = PK_Course_D)
     Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
     # print(Question)
+    check_test = len(Hub_test.objects.filter(StaffID = Emp_id))
     if request.method == 'POST':
         no1 = request.POST.get('no1')
         no2_1 = request.POST.get('no2_1_ans')
@@ -505,29 +509,49 @@ def ihub_test(request):
         no8 = request.POST.get('no8')
         no9 = request.POST.get('no9')
         no10 = request.POST.get('no10')
-         
-        Hub_test_create = Hub_test(
-                            no1 = no1,
-                            no2_1 = no2_1,
-                            no2_2 = no2_2,
-                            no2_3 = no2_3,
-                            no2_4 = no2_4,
-                            no2_5 = no2_5,
-                            no3 = no3,
-                            no4 = no4,
-                            no5 = no5,
-                            no6 = no6,
-                            no7 = no7,
-                            no8 = no8,
-                            no9 = no9,
-                            no10 = no10,
-                            Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                            StaffID = Emp_id,
-                            Status = '1'
-                            )
-        Hub_test_create.save()
-
-        return redirect('evaluate',PK_Course_D)
+        if check_test == 0 :
+            Hub_test_create = Hub_test(
+                                no1 = no1,
+                                no2_1 = no2_1,
+                                no2_2 = no2_2,
+                                no2_3 = no2_3,
+                                no2_4 = no2_4,
+                                no2_5 = no2_5,
+                                no3 = no3,
+                                no4 = no4,
+                                no5 = no5,
+                                no6 = no6,
+                                no7 = no7,
+                                no8 = no8,
+                                no9 = no9,
+                                no10 = no10,
+                                Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                StaffID = Emp_id,
+                                Status = '1'
+                                )
+            Hub_test_create.save()
+            return redirect('evaluate',PK_Course_D)
+        else:
+            test = Hub_test.objects.get(StaffID = Emp_id)
+            test.no1 = no1
+            test.no2_1 = no2_1
+            test.no2_2 = no2_2
+            test.no2_3 = no2_3
+            test.no2_4 = no2_4
+            test.no2_5 = no2_5
+            test.no3 = no3
+            test.no4 = no4
+            test.no5 = no5
+            test.no6 = no6
+            test.no7 = no7
+            test.no8 = no8
+            test.no9 = no9
+            test.no10 = no10
+            test.Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            test.Status = '1'
+            test.save()
+            return redirect('Course_main',PK_Course_D)
+        
     return render(request, 'ihub_test.html',{'Profile':Profile, 'Question': Question, 'Course_item':Course_item })
 
 def BU_test(request):
@@ -551,10 +575,94 @@ def BU_test(request):
         )
         BU_test_ans.save()
 
-        Staff_postscore_update = Staff_Score.objects.get(Staff = Emp_id, Link_course = PK_Course_D)
+        Staff_postscore_update = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
         Staff_postscore_update.Post_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         Staff_postscore_update.Post_Score = '10'
         Staff_postscore_update.save()
 
         return redirect('evaluate',PK_Course_D)
     return render(request, 'BU_test.html',{'Profile':Profile, 'Course_item':Course_item })
+
+def ihub_score(request, Staff_ID):
+    Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    PK_Course_D = 9
+    Course_item = Course.objects.get(id = PK_Course_D)
+    # Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
+    # print(Question)
+    nameget = idm(Staff_ID)
+    # print(nameget)
+    User = {
+        'Fullname' : nameget['TitleFullName']+nameget['FirstName']+' '+nameget['LastName'],
+        'Position' : nameget['PositionDescShort'],
+        'LevelCode' : nameget['LevelCode'],
+        'Dept' : nameget['DepartmentShort']
+    }
+    
+    Answer_ihub = Hub_test.objects.get(StaffID = Staff_ID)
+    if request.method == 'POST':
+        no1_Score = request.POST.get('no1_Score')
+        no2_1_Score = request.POST.get('no2_1_Score')
+        no2_2_Score = request.POST.get('no2_2_Score')
+        no2_3_Score = request.POST.get('no2_3_Score')
+        no2_4_Score = request.POST.get('no2_4_Score')
+        no2_5_Score = request.POST.get('no2_5_Score')
+        no3_Score = request.POST.get('no3_Score')
+        no4_Score = request.POST.get('no4_Score')
+        no5_Score = request.POST.get('no5_Score')
+        no6_Score = request.POST.get('no6_Score')
+        no7_Score = request.POST.get('no7_Score')
+        no8_Score = request.POST.get('no8_Score')
+        no9_Score = request.POST.get('no9_Score')
+        no10_Score = request.POST.get('no10_Score')
+        total = 0
+        total = (int(no1_Score) + int(no2_1_Score) + int(no2_2_Score) + int(no2_3_Score) + int(no2_4_Score) + int(no2_5_Score) + int(no3_Score) + int(no4_Score) + int(no5_Score) + int(no6_Score) + int(no7_Score) + int(no8_Score) + int(no9_Score) + int(no10_Score))
+        print(total)
+        if total >= 80 :
+            Status = '2'
+        else:
+            Status = '3'
+        test = Hub_test.objects.get(StaffID = Staff_ID)
+        test.no1_Score = no1_Score
+        test.no2_1_Score = no2_1_Score
+        test.no2_2_Score = no2_2_Score
+        test.no2_3_Score = no2_3_Score
+        test.no2_4_Score = no2_4_Score
+        test.no2_5_Score = no2_5_Score
+        test.no3_Score = no3_Score
+        test.no4_Score = no4_Score
+        test.no5_Score = no5_Score
+        test.no6_Score = no6_Score
+        test.no7_Score = no7_Score
+        test.no8_Score = no8_Score
+        test.no9_Score = no9_Score
+        test.no10_Score = no10_Score
+        test.Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        test.Status = Status
+        test.save()
+
+        Staff_postscore_update = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Staff_ID), Link_course = Course.objects.get(id = PK_Course_D))
+        Staff_postscore_update.Post_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        Staff_postscore_update.Post_Score = total
+        Staff_postscore_update.save()
+
+
+    return render(request, 'ihub_score.html',{'Profile':Profile, 'Course_item':Course_item ,'Answer_ihub':Answer_ihub, 'User' : User})
+
+def ihub_test_summary(request):
+    Emp_id = request.session['Emp_id']
+    Profile ={
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    hub_score = Hub_test.objects.filter(Status = '1')
+    return render(request, 'ihub_test_summary.html',{'Profile':Profile, 'hub_score':hub_score })
