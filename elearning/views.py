@@ -483,6 +483,7 @@ def evaluate(request, PK_Course_D):
 def ihub_test(request):
     Emp_id = request.session['Emp_id']
     Profile ={
+        'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
         'Position' : request.session['Position'],
         'LevelCode' : request.session['LevelCode'],
@@ -526,7 +527,7 @@ def ihub_test(request):
                                 no9 = no9,
                                 no10 = no10,
                                 Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                StaffID = Emp_id,
+                                StaffID = Staff.objects.get(StaffID = Emp_id),
                                 Status = '1'
                                 )
             Hub_test_create.save()
@@ -557,6 +558,7 @@ def ihub_test(request):
 def BU_test(request):
     Emp_id = request.session['Emp_id']
     Profile ={
+        'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
         'Position' : request.session['Position'],
         'LevelCode' : request.session['LevelCode'],
@@ -586,6 +588,7 @@ def BU_test(request):
 def ihub_score(request, Staff_ID):
     Emp_id = request.session['Emp_id']
     Profile ={
+        'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
         'Position' : request.session['Position'],
         'LevelCode' : request.session['LevelCode'],
@@ -643,6 +646,7 @@ def ihub_score(request, Staff_ID):
         test.no8_Score = no8_Score
         test.no9_Score = no9_Score
         test.no10_Score = no10_Score
+        test.total = total
         test.Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         test.Status = Status
         test.save()
@@ -651,18 +655,23 @@ def ihub_score(request, Staff_ID):
         Staff_postscore_update.Post_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         Staff_postscore_update.Post_Score = total
         Staff_postscore_update.save()
-
+        return redirect('ihub_test_summary')
 
     return render(request, 'ihub_score.html',{'Profile':Profile, 'Course_item':Course_item ,'Answer_ihub':Answer_ihub, 'User' : User})
 
 def ihub_test_summary(request):
     Emp_id = request.session['Emp_id']
     Profile ={
+        'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
         'Position' : request.session['Position'],
         'LevelCode' : request.session['LevelCode'],
         'Dept' : request.session['Department'],
         'RegionCode' : request.session['RegionCode']
     }
-    hub_score = Hub_test.objects.filter(Status = '1')
+    hub_score = Hub_test.objects.select_related('StaffID').filter(Status = '1')
+    # summary = []
+    # for i in hub_score:
+    #     idm(i.StaffID)
+
     return render(request, 'ihub_test_summary.html',{'Profile':Profile, 'hub_score':hub_score })

@@ -92,7 +92,7 @@ class Closed_class(models.Model):
 
 class Hub_test(models.Model):
     id = models.AutoField(primary_key=True)
-    StaffID = models.CharField(max_length=10)
+    StaffID = models.ForeignKey(Staff, related_name= 'Staff_testihub', on_delete= models.CASCADE,null= True)
     no1 = models.TextField(default='ข้อ1',blank=True, null=True)
     no1_Score = models.IntegerField(default=0,null=True)
     no2_1 = models.TextField(default='ข้อ2_1',blank=True, null=True)
@@ -121,6 +121,7 @@ class Hub_test(models.Model):
     no9_Score = models.IntegerField(default=0,null=True)
     no10 = models.TextField(default='ข้อ10',blank=True, null=True)
     no10_Score = models.IntegerField(default=0,null=True)
+    total = models.IntegerField(default=0,null=True)
     Status = models.CharField(default=0, null=True, max_length =1)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
     # Status 0 notest  1 waiting 2 pass 3 false
