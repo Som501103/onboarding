@@ -249,11 +249,11 @@
 
 												{% if B_colour == 'False' %}
 												<td><a href="#" class="btn btn-gradient-secondary">ทดสอบ</a></td>
-												{% elif Hub_status_test == 0 %}
+												{% elif Hub_status_test == '0' %}
 												<td><a href="{% url 'ihub_test' %}" class="btn btn-gradient-info">ทดสอบ</a></td>
-												{% elif Hub_status_test == 1 %}
+												{% elif Hub_status_test == '1' %}
 												<td><a href="{% url 'ihub_test' %}" class="btn btn-gradient-info">รอตรวจ</a></td>
-												{% elif post < Course_detail.Course_Pass_Score %}
+												{% elif Hub_status_test == '3' %}
 												<td><a href="{% url 'ihub_test' %}" class="btn btn-gradient-danger">ทดสอบใหม่</a></td>
 												{% else %}
 												<td><a class="btn btn-gradient-info">ผ่านแล้ว</a></td>
