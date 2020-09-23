@@ -669,9 +669,61 @@ def ihub_test_summary(request):
         'Dept' : request.session['Department'],
         'RegionCode' : request.session['RegionCode']
     }
-    hub_score = Hub_test.objects.select_related('StaffID').filter(Status = '1')
+    hub_score = Hub_test.objects.select_related('StaffID').filter(Status__in=['1', '4']).order_by('Date_Created')
     # summary = []
     # for i in hub_score:
     #     idm(i.StaffID)
 
     return render(request, 'ihub_test_summary.html',{'Profile':Profile, 'hub_score':hub_score })
+
+def ihub_test_alter(request):
+    Emp_id = request.session['Emp_id']
+    Profile ={
+        'Emp_id' : request.session['Emp_id'],
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    PK_Course_D = 9
+    Course_item = Course.objects.get(id = PK_Course_D)
+    # Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
+    # print(Question)
+    Answer_ihub = Hub_test.objects.get(StaffID = Emp_id)
+    if request.method == 'POST':
+        no1 = request.POST.get('no1')
+        no2_1 = request.POST.get('no2_1_ans')
+        no2_2 = request.POST.get('no2_2_ans')
+        no2_3 = request.POST.get('no2_3_ans')
+        no2_4 = request.POST.get('no2_4_ans')
+        no2_5 = request.POST.get('no2_5_ans')
+        no3 = request.POST.get('no3')
+        no4 = request.POST.get('no4')
+        no5 = request.POST.get('no5')
+        no6 = request.POST.get('no6')
+        no7 = request.POST.get('no7')
+        no8 = request.POST.get('no8')
+        no9 = request.POST.get('no9')
+        no10 = request.POST.get('no10')
+        test = Hub_test.objects.get(StaffID = Emp_id)
+        test.no1 = no1
+        test.no2_1 = no2_1
+        test.no2_2 = no2_2
+        test.no2_3 = no2_3
+        test.no2_4 = no2_4
+        test.no2_5 = no2_5
+        test.no3 = no3
+        test.no4 = no4
+        test.no5 = no5
+        test.no6 = no6
+        test.no7 = no7
+        test.no8 = no8
+        test.no9 = no9
+        test.no10 = no10
+        test.Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        test.Status = '4'
+        test.save()
+        return redirect('Course_main',PK_Course_D)
+    return render(request, 'ihub_test_alter.html',{'Profile':Profile, 'Answer_ihub': Answer_ihub, 'Course_item':Course_item })
+

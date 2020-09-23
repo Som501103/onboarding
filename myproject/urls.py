@@ -26,6 +26,7 @@ urlpatterns = [
     url('menu/', views.menu, name='menu'),
     url('feedback/', views.feedback, name='feedback'),
     url('ihub_test/', views.ihub_test, name='ihub_test'),
+    url('ihub_test_alter/', views.ihub_test_alter, name='ihub_test_alter'),
     url('BU_test/', views.BU_test, name='BU_test'),
     url('virtualclass/', views.virtualclass, name='virtualclass'),
     url('ihub_test_summary/', views.ihub_test_summary, name='ihub_test_summary'),

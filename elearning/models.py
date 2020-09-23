@@ -124,7 +124,7 @@ class Hub_test(models.Model):
     total = models.IntegerField(default=0,null=True)
     Status = models.CharField(default=0, null=True, max_length =1)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
-    # Status 0 notest  1 waiting 2 pass 3 false
+    # Status 0 notest  1 waiting 2 pass 3 false 4 testagain
 
 class Bu_test(models.Model):
     id = models.AutoField(primary_key=True)
