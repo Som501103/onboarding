@@ -244,7 +244,7 @@ def Course_main(request, PK_Course_D):
         if check_Test == 1:
             hub_score = Hub_test.objects.get(StaffID=Emp_id)
             Hub_status_test = hub_score.Status
-            print(Hub_status_test)
+            print('Hub_status_test',Hub_status_test)
         else :
             Hub_status_test = 0
     else :
