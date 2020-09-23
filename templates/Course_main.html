@@ -255,7 +255,7 @@
 												<td><a href="{% url 'ihub_test' %}" class="btn btn-gradient-info">รอตรวจ</a></td>
 												{% elif Hub_status_test == 3 %}
 												<td><a href="{% url 'ihub_test' %}" class="btn btn-gradient-danger">ทดสอบใหม่</a></td>
-												{% else %}
+												{% elif Hub_status_test == 2 %}
 												<td><a class="btn btn-gradient-info">ผ่านแล้ว</a></td>
 												{% endif %}
 
