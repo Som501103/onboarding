@@ -38,6 +38,14 @@
 									<p class="card-description"> INNOVATION HUB </p>
 									<form class="forms-sample" method="POST">
 										{% csrf_token %}
+										<div class="form-group">
+											<div class="row">
+												<div class="col-12"><label for="exampleInputName1">ข้อเสนอแนะจากผู้ตรวจ</label></div>
+											</div>
+											<div class="row">
+												<div class="col-12"><label for="exampleInputName1"><textarea class="form-control" id="feedback" name="feedback" rows="7" readonly>{{ Answer_ihub.feedback }}</textarea></label></div>
+											</div>
+										</div>
 										
 										  <div class="form-group">
 											<div class="row">

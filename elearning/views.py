@@ -624,6 +624,7 @@ def ihub_score(request, Staff_ID):
         no8_Score = request.POST.get('no8_Score')
         no9_Score = request.POST.get('no9_Score')
         no10_Score = request.POST.get('no10_Score')
+        feedback = request.POST.get('feedback')
         total = 0
         total = (int(no1_Score) + int(no2_1_Score) + int(no2_2_Score) + int(no2_3_Score) + int(no2_4_Score) + int(no2_5_Score) + int(no3_Score) + int(no4_Score) + int(no5_Score) + int(no6_Score) + int(no7_Score) + int(no8_Score) + int(no9_Score) + int(no10_Score))
         print(total)
@@ -647,6 +648,7 @@ def ihub_score(request, Staff_ID):
         test.no9_Score = no9_Score
         test.no10_Score = no10_Score
         test.total = total
+        test.feedback = feedback
         test.Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         test.Status = Status
         test.save()
