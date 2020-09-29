@@ -254,9 +254,11 @@
 												{% elif Hub_status_test == 1 or Hub_status_test == '1'%}
 												<td><a href="{% url 'ihub_test' %}" class="btn btn-gradient-info">รอตรวจ</a></td>
 												{% elif Hub_status_test == 3 or Hub_status_test == '3'%}
-												<td><a href="{% url 'ihub_test_alter.html' %}" class="btn btn-gradient-danger">ทดสอบใหม่</a></td>
+												<td><a href="{% url 'ihub_test_alter' %}" class="btn btn-gradient-danger">ทดสอบใหม่</a></td>
 												{% elif Hub_status_test == 2 or Hub_status_test == '2'%}
 												<td><a class="btn btn-gradient-success">ผ่านแล้ว</a></td>
+												{% elif Hub_status_test == 4 or Hub_status_test == '4'%}
+												<td><a href="{% url 'ihub_test_alter' %}" class="btn btn-gradient-info">รอตรวจ</a></td>
 												{% endif %}
 
 											{% elif Course_detail.id == 4 %}
