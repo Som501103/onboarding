@@ -27,7 +27,7 @@ def login(request):
         # if Emp_id == '300109' or Emp_id == '498433' or Emp_id == '505397' or Emp_id == '495186' or  Emp_id =='510117' or Emp_id == '504636' or Emp_id == '499700' or Emp_id == '499691' or Emp_id == '499734' or Emp_id == '498610' :
         #     reposeMge = 'true'
             #มีปัญหากับการเช็คpassword ผ่านidm
-        elif Emp_id == '502979' or Emp_id == '509024':
+        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' :
              reposeMge = 'true'
         else:
             check_ID = idm_login(Emp_id,Emp_pass)
