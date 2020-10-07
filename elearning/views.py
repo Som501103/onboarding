@@ -692,7 +692,10 @@ def ihub_test_alter(request):
     Course_item = Course.objects.get(id = PK_Course_D)
     # Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
     # print(Question)
+    
     Answer_ihub = Hub_test.objects.get(StaffID = Emp_id)
+    Sum_2 = (Answer_ihub.no2_1_Score)+(Answer_ihub.no2_2_Score)+(Answer_ihub.no2_3_Score)+(Answer_ihub.no2_4_Score)+(Answer_ihub.no2_5_Score)
+    print(Sum_2)
     if request.method == 'POST':
         no1 = request.POST.get('no1')
         no2_1 = request.POST.get('no2_1_ans')
@@ -727,5 +730,5 @@ def ihub_test_alter(request):
         test.Status = '4'
         test.save()
         return redirect('Course_main',PK_Course_D)
-    return render(request, 'ihub_test_alter.html',{'Profile':Profile, 'Answer_ihub': Answer_ihub, 'Course_item':Course_item })
+    return render(request, 'ihub_test_alter.html',{'Profile':Profile, 'Answer_ihub': Answer_ihub, 'Course_item':Course_item ,'Sum_2':Sum_2})
 
