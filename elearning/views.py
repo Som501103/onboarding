@@ -628,7 +628,7 @@ def ihub_score(request, Staff_ID):
         total = 0
         total = (int(no1_Score) + int(no2_1_Score) + int(no2_2_Score) + int(no2_3_Score) + int(no2_4_Score) + int(no2_5_Score) + int(no3_Score) + int(no4_Score) + int(no5_Score) + int(no6_Score) + int(no7_Score) + int(no8_Score) + int(no9_Score) + int(no10_Score))
         print(total)
-        if total >= 80 :
+        if total >= 70 :
             Status = '2'
         else:
             Status = '3'
