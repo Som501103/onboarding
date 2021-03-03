@@ -732,3 +732,30 @@ def ihub_test_alter(request):
         return redirect('Course_main',PK_Course_D)
     return render(request, 'ihub_test_alter.html',{'Profile':Profile, 'Answer_ihub': Answer_ihub, 'Course_item':Course_item ,'Sum_2':Sum_2})
 
+def summary(request):
+    # Profile ={
+    #     'Emp_id' : request.session['Emp_id'],
+    #     'Fullname' : request.session['Fullname'],
+    #     'Position' : request.session['Position'],
+    #     'LevelCode' : request.session['LevelCode'],
+    #     'Dept' : request.session['Department'],
+    #     'RegionCode' : request.session['RegionCode']
+    # }
+    total_record = Staff_Score.objects.select_related('Staff').values('Staff__StaffName', 'Staff__StaffPosition','Staff__StaffLevelcode','Staff__StaffDepshort').exclude(Link_course=11).annotate(Count('Staff_id')).order_by('Staff__DeptCode')
+    print(total_record.query)
+
+    return render(request, 'summary_admin.html',{ 'total_record':total_record })
+
+def summary_healthy(request):
+    # Profile ={
+    #     'Emp_id' : request.session['Emp_id'],
+    #     'Fullname' : request.session['Fullname'],
+    #     'Position' : request.session['Position'],
+    #     'LevelCode' : request.session['LevelCode'],
+    #     'Dept' : request.session['Department'],
+    #     'RegionCode' : request.session['RegionCode']
+    # }
+    total_record = Staff_Score.objects.select_related('Staff').values('Staff__StaffName', 'Staff__StaffPosition','Staff__StaffLevelcode','Staff__StaffDepshort').filter(Link_course=11).annotate(Count('Staff_id')).order_by('Staff__DeptCode')
+    print(total_record.query)
+
+    return render(request, 'summary_healthy.html',{ 'total_record':total_record })

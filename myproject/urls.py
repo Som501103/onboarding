@@ -37,4 +37,6 @@ urlpatterns = [
     path('Posttest/<int:PK_Course_D>/', views.posttest, name='posttest'),
     path('evaluate/<int:PK_Course_D>/', views.evaluate, name='evaluate'),
     url('errorstage/',views.errorstage, name='errorstage'),
+    url('summary_admin/',views.summary,name='summary'),
+    url('summary_healthy/',views.summary_healthy,name='summary_healthy'),
 ]
