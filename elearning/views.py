@@ -8,7 +8,13 @@ import string
 from datetime import datetime
 from itertools import zip_longest
 import re
-from django.db.models import Count
+from django.db.models import Count,Q
+#Export to Excel
+import itertools
+import xlwt
+from datetime import date
+from django.http import HttpResponse
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -732,3 +738,72 @@ def ihub_test_alter(request):
         return redirect('Course_main',PK_Course_D)
     return render(request, 'ihub_test_alter.html',{'Profile':Profile, 'Answer_ihub': Answer_ihub, 'Course_item':Course_item ,'Sum_2':Sum_2})
 
+def export_users_xls(request):
+
+    #datetime--now
+    today = date.today()
+    d1 = today.strftime("%d/%m/%Y")
+    #-----------------------
+    #namecourse = Course.objects.get(id = CourseName)
+    reportxls = "Reportonboarding [" + "IDP" +"] " + d1 + ".xls"
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=' + reportxls
+
+    book = xlwt.Workbook(encoding='utf-8')
+    sheet = book.add_sheet('Course')
+    col_width = 256 * 20 # 20 characters wide
+
+    try:
+        for i in itertools.count():
+            sheet.col(i).width = col_width
+    except ValueError:
+        pass
+
+    default_book_style = book.default_style
+    default_book_style.font.height = 20 * 36 # 36pt
+
+    # Sheet header, first row
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font = xlwt.Font()
+    font.bold = True    #  bold 
+    font.name = 'TH Sarabun New'   #  select the font 
+    font.height = 300   #  the font size 
+    font.colour_index = 0  #  the font color 
+    aligment = xlwt.Alignment()
+    aligment.horz = aligment.HORZ_CENTER    #  horizontal alignment 
+    aligment.vert = aligment.VERT_BOTTOM    #  perpendicular to its way 
+    font_style.alignment = aligment
+    font_style.font = font
+
+    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'สังกัด', 'ตำแหน่ง','สถานะ']
+
+    for col_num in range(len(columns)):
+        sheet.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    font = xlwt.Font()
+    font.name = 'TH Sarabun New'   #  select the font 
+    font.height = 300   #  the font size 
+    font.colour_index = 0  #  the font color 
+    font_style.font = font
+                                                        # .filter(Q(Link_course_id=1) & Q(Post_Score__gte=9))
+    query_re = Staff_Score.objects.select_related('Staff').filter(Link_course_id=1).filter(Post_Score__gte=9).order_by('Staff__DeptCode')
+
+    print(query_re.query)
+    for j in query_re :
+        print(j.Staff,j.Post_Score,j.Staff.StaffName)
+
+    rows = query_re.values_list('Staff__StaffID', 
+                                'Staff__StaffName', 
+                                'Staff__StaffDepshort',
+                                'Staff__StaffPosition',
+                                'Post_Score')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            sheet.write(row_num, col_num, row[col_num], font_style)
+
+    book.save(response)
+    return response
