@@ -740,17 +740,17 @@ def ihub_test_alter(request):
 
 def export_users_xls(request):
 
+    input_course = 9
+    pass_Score = Course.objects.get(id=input_course)
     #datetime--now
-    today = date.today()
-    d1 = today.strftime("%d/%m/%Y")
-    #-----------------------
-    #namecourse = Course.objects.get(id = CourseName)
-    reportxls = "Reportonboarding [" + "IDP" +"] " + d1 + ".xls"
+    today = str(date.today())
+    courseid = str(pass_Score.id)
+
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename=' + reportxls
+    response['Content-Disposition'] = 'attachment;filename="Export :"'+str(courseid)+ "[" +str(today) + "]"'".xls"'
 
     book = xlwt.Workbook(encoding='utf-8')
-    sheet = book.add_sheet('Course')
+    sheet = book.add_sheet('Course'+today)
     col_width = 256 * 20 # 20 characters wide
 
     try:
@@ -776,7 +776,7 @@ def export_users_xls(request):
     font_style.alignment = aligment
     font_style.font = font
 
-    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'สังกัด', 'ตำแหน่ง','สถานะ']
+    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'สังกัด', 'ตำแหน่ง','คะแนนสอบ']
 
     for col_num in range(len(columns)):
         sheet.write(row_num, col_num, columns[col_num], font_style)
@@ -787,13 +787,9 @@ def export_users_xls(request):
     font.name = 'TH Sarabun New'   #  select the font 
     font.height = 300   #  the font size 
     font.colour_index = 0  #  the font color 
-    font_style.font = font
-                                                        # .filter(Q(Link_course_id=1) & Q(Post_Score__gte=9))
-    query_re = Staff_Score.objects.select_related('Staff').filter(Link_course_id=1).filter(Post_Score__gte=9).order_by('Staff__DeptCode')
-
-    print(query_re.query)
-    for j in query_re :
-        print(j.Staff,j.Post_Score,j.Staff.StaffName)
+    font_style.font = font      
+                                                        # .filter(Link_course_id=input_course).filter(Post_Score__gte=pass_Score.Course_Pass_Score)
+    query_re = Staff_Score.objects.select_related('Staff').filter(Q(Link_course_id=input_course) & Q(Post_Score__gte=pass_Score.Course_Pass_Score)).order_by('Staff__DeptCode')
 
     rows = query_re.values_list('Staff__StaffID', 
                                 'Staff__StaffName', 
