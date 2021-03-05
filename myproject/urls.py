@@ -22,6 +22,7 @@ from elearning import views
 urlpatterns = [
     url(r'^$', views.login, name='login'),
     url(r'^admin/', admin.site.urls),
+    url('admin_list_report/', views.admin_list_report, name='admin_list_report'),
     url('home/', views.home, name='home'),
     url('menu/', views.menu, name='menu'),
     url('feedback/', views.feedback, name='feedback'),
@@ -37,4 +38,5 @@ urlpatterns = [
     path('Posttest/<int:PK_Course_D>/', views.posttest, name='posttest'),
     path('evaluate/<int:PK_Course_D>/', views.evaluate, name='evaluate'),
     url('errorstage/',views.errorstage, name='errorstage'),
+    url(r'^export/xls/$', views.export_users_xls, name='export_users_xls'),
 ]

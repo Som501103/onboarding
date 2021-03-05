@@ -8,7 +8,13 @@ import string
 from datetime import datetime
 from itertools import zip_longest
 import re
-from django.db.models import Count
+from django.db.models import Count,Q
+#Export to Excel
+import itertools
+import xlwt
+from datetime import date
+from django.http import HttpResponse
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -732,3 +738,98 @@ def ihub_test_alter(request):
         return redirect('Course_main',PK_Course_D)
     return render(request, 'ihub_test_alter.html',{'Profile':Profile, 'Answer_ihub': Answer_ihub, 'Course_item':Course_item ,'Sum_2':Sum_2})
 
+def admin_list_report(request):
+    NameCourse_values = []
+    Count_view_values = []
+    Count_view_values1 = []
+    Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').exclude(Link_course__id = 11).annotate(Count('Link_course__id')).order_by('Link_course')
+    for j in Count_view :
+        print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
+                # Count_view_label.append(j['Link_course__'])
+                # Count_view_values.append(j['Link_course__Count'])
+        # Staff_Score.objects.select_related('Staff').filter(Link_course_id=1).filter(Post_Score__gte=9).order_by('Staff__DeptCode')
+        compare_total_test = Staff_Score.objects.filter(Link_course_id=j['Link_course__id']).filter(Post_Score__gte=j['Link_course__Course_Pass_Score']).values('Link_course__id','Link_course__Course_Pass_Score').annotate(Count('Link_course__id')).order_by('Link_course')
+        for k in compare_total_test:
+            print(j['Link_course__id__count'],k['Link_course__id__count'])
+            NameCourse_values.append(j['Link_course__CourseName'])
+            Count_view_values.append(j['Link_course__id__count'])
+            Count_view_values1.append(k['Link_course__id__count'])
+
+    Count_pass = list(zip_longest(NameCourse_values, Count_view_values,Count_view_values1))
+    
+    print(Count_pass)
+
+    # พี่ส้มทำต่อ
+
+    # for i in Count_pass :
+    #     print(i['Link_course__CourseName'],i['Post_Score'])
+
+    return render(request, 'admin_list_report.html', {'Count_view': Count_view,'Count_pass': Count_pass})
+
+def export_users_xls(request):
+
+    input_course = 9
+    pass_Score = Course.objects.get(id=input_course)
+    #datetime--now
+    
+    #-----------------------
+    #namecourse = Course.objects.get(id = CourseName)
+    today = str(date.today())
+    courseid = str(pass_Score.id)
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment;filename="Export :"'+str(courseid)+ "[" +str(today) + "]"'".xls"'
+
+    book = xlwt.Workbook(encoding='utf-8')
+    sheet = book.add_sheet('Course'+today)
+    col_width = 256 * 20 # 20 characters wide
+
+    try:
+        for i in itertools.count():
+            sheet.col(i).width = col_width
+    except ValueError:
+        pass
+
+    default_book_style = book.default_style
+    default_book_style.font.height = 20 * 36 # 36pt
+
+    # Sheet header, first row
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font = xlwt.Font()
+    font.bold = True    #  bold 
+    font.name = 'TH Sarabun New'   #  select the font 
+    font.height = 300   #  the font size 
+    font.colour_index = 0  #  the font color 
+    aligment = xlwt.Alignment()
+    aligment.horz = aligment.HORZ_CENTER    #  horizontal alignment 
+    aligment.vert = aligment.VERT_BOTTOM    #  perpendicular to its way 
+    font_style.alignment = aligment
+    font_style.font = font
+
+    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'สังกัด', 'ตำแหน่ง','คะแนนสอบ']
+
+    for col_num in range(len(columns)):
+        sheet.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    font = xlwt.Font()
+    font.name = 'TH Sarabun New'   #  select the font 
+    font.height = 300   #  the font size 
+    font.colour_index = 0  #  the font color 
+    font_style.font = font      
+                                                        # .filter(Link_course_id=input_course).filter(Post_Score__gte=pass_Score.Course_Pass_Score)
+    query_re = Staff_Score.objects.select_related('Staff').filter(Q(Link_course_id=input_course) & Q(Post_Score__gte=pass_Score.Course_Pass_Score)).order_by('Staff__DeptCode')
+
+    rows = query_re.values_list('Staff__StaffID', 
+                                'Staff__StaffName', 
+                                'Staff__StaffDepshort',
+                                'Staff__StaffPosition',
+                                'Post_Score')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            sheet.write(row_num, col_num, row[col_num], font_style)
+
+    book.save(response)
+    return response 
