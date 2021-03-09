@@ -740,7 +740,7 @@ def ihub_test_alter(request):
 
 def export_users_xls(request):
 
-    input_course = 9
+    input_course = 1
     pass_Score = Course.objects.get(id=input_course)
     #datetime--now
     today = str(date.today())
@@ -748,6 +748,7 @@ def export_users_xls(request):
 
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment;filename="Export :"'+str(courseid)+ "[" +str(today) + "]"'".xls"'
+    
 
     book = xlwt.Workbook(encoding='utf-8')
     sheet = book.add_sheet('Course'+today)
@@ -776,7 +777,7 @@ def export_users_xls(request):
     font_style.alignment = aligment
     font_style.font = font
 
-    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'สังกัด', 'ตำแหน่ง','คะแนนสอบ']
+    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'สังกัด', 'ตำแหน่ง','คะแนนสอบ','รหัสวิชา','ชื่อวิชา']
 
     for col_num in range(len(columns)):
         sheet.write(row_num, col_num, columns[col_num], font_style)
@@ -795,7 +796,9 @@ def export_users_xls(request):
                                 'Staff__StaffName', 
                                 'Staff__StaffDepshort',
                                 'Staff__StaffPosition',
-                                'Post_Score')
+                                'Post_Score',
+                                'Link_course',
+                                'Link_course__CourseName')
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
