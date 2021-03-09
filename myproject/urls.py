@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-
 from elearning import views
 
 urlpatterns = [
@@ -31,10 +30,13 @@ urlpatterns = [
     url('virtualclass/', views.virtualclass, name='virtualclass'),
     url('ihub_test_summary/', views.ihub_test_summary, name='ihub_test_summary'),
     path('Course_main/<int:PK_Course_D>/', views.Course_main, name='Course_main'),
+    path('eva_chart/<int:PK_Course_D>/',views.eva_chart,name='eva_chart'),#
     path('ihub_score/<int:Staff_ID>/', views.ihub_score, name='ihub_score'),
     path('VDO/<int:PK_Title>/', views.VDO, name='VDO'),
     path('Pretest/<int:PK_Course_D>/', views.pretest, name='pretest'),
     path('Posttest/<int:PK_Course_D>/', views.posttest, name='posttest'),
     path('evaluate/<int:PK_Course_D>/', views.evaluate, name='evaluate'),
     url('errorstage/',views.errorstage, name='errorstage'),
+    url('summary_admin/',views.summary,name='summary'),
+    url('summary_healthy/',views.summary_healthy,name='summary_healthy'),
 ]
