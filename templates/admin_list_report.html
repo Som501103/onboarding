@@ -57,14 +57,14 @@
                                                   {{ Course.1 }}                                                   
                                               </td>
                                               <td>
-                                                  {{ Course.2 }}                                                  
+                                                  {{ Course.2 }}                                            
                                               </td>
                                                <td>
-                                                                                                   
+                                                
                                               </td>
                                               <td>
                                               <li class="nav-item">
-                                                <a href="{% url 'export_users_xls' %}" class="nav-link">
+                                                <a href="{% url 'export_users_xls' Course.3 %}" class="nav-link">
                                                   <i class="mdi mdi-clipboard-text menu-icon"></i>
                                                   <span class="menu">Download EX File</span>
                                                 </a>

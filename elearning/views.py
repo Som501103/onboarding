@@ -742,6 +742,7 @@ def admin_list_report(request):
     NameCourse_values = []
     Count_view_values = []
     Count_view_values1 = []
+    Course_view_values_id = []
     Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').exclude(Link_course__id = 11).annotate(Count('Link_course__id')).order_by('Link_course')
     for j in Count_view :
         print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
@@ -754,8 +755,9 @@ def admin_list_report(request):
             NameCourse_values.append(j['Link_course__CourseName'])
             Count_view_values.append(j['Link_course__id__count'])
             Count_view_values1.append(k['Link_course__id__count'])
+            Course_view_values_id.append(j['Link_course__id'])
 
-    Count_pass = list(zip_longest(NameCourse_values, Count_view_values,Count_view_values1))
+    Count_pass = list(zip_longest(NameCourse_values, Count_view_values,Count_view_values1,Course_view_values_id))
     
     print(Count_pass)
 
@@ -766,9 +768,8 @@ def admin_list_report(request):
 
     return render(request, 'admin_list_report.html', {'Count_view': Count_view,'Count_pass': Count_pass})
 
-def export_users_xls(request):
-
-    input_course = 9
+def export_users_xls(request,input_course):
+    # Course_id = Course.objects.get(id=input_course)
     pass_Score = Course.objects.get(id=input_course)
     #datetime--now
     
@@ -806,7 +807,7 @@ def export_users_xls(request):
     font_style.alignment = aligment
     font_style.font = font
 
-    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'สังกัด', 'ตำแหน่ง','คะแนนสอบ']
+    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'สังกัด', 'ตำแหน่ง','คะแนนสอบ','รหัสวิชา','ชื่อวิชา']
 
     for col_num in range(len(columns)):
         sheet.write(row_num, col_num, columns[col_num], font_style)
@@ -825,7 +826,10 @@ def export_users_xls(request):
                                 'Staff__StaffName', 
                                 'Staff__StaffDepshort',
                                 'Staff__StaffPosition',
-                                'Post_Score')
+                                'Post_Score',
+                                'Link_course',
+                                'Link_course__CourseName')
+                                
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
