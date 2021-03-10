@@ -8,7 +8,7 @@ import string
 from datetime import datetime
 from itertools import zip_longest
 import re
-from django.db.models import Count
+from django.db.models import Count, Sum,Q,F
 
 # Create your views here.
 
@@ -102,15 +102,42 @@ def home(request):
     # print(close_check)
     if close_check == 1:
         Course_all = Course.objects.filter(id = 11)
+        Count_view = Staff_Vdolog.objects.filter(Link_course= 11).count()
     elif close_check == 2 : 
         Course_all = Course.objects.all().order_by('id')
+        Count_view = Staff_Vdolog.objects.select_related('Link_course').count().order_by('Link_course')
     else :
         Course_all = Course.objects.all().order_by('id').exclude(id = 11)
+        Count_view = Staff_Vdolog.objects.select_related('Link_course').exclude(id = 11).annotate(Count('id'))
+        # print(Count_view)
 
     # print(Course_all)
+    Name_Course = []
+    Count_view_label = []
+    Count_view_values = []
+
+    Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').exclude(Link_course__id = 11).annotate(Count('Link_course__id')).order_by('Link_course')
+    for j in Count_view :
+        print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
+                # Count_view_label.append(j['Link_course__'])
+                # Count_view_values.append(j['Link_course__Count'])
+        # Staff_Score.objects.select_related('Staff').filter(Link_course_id=1).filter(Post_Score__gte=9).order_by('Staff__DeptCode')
+        compare_total_test = Staff_Score.objects.filter(Link_course_id=j['Link_course__id']).filter(Post_Score__gte=j['Link_course__Course_Pass_Score']).values('Link_course__id','Link_course__Course_Pass_Score').annotate(Count('Link_course__id')).order_by('Link_course')
+        for k in compare_total_test:
+            print(j['Link_course__CourseName'],j['Link_course__id__count'],k['Link_course__id__count'])
+            Name_Course.append(j['Link_course__CourseName'])
+            Count_view_label.append(j['Link_course__id__count'])
+            Count_view_values.append(k['Link_course__id__count'])
+    total ={
+        'Name_Course' : Name_Course,
+        'Count_view_label' : Count_view_label,
+        'Count_view_values': Count_view_values
+    }
+    print(total['Name_Course'])
     Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_course')
-    combined_results = list(zip_longest(Course_all, Course_score))
+    combined_results = list(zip_longest(Course_all ,Course_score))
     # print(combined_results)
+    # Course_name = list(zip_longest(Course_all, Course_score))
     
     Profile= {
         'Emp_id' : Emp_id,
@@ -120,7 +147,7 @@ def home(request):
         'Dept' : Dept,
         'RegionCode':RegionCode,
         }
-    return render(request, 'home.html',{'Profile':Profile, 'Course_all': Course_all ,'combined_results':combined_results,'Course_score':Course_score})
+    return render(request, 'home.html',{'Profile':Profile, 'Course_all': Course_all ,'combined_results':combined_results,'Course_score':Course_score,'Count_view':Count_view})
 
 def idm_login(Emp_id, Emp_pass):
     # Emp_passc = str(Emp_pass)
