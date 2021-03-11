@@ -136,9 +136,12 @@
 					}else{
 						var choose = document.querySelector('input[name = optradio'+i+']:checked').value;
 						console.log(choose);
+
 						if( choose == document.getElementById("ans"+i).value){
 							
 							document.getElementById("ch"+i).value = 1;
+							test = document.getElementById("ch"+i).value;
+							console.log(test);
 						}else{
 							document.getElementById("ch"+i).value = 0;
 						}
