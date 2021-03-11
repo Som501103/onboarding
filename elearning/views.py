@@ -5,16 +5,12 @@ from django.http import Http404
 import requests, xmltodict
 from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test
 import string
-from django.db.models import Avg
 from datetime import datetime
 from itertools import zip_longest
 import re
-from django.db.models import Count
-from django.views.generic import UpdateView
-from django.views.generic import TemplateView
-from django.template.response import TemplateResponse
-import json
+from django.db.models import Count, Sum,Q,F
 
+# Create your views here.
 
 def login(request):
     mgs = {
@@ -105,16 +101,43 @@ def home(request):
     # Course_all = Closed_class.objects.select_related('Link_course').filter(StaffID = Emp_id, Status = True)
     # print(close_check)
     if close_check == 1:
-        Course_all = Course.objects.filter(id = 11)
+        Course_all = Course.objects.filter(id = 11) 
+        Count_view = Staff_Vdolog.objects.filter(Link_course= 11).count()
     elif close_check == 2 : 
-        Course_all = Course.objects.all().order_by('id')
+        Course_all = Course.objects.all().order_by('id') 
+        Count_view = Staff_Vdolog.objects.select_related('Link_course').count().order_by('Link_course')
     else :
         Course_all = Course.objects.all().order_by('id').exclude(id = 11)
+        Count_view = Staff_Vdolog.objects.select_related('Link_course').exclude(id = 11).annotate(Count('id'))
+        # print(Count_view)
 
     # print(Course_all)
+    Name_Course = []
+    Count_view_label = []
+    Count_view_values = []
+
+    Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').exclude(Link_course__id = 11).annotate(Count('Link_course__id')).order_by('Link_course')
+    for j in Count_view :
+        print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
+                # Count_view_label.append(j['Link_course__'])
+                # Count_view_values.append(j['Link_course__Count'])
+        # Staff_Score.objects.select_related('Staff').filter(Link_course_id=1).filter(Post_Score__gte=9).order_by('Staff__DeptCode')
+        compare_total_test = Staff_Score.objects.filter(Link_course_id=j['Link_course__id']).filter(Post_Score__gte=j['Link_course__Course_Pass_Score']).values('Link_course__id','Link_course__Course_Pass_Score').annotate(Count('Link_course__id')).order_by('Link_course')
+        for k in compare_total_test:
+            print(j['Link_course__CourseName'],j['Link_course__id__count'],k['Link_course__id__count'])
+            Name_Course.append(j['Link_course__CourseName'])
+            Count_view_label.append(j['Link_course__id__count'])
+            Count_view_values.append(k['Link_course__id__count'])
+    total ={
+        'Name_Course' : Name_Course,
+        'Count_view_label' : Count_view_label,
+        'Count_view_values': Count_view_values
+    }
+    print(total['Name_Course'])
     Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_course')
-    combined_results = list(zip_longest(Course_all, Course_score))
+    combined_results = list(zip_longest(Course_all ,Course_score))
     # print(combined_results)
+    # Course_name = list(zip_longest(Course_all, Course_score))
     
     Profile= {
         'Emp_id' : Emp_id,
@@ -124,8 +147,27 @@ def home(request):
         'Dept' : Dept,
         'RegionCode':RegionCode,
         }
-    return render(request, 'home.html',{'Profile':Profile, 'Course_all': Course_all ,'combined_results':combined_results,'Course_score':Course_score})
+    return render(request, 'home.html',{'Profile':Profile, 'Course_all': Course_all ,'combined_results':combined_results,'Course_score':Course_score,'Count_view':Count_view})
 
+def select(request):
+    Emp_id = request.session['Emp_id']
+    Fullname = request.session['Fullname']
+    Position = request.session['Position']
+    LevelCode = request.session['LevelCode']
+    Dept = request.session['Department']
+    RegionCode = request.session['RegionCode']
+    Profile= {
+        'Emp_id' : Emp_id,
+        'Fullname' : Fullname,
+        'Position' : Position,
+        'LevelCode' : LevelCode,
+        'Dept' : Dept,
+        'RegionCode':RegionCode,
+        }
+    Course_select = Course.objects.filter(Course_Type = '2')
+    
+    return render(request, 'select.html',{'Profile':Profile, 'Course_select': Course_select})
+    
 def idm_login(Emp_id, Emp_pass):
     # Emp_passc = str(Emp_pass)
     print('--------------------')
@@ -256,51 +298,6 @@ def Course_main(request, PK_Course_D):
     
     return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate,'Hub_status_test':Hub_status_test})
 
-
-def eva_chart(request,PK_Course_D): #, PK_Course_D
-    Profile ={
-        'Emp_id' : request.session['Emp_id'],
-        'Fullname' : request.session['Fullname'],
-        'Position' : request.session['Position'],
-        'LevelCode' : request.session['LevelCode'],
-        'Dept' : request.session['Department'],
-        'RegionCode' : request.session['RegionCode']
-    }
-
-    avg_eva = {}
-    for num in range(9):
-        a='No_'
-        num+=1
-        avg_eva.update(Evaluate_t.objects.filter(Link_course = Course.objects.get(id = PK_Course_D)).aggregate(Avg(a+str(num))))
-    print(avg_eva)
-    no_1 = float(avg_eva['No_1__avg'])
-    no_1 = round(no_1,2)
-    no_2 = float(avg_eva['No_2__avg'])
-    no_2 = round(no_2,2)
-    no_3 = float(avg_eva['No_3__avg'])
-    no_3 = round(no_3,2)
-    no_4 = float(avg_eva['No_4__avg'])
-    no_4 = round(no_4,2)
-    no_5 = float(avg_eva['No_5__avg'])
-    no_5 = round(no_5,2)
-    no_6 = float(avg_eva['No_6__avg'])
-    no_6 = round(no_6,2)
-    no_7 = float(avg_eva['No_7__avg'])
-    no_7 = round(no_7,2)
-    no_8 = float(avg_eva['No_8__avg'])
-    no_8 = round(no_8,2)
-    no_9 = float(avg_eva['No_9__avg'])
-    no_9 = round(no_9,2)
-    total_eva = (no_1+no_2+no_3+no_4+no_5+no_6+no_7+no_8+no_9)/9
-    total_eva = round(total_eva,2)
-    data = []
-    data.extend((no_1,no_2,no_3,no_4,no_5,no_6,no_7,no_8,no_9,total_eva))
-    json.dumps(data)
-    send_data ={
-        'data':data
-    }
-    return render(request,'eva_chart.html',send_data)
-    
 def VDO(request, PK_Title):
     Emp_id = request.session['Emp_id']
     Profile ={
