@@ -72,6 +72,11 @@ class Feedback(models.Model):
     Date_Created = models.DateTimeField(auto_now_add=False, null= True)
     Staff = models.ForeignKey(Staff, related_name= 'Staff_feedback', on_delete= models.CASCADE,null= True)
 
+class Topic_Evaluate(models.Model):
+    Topic = models.CharField(max_length=300)
+    Order = models.CharField(max_length=2)
+    Sub_Course = models.ForeignKey(Sub_Course,related_name='Sub_Courses',on_delete = models.CASCADE,null= True)
+
 class Evaluate_t(models.Model):
     No_1 = models.IntegerField(default=0)
     No_2 = models.IntegerField(default=0)
