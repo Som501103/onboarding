@@ -337,6 +337,7 @@ def eva_chart(request,PK_Course_D): #, PK_Course_D
 def VDO(request, PK_Title):
     Emp_id = request.session['Emp_id']
     Profile ={
+        'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
         'Position' : request.session['Position'],
         'LevelCode' : request.session['LevelCode'],
