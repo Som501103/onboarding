@@ -5,10 +5,15 @@ from django.http import Http404
 import requests, xmltodict
 from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test
 import string
+from django.db.models import Avg
 from datetime import datetime
 from itertools import zip_longest
 import re
-
+from django.db.models import Count, Sum,Q,F
+from django.views.generic import UpdateView
+from django.views.generic import TemplateView
+from django.template.response import TemplateResponse
+import json
 from django.db.models import Count, Sum,Q,F
 #Export to Excel
 import itertools
@@ -17,9 +22,6 @@ from datetime import date
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-
-
-# Create your views here.
 
 def login(request):
     mgs = {
@@ -288,6 +290,51 @@ def Course_main(request, PK_Course_D):
     
     return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate,'Hub_status_test':Hub_status_test})
 
+
+def eva_chart(request,PK_Course_D): #, PK_Course_D
+    Profile ={
+        'Emp_id' : request.session['Emp_id'],
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+
+    avg_eva = {}
+    for num in range(9):
+        a='No_'
+        num+=1
+        avg_eva.update(Evaluate_t.objects.filter(Link_course = Course.objects.get(id = PK_Course_D)).aggregate(Avg(a+str(num))))
+    print(avg_eva)
+    no_1 = float(avg_eva['No_1__avg'])
+    no_1 = round(no_1,2)
+    no_2 = float(avg_eva['No_2__avg'])
+    no_2 = round(no_2,2)
+    no_3 = float(avg_eva['No_3__avg'])
+    no_3 = round(no_3,2)
+    no_4 = float(avg_eva['No_4__avg'])
+    no_4 = round(no_4,2)
+    no_5 = float(avg_eva['No_5__avg'])
+    no_5 = round(no_5,2)
+    no_6 = float(avg_eva['No_6__avg'])
+    no_6 = round(no_6,2)
+    no_7 = float(avg_eva['No_7__avg'])
+    no_7 = round(no_7,2)
+    no_8 = float(avg_eva['No_8__avg'])
+    no_8 = round(no_8,2)
+    no_9 = float(avg_eva['No_9__avg'])
+    no_9 = round(no_9,2)
+    total_eva = (no_1+no_2+no_3+no_4+no_5+no_6+no_7+no_8+no_9)/9
+    total_eva = round(total_eva,2)
+    data = []
+    data.extend((no_1,no_2,no_3,no_4,no_5,no_6,no_7,no_8,no_9,total_eva))
+    json.dumps(data)
+    send_data ={
+        'data':data
+    }
+    return render(request,'eva_chart.html',send_data)
+    
 def VDO(request, PK_Title):
     Emp_id = request.session['Emp_id']
     Profile ={
@@ -768,7 +815,6 @@ def ihub_test_alter(request):
         return redirect('Course_main',PK_Course_D)
     return render(request, 'ihub_test_alter.html',{'Profile':Profile, 'Answer_ihub': Answer_ihub, 'Course_item':Course_item ,'Sum_2':Sum_2})
 
-
 def admin_list_report(request):
     NameCourse_values = []
     Count_view_values = []
@@ -868,7 +914,8 @@ def export_users_xls(request,input_course):
 
     book.save(response)
     return response 
-=======
+
+  
 def summary(request):
     # Profile ={
     #     'Emp_id' : request.session['Emp_id'],
