@@ -914,8 +914,7 @@ def export_users_xls(request,input_course):
 
     book.save(response)
     return response 
-
-  
+ 
 def summary(request):
     # Profile ={
     #     'Emp_id' : request.session['Emp_id'],
