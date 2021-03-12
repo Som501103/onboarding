@@ -290,7 +290,6 @@ def Course_main(request, PK_Course_D):
     
     return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate,'Hub_status_test':Hub_status_test})
 
-
 def eva_chart(request,PK_Course_D): #, PK_Course_D
     Profile ={
         'Emp_id' : request.session['Emp_id'],
@@ -943,3 +942,7 @@ def summary_healthy(request):
 
     return render(request, 'summary_healthy.html',{ 'total_record':total_record })
 
+def select(request):
+    Course_all = Course.objects.filter(Course_Type =2)
+
+    return render(request, 'select.html',{ 'Course_all':Course_all })
