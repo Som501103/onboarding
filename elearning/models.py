@@ -2,6 +2,7 @@ from django.db import models
 
 class Course(models.Model):
     CourseName = models.CharField(max_length=100)
+    Course_Type  = models.CharField(max_length = 2, default='1')
     CourseBy = models.CharField(max_length=50)
     Couse_Sub_Total = models.IntegerField(null=True, default=0)
     Course_Total_QS = models.IntegerField(null=True, default=0)
@@ -9,6 +10,7 @@ class Course(models.Model):
     Date_Created = models.DateTimeField(auto_now_add=True, null=True)
     Cover_img = models.CharField(max_length=50,null=True)
     CourseStatus = models.CharField(null=True,max_length=3,default='OFF')
+    # course_type 1 = ภาคบังคับ 2 = ภาคเสรี
 
 class Sub_Course(models.Model):
     Title = models.CharField(max_length=100)

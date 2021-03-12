@@ -39,4 +39,7 @@ urlpatterns = [
     path('evaluate/<int:PK_Course_D>/', views.evaluate, name='evaluate'),
     url('errorstage/',views.errorstage, name='errorstage'),
     path('export/xls/<int:input_course>/', views.export_users_xls, name='export_users_xls'),
+    url('summary_admin/',views.summary,name='summary'),
+    url('summary_healthy/',views.summary_healthy,name='summary_healthy'),
+
 ]
