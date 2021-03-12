@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url('admin_list_report/', views.admin_list_report, name='admin_list_report'),
     url('home/', views.home, name='home'),
+    url('select/', views.select, name='select'),
     url('menu/', views.menu, name='menu'),
     url('feedback/', views.feedback, name='feedback'),
     url('ihub_test/', views.ihub_test, name='ihub_test'),
