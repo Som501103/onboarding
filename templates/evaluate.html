@@ -56,6 +56,10 @@
 										{% endfor %}
 								
 									<input type="hidden" id="Course_total" name="Course_total" value="{{ Course_item.id }}"/>
+									{% if %}
+									
+
+									{% else %}
 									<form class="forms-sample" method="post">
 										{% csrf_token %}
 										<div class="table-responsive">
@@ -425,6 +429,9 @@
 											</table>
 											</div>
 									</form>
+
+									{% endif %}
+									
 									
 							  </div>	
 							</div>
