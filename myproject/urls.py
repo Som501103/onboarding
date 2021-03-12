@@ -21,9 +21,9 @@ from elearning import views
 urlpatterns = [
     url(r'^$', views.login, name='login'),
     url(r'^admin/', admin.site.urls),
-    url('admin_list_report/', views.admin_list_report, name='admin_list_report'),
+    url('admin_list_report/', views.admin_list_report, name='admin_list_report'),#หน้าแสดงคะแนนประเมิน
     url('home/', views.home, name='home'),
-    url('select/', views.select, name='select'),
+    url('select/', views.select, name='select'), 
     url('menu/', views.menu, name='menu'),
     url('feedback/', views.feedback, name='feedback'),
     url('ihub_test/', views.ihub_test, name='ihub_test'),
