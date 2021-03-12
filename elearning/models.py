@@ -10,6 +10,8 @@ class Course(models.Model):
     Date_Created = models.DateTimeField(auto_now_add=True, null=True)
     Cover_img = models.CharField(max_length=50,null=True)
     CourseStatus = models.CharField(null=True,max_length=3,default='OFF')
+    Pre_Test = models.BooleanField(default=True)
+    Post_Test = models.BooleanField(default=True)
     # course_type 1 = ภาคบังคับ 2 = ภาคเสรี
 
 class Sub_Course(models.Model):
@@ -18,8 +20,8 @@ class Sub_Course(models.Model):
     ConstructorPosition = models.CharField(max_length=100, null=True)
     Tel = models.CharField(max_length=7,null=True,default='0000')
     email = models.EmailField(null=True, default='uuu@pea.co.th')
-    Document = models.URLField(max_length=300, null=True)
-    URLGdrive = models.URLField(max_length=300, null=True)
+    Document = models.URLField(max_length=300, null=False,blank=True)
+    URLGdrive = models.URLField(max_length=300, null=True,blank=True)
     TotalTime =models.IntegerField(null=True, default=0)
     Date_Created = models.DateField(auto_now_add=True, null=True)
     Link_Course = models.ForeignKey(Course,related_name='Sub_Courses',on_delete = models.CASCADE,null= True)
@@ -80,6 +82,9 @@ class Evaluate_t(models.Model):
     No_7 = models.IntegerField(default=0)
     No_8 = models.IntegerField(default=0)
     No_9 = models.IntegerField(default=0)
+    Usability = models.TextField(default='การนำไปใช้',blank=True, null=True)
+    Future_Subject = models.CharField(max_length=300,blank=True, null=True)
+    Suggestion = models.TextField(default='ข้อเสนอแนะ',blank=True, null=True)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
     Status = models.BooleanField(default=False)
     Link_course = models.ForeignKey(Course, related_name='Course_Eva', on_delete=models.CASCADE,null= True)
@@ -135,3 +140,4 @@ class Bu_test(models.Model):
     no1 = models.TextField(default='ข้อ1',blank=True, null=True)
     Status = models.CharField(default=0, null=True, max_length =1)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
+
