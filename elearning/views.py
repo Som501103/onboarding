@@ -129,13 +129,14 @@ def home(request):
 
     Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').exclude(Link_course__id = 11).annotate(Count('Link_course__id')).order_by('Link_course')
     for j in Count_view :
-        # print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
+        #print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
+
                 # Count_view_label.append(j['Link_course__'])
                 # Count_view_values.append(j['Link_course__Count'])
         # Staff_Score.objects.select_related('Staff').filter(Link_course_id=1).filter(Post_Score__gte=9).order_by('Staff__DeptCode')
         compare_total_test = Staff_Score.objects.filter(Link_course_id=j['Link_course__id']).filter(Post_Score__gte=j['Link_course__Course_Pass_Score']).values('Link_course__id','Link_course__Course_Pass_Score').annotate(Count('Link_course__id')).order_by('Link_course')
         for k in compare_total_test:
-            # print(j['Link_course__CourseName'],j['Link_course__id__count'],k['Link_course__id__count'])
+            #print(j['Link_course__CourseName'],j['Link_course__id__count'],k['Link_course__id__count'])
             Name_Course.append(j['Link_course__CourseName'])
             Count_view_label.append(j['Link_course__id__count'])
             Count_view_values.append(k['Link_course__id__count'])
@@ -144,7 +145,7 @@ def home(request):
         'Count_view_label' : Count_view_label,
         'Count_view_values': Count_view_values
     }
-    # print(total['Name_Course'])
+    #print(total['Name_Course'])
     Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_course')
     combined_results = list(zip_longest(Course_all ,Course_score))
     # print(combined_results)
@@ -337,7 +338,6 @@ def eva_chart(request,PK_Course_D): #, PK_Course_D
 def VDO(request, PK_Title):
     Emp_id = request.session['Emp_id']
     Profile ={
-        'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
         'Position' : request.session['Position'],
         'LevelCode' : request.session['LevelCode'],
@@ -817,42 +817,46 @@ def ihub_test_alter(request):
     return render(request, 'ihub_test_alter.html',{'Profile':Profile, 'Answer_ihub': Answer_ihub, 'Course_item':Course_item ,'Sum_2':Sum_2})
 
 def admin_list_report(request):
-    Profile ={
-        'Emp_id' : request.session['Emp_id'],
-        'Fullname' : request.session['Fullname'],
-        'Position' : request.session['Position'],
-        'LevelCode' : request.session['LevelCode'],
-        'Dept' : request.session['Department'],
-        'RegionCode' : request.session['RegionCode']
-    }
+    Emp_id = request.session['Emp_id']
+    Fullname = request.session['Fullname']
+    Position = request.session['Position']
+    LevelCode = request.session['LevelCode']
+    Dept = request.session['Department']
+    RegionCode = request.session['RegionCode']
+
     NameCourse_values = []
     Count_view_values = []
     Count_view_values1 = []
     Course_view_values_id = []
     Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').exclude(Link_course__id = 11).annotate(Count('Link_course__id')).order_by('Link_course')
     for j in Count_view :
-        # print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
+        #print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
                 # Count_view_label.append(j['Link_course__'])
                 # Count_view_values.append(j['Link_course__Count'])
         # Staff_Score.objects.select_related('Staff').filter(Link_course_id=1).filter(Post_Score__gte=9).order_by('Staff__DeptCode')
         compare_total_test = Staff_Score.objects.filter(Link_course_id=j['Link_course__id']).filter(Post_Score__gte=j['Link_course__Course_Pass_Score']).values('Link_course__id','Link_course__Course_Pass_Score').annotate(Count('Link_course__id')).order_by('Link_course')
         for k in compare_total_test:
-            print(j['Link_course__id__count'],k['Link_course__id__count'])
+            #print(j['Link_course__id__count'],k['Link_course__id__count'])
             NameCourse_values.append(j['Link_course__CourseName'])
             Count_view_values.append(j['Link_course__id__count'])
             Count_view_values1.append(k['Link_course__id__count'])
             Course_view_values_id.append(j['Link_course__id'])
-
     Count_pass = list(zip_longest(NameCourse_values, Count_view_values,Count_view_values1,Course_view_values_id))
-    
-    print(Count_pass)
 
+    Profile= {
+        'Emp_id' : Emp_id,
+        'Fullname' : Fullname,
+        'Position' : Position,
+        'LevelCode' : LevelCode,
+        'Dept' : Dept,
+        'RegionCode':RegionCode,
+        }
     # พี่ส้มทำต่อ
 
     # for i in Count_pass :
     #     print(i['Link_course__CourseName'],i['Post_Score'])
 
-    return render(request, 'admin_list_report.html', {'Profile':Profile,'Count_view': Count_view,'Count_pass': Count_pass})
+    return render(request, 'admin_list_report.html', { 'Profile':Profile, 'Count_view': Count_view,'Count_pass': Count_pass})
 
 def export_users_xls(request,input_course):
     # Course_id = Course.objects.get(id=input_course)
@@ -953,14 +957,6 @@ def summary_healthy(request):
     return render(request, 'summary_healthy.html',{ 'total_record':total_record })
 
 def select(request):
-    Profile ={
-        'Emp_id' : request.session['Emp_id'],
-        'Fullname' : request.session['Fullname'],
-        'Position' : request.session['Position'],
-        'LevelCode' : request.session['LevelCode'],
-        'Dept' : request.session['Department'],
-        'RegionCode' : request.session['RegionCode']
-    }
-    Course_select = Course.objects.filter(Course_Type = '2')
+    Course_all = Course.objects.filter(Course_Type =2)
 
-    return render(request, 'select.html',{'Profile':Profile, 'Course_select':Course_select })
+    return render(request, 'select.html',{ 'Course_all':Course_all })

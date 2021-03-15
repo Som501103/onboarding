@@ -98,7 +98,7 @@
 										</td>
 										<td><a href="#" class="btn btn-gradient-secondary">ทดสอบ</a></td>
 									  </tr> -->
-									  {% if Course_detail.id == 9 or Course_detail.id == 4 or Course_detail.id == 17 %}
+									  {% if Course_detail.id == 9 or Course_detail.id == 4 %}
 									  <tr>
 										<!-- <td>
 											{% if Course_detail.id != 17 %}
@@ -152,7 +152,7 @@
 												{% endif %}
 											{% endfor %}
 										</td>
-										<td><a href="{% url 'VDO' x.id %}" >{{ x.Title }} </a></td>
+										<td><a href="{% url 'VDO' x.id %}" >{{ x.Title }} {{ x.id }}</a></td>
 										
 										<td><a href="{% url 'VDO' x.id %}" class="btn btn-gradient-info">เข้าเรียน</a></td>
 										<!-- <td><a href="{% url 'VDO' 1 %}" class="btn btn-gradient-info">เข้าเรียน</a></td> -->
@@ -288,9 +288,6 @@
 												{% else %}
 												<td><a class="btn btn-gradient-info">ผ่านแล้ว</a></td>
 												{% endif %}
-											{% elif Course_detail.id == 17 %}
-												<tr></tr>
-
 											{% else %}
 											    <td>
 												{% if post == 0 or post < Course_detail.Course_Pass_Score %}
@@ -334,9 +331,9 @@
 											{% endif %}
 										  </td>
 										  <td>
-											<a href="{% url 'evaluate' Course_detail.id %}">แบบประเมินความพึงพอใจหลักสูตร</a>
+											<a href="{% url 'evaluate' Course_detail.id %}">แบบประเมินวิทยากร</a>
 										  </td>
-										  <td><a class="btn btn-gradient-primary" href="{% url 'evaluate' Course_detail.id %}">ประเมินความพึงพอใจ</a></td>
+										  <td><a class="btn btn-gradient-primary" href="{% url 'evaluate' Course_detail.id %}">ประเมินวิทยากร</a></td>
 									  </tr>
 									  <tr>
 										  <td colspan="3" class="text-center"><a href="{% url 'home' %}" class="btn btn-gradient-primary">กลับหน้ารวมหลักสูตร</a></td>

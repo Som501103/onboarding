@@ -145,3 +145,4 @@ class Bu_test(models.Model):
     no1 = models.TextField(default='ข้อ1',blank=True, null=True)
     Status = models.CharField(default=0, null=True, max_length =1)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
+
