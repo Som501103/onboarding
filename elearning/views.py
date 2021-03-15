@@ -129,13 +129,13 @@ def home(request):
 
     Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').exclude(Link_course__id = 11).annotate(Count('Link_course__id')).order_by('Link_course')
     for j in Count_view :
-        print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
+        # print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
                 # Count_view_label.append(j['Link_course__'])
                 # Count_view_values.append(j['Link_course__Count'])
         # Staff_Score.objects.select_related('Staff').filter(Link_course_id=1).filter(Post_Score__gte=9).order_by('Staff__DeptCode')
         compare_total_test = Staff_Score.objects.filter(Link_course_id=j['Link_course__id']).filter(Post_Score__gte=j['Link_course__Course_Pass_Score']).values('Link_course__id','Link_course__Course_Pass_Score').annotate(Count('Link_course__id')).order_by('Link_course')
         for k in compare_total_test:
-            print(j['Link_course__CourseName'],j['Link_course__id__count'],k['Link_course__id__count'])
+            # print(j['Link_course__CourseName'],j['Link_course__id__count'],k['Link_course__id__count'])
             Name_Course.append(j['Link_course__CourseName'])
             Count_view_label.append(j['Link_course__id__count'])
             Count_view_values.append(k['Link_course__id__count'])
@@ -144,7 +144,7 @@ def home(request):
         'Count_view_label' : Count_view_label,
         'Count_view_values': Count_view_values
     }
-    print(total['Name_Course'])
+    # print(total['Name_Course'])
     Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_course')
     combined_results = list(zip_longest(Course_all ,Course_score))
     # print(combined_results)
@@ -179,7 +179,7 @@ def idm_login(Emp_id, Emp_pass):
     wskey = '07d75910-3365-42c9-9365-9433b51177c6'
     body = xmltext.format(wskey,Emp_id,Emp_pass)
     response = requests.post(url,data=body,headers=headers)
-    print(response.status_code)
+    # print(response.status_code)
     o = xmltodict.parse(response.text)
     jsonconvert=dict(o)
     # print(o)
@@ -206,7 +206,7 @@ def idm(Emp_id):
     # print(o)
     jsonconvert=o["soap:Envelope"]['soap:Body']['GetEmployeeInfoByEmployeeId_SIResponse']['GetEmployeeInfoByEmployeeId_SIResult']['ResultObject']
     employeedata = dict(jsonconvert)
-    print(employeedata['FirstName'])
+    # print(employeedata['FirstName'])
     return employeedata
 
 def Course_main(request, PK_Course_D):
@@ -514,6 +514,7 @@ def feedback(request):
 def evaluate(request, PK_Course_D):
     Emp_id = request.session['Emp_id']
     Profile ={
+        'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
         'Position' : request.session['Position'],
         'LevelCode' : request.session['LevelCode'],
