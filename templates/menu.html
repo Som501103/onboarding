@@ -50,28 +50,28 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'select' %}">
-                        <i class="mdi mdi-file-document-box menu-icon"></i>
+                        <i class="mdi mdi-book-open-variant menu-icon"></i>
                         <span class="menu-title">หลักสูตรเสรี</span>
                     </a>
                 </li>
                 {% if Profile.Emp_id == '502979' or Profile.Emp_id == '505330' or Profile.Emp_id == '509805' or Profile.Emp_id == '505321' or Profile.Emp_id == '501103' %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'ihub_test_summary' %}">
-                        <i class="mdi mdi-file-document-box menu-icon"></i>
+                        <i class="mdi mdi-message-draw menu-icon"></i>
                         <span class="menu-title">ตรวจข้อสอบ</span>
                     </a>
                 </li>
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'virtualclass' %}">
-                        <i class="mdi mdi-file-document-box menu-icon"></i>
+                        <i class="mdi mdi-calendar-text menu-icon"></i>
                         <span class="menu-title">กำหนดการสอน Virtual Class</span>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{% url 'feedback' %}" class="nav-link">
-                        <i class="mdi mdi-file-document-box menu-icon"></i>
+                        <i class="mdi mdi-phone menu-icon"></i>
                         <span class="menu-title">ติดต่อสอบถาม</span></a>
                 </li>
                 {% if Profile.Emp_id == '501103' %}
