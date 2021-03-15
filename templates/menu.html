@@ -40,6 +40,47 @@
         </div>
     </nav>
     <nav class="bottom-navbar">
+<<<<<<< HEAD
+      <div class="container">
+        <ul class="nav page-navigation">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">หลักสูตร</span>
+            </a>
+          </li>
+          {% if Profile.Emp_id == '502979' or Profile.Emp_id == '505330' or Profile.Emp_id == '509805' or Profile.Emp_id == '505321' or Profile.Emp_id == '501103'  %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'ihub_test_summary' %}">
+              <i class="mdi mdi-file-document-box menu-icon"></i>
+              <span class="menu-title">ตรวจข้อสอบ</span>
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'virtualclass' %}">
+              <i class="mdi mdi-file-document-box menu-icon"></i>
+              <span class="menu-title">กำหนดการสอน Virtual Class</span>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a href="{% url 'feedback' %}" class="nav-link" >
+              <i class="mdi mdi-file-document-box menu-icon"></i>
+              <span class="menu-title">ติดต่อสอบถาม</span></a>
+          </li>
+          <li class="nav-item">
+          <a href="{% url 'export_users_xls' %}" class="nav-link" >
+              <i class="mdi mdi-file-document-box menu-icon"></i>
+              <span class="menu-title">Export</span></a>
+          </li>
+          <li class="nav-item"></li>
+          <li class="nav-item"></li>
+          <li class="nav-item"></li>
+          <li class="nav-item"></li>
+        </ul>
+      </div>
+=======
         <div class="container">
             <ul class="nav page-navigation">
                 <li class="nav-item">
@@ -83,5 +124,6 @@
                 {% endif %}
             </ul>
         </div>
+>>>>>>> 866996a27db412090aca429e1bb1c22a11e17840
     </nav>
 </div>

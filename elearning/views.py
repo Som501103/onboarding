@@ -9,6 +9,7 @@ from django.db.models import Avg
 from datetime import datetime
 from itertools import zip_longest
 import re
+from django.db.models import Count,Q
 from django.db.models import Count, Sum,Q,F
 from django.views.generic import UpdateView
 from django.views.generic import TemplateView
@@ -816,6 +817,17 @@ def ihub_test_alter(request):
         return redirect('Course_main',PK_Course_D)
     return render(request, 'ihub_test_alter.html',{'Profile':Profile, 'Answer_ihub': Answer_ihub, 'Course_item':Course_item ,'Sum_2':Sum_2})
 
+def export_users_xls(request):
+
+    input_course = 1
+    pass_Score = Course.objects.get(id=input_course)
+    #datetime--now
+    today = str(date.today())
+    courseid = str(pass_Score.id)
+
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment;filename="Export :"'+str(courseid)+ "[" +str(today) + "]"'".xls"'
+
 def admin_list_report(request):
     Profile ={
         'Emp_id' : request.session['Emp_id'],
@@ -915,13 +927,15 @@ def export_users_xls(request,input_course):
                                 'Post_Score',
                                 'Link_course',
                                 'Link_course__CourseName')
-                                
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
             sheet.write(row_num, col_num, row[col_num], font_style)
 
     book.save(response)
+
+    return response
+
     return response 
  
 def summary(request):
