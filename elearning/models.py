@@ -72,6 +72,11 @@ class Feedback(models.Model):
     Date_Created = models.DateTimeField(auto_now_add=False, null= True)
     Staff = models.ForeignKey(Staff, related_name= 'Staff_feedback', on_delete= models.CASCADE,null= True)
 
+class Topic_Evaluate(models.Model):
+    Topic = models.CharField(max_length=300)
+    Order = models.CharField(max_length=2)
+    Sub_Course = models.ForeignKey(Sub_Course,related_name='Sub_Courses',on_delete = models.CASCADE,null= True)
+
 class Evaluate_t(models.Model):
     No_1 = models.IntegerField(default=0)
     No_2 = models.IntegerField(default=0)
@@ -82,8 +87,8 @@ class Evaluate_t(models.Model):
     No_7 = models.IntegerField(default=0)
     No_8 = models.IntegerField(default=0)
     No_9 = models.IntegerField(default=0)
-    Usability = models.TextField(default='การนำไปใช้',blank=True, null=True)
-    Future_Subject = models.CharField(max_length=300,blank=True, null=True)
+    Usability = models.CharField(default='การนำไปใช้',max_length=300,blank=True, null=True)
+    Future_Subject = models.CharField(default='หัวข้อที่สนใจ',max_length=300,blank=True, null=True)
     Suggestion = models.TextField(default='ข้อเสนอแนะ',blank=True, null=True)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
     Status = models.BooleanField(default=False)
