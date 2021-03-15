@@ -17,8 +17,10 @@
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="/static/assets/css/demo_3/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <!-- End Layout styles -->
     <link rel="shortcut icon" href="/static/assets/images/favicon.png" />
+
   </head>
 
     <body>
@@ -37,10 +39,11 @@
                                         <ul class="nav product-filter-nav">
                                         <li class="active"><a href="#">แจ้งรายงาน</a></li>
                                     
-                                        </ul>
-                                        <table class="table">
+                                        </ul>   
+                                        <table class="table" table {counter-reset: no -1;} >
                                         <thead class="thead-inverse">
                                           <tr>
+                                            <th>ลำดับ</th>
                                             <th>รายวิชา</th>
                                             <th>จำนวนคนเรียน</th>
                                             <th>จำนวนคนผ่าน</th>
@@ -50,6 +53,8 @@
                                         <tbody>
                                           {% for Course in Count_pass %}
                                             <tr>
+                                              <td class="counterCell">  
+                                              </td>
                                               <td>
                                                   {{ Course.0 }}                                                  
                                               </td>
