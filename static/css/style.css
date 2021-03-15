@@ -23,3 +23,10 @@ html {
     font-style: normal;
   }
   
+  table {
+    counter-reset: tableCount;     
+  }
+  .counterCell:before {              
+    content: counter(tableCount); 
+    counter-increment: tableCount; 
+  }
