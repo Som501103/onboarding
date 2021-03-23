@@ -544,6 +544,7 @@ def evaluate(request, PK_Course_D):
         optradio9 = request.POST.get('optradio9')
         print(optradio9)
         if PK_Course_D == 17 :
+            Eva_update  = Evaluate_t.objects.filter(Link_course = Course.objects.get(id = PK_Course_D), Staff =Staff.objects.get(StaffID = Emp_id))
             Usability = request.POST.get('Usability')
             Future_Subject = request.POST.get('Future_Subject')
             Suggestion = request.POST.get('Suggestion')
@@ -566,6 +567,7 @@ def evaluate(request, PK_Course_D):
                                 Staff = Staff.objects.get(StaffID = Emp_id)
                                 )
             eve_staff_create.save()
+
         else :
             eve_staff_create = Evaluate_t(
                                 No_1 = optradio1,
