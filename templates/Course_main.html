@@ -116,6 +116,8 @@
 										<td><a href="{% url 'pretest' Course_detail.id %}" >Pre-Test</a></td>
 										<td><a href="{% url 'pretest' Course_detail.id %}" class="btn btn-gradient-info">ทดสอบ</a></td> -->
 									  </tr>
+									  {% elif Course_detail.id == 17 %}
+									  
 									  {% else %}
 									  <tr>
 										<td>
@@ -288,6 +290,8 @@
 												{% else %}
 												<td><a class="btn btn-gradient-info">ผ่านแล้ว</a></td>
 												{% endif %}
+											{% elif Course_detail.id == 17 %}
+												
 											{% else %}
 											    <td>
 												{% if post == 0 or post < Course_detail.Course_Pass_Score %}

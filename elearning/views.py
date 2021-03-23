@@ -982,6 +982,14 @@ def summary_healthy(request):
     return render(request, 'summary_healthy.html',{ 'total_record':total_record })
 
 def select(request):
-    Course_all = Course.objects.filter(Course_Type =2)
+    Profile ={
+        'Emp_id' : request.session['Emp_id'],
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    Course_all = Course.objects.filter(Course_Type = 2)
 
-    return render(request, 'select.html',{ 'Course_all':Course_all })
+    return render(request, 'select.html',{ 'Profile':Profile ,'Course_all':Course_all })

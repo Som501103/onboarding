@@ -47,6 +47,7 @@
 									<p><i class="mdi mdi-phone-classic"></i> : {{ Sub_course.Tel }} | <i class="mdi mdi-email"></i> : {{ Sub_course.email }}</p>
 									<p><i class="mdi mdi-file-document"></i> : <a href="{{ Sub_course.Document }}" target="_blank">เอกสารประกอบบทเรียน</a></p>
 									<p class="text-danger"><label>ปุ่ม บันทึกผลการเรียน จะปรากฎขึ้นเมื่อการบรรยายใกล้จะจบ</label></p>
+									<a class="btn btn-gradient-info btn-md" href="{% url 'Course_main' Sub_course.Link_Course.id %}">ย้อนกลับ</a>
 									<div>ปุ่มจะปรากฏในอีก <span id="time">{{ Sub_course.TotalTime }}:00</span> นาที!</div>
 									<form method="POST" onsubmit="return checkscore()">
 										{% csrf_token %}
