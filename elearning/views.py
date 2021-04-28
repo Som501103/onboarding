@@ -112,8 +112,8 @@ def home(request):
     # Course_all = Closed_class.objects.select_related('Link_course').filter(StaffID = Emp_id, Status = True)
     # print(close_check)
     if close_check == 1:
-        Course_all = Course.objects.filter(id = 11)
-        Count_view = Staff_Vdolog.objects.filter(Link_course= 11).count()
+        Course_all = Course.objects.filter(id = 18)
+        Count_view = Staff_Vdolog.objects.filter(Link_course= 18).count()
     elif close_check == 2 : 
         Course_all = Course.objects.all().order_by('id')
         Count_view = Staff_Vdolog.objects.select_related('Link_course').count().order_by('Link_course')
