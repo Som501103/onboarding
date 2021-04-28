@@ -38,8 +38,10 @@
 								<!-- https://drive.google.com/file/d/1-2DuLtzekmoTEm1qV8_xRRLMN6bwlTdS/preview -->
 								<div class="text-center table-responsive">
 									<!-- <iframe src="{{ Sub_course.URLGdrive }}" allow="autoplay" width="100%" height="480" referrerpolicy="no-referrer"></iframe> -->
+									<!-- src="https://drive.google.com/file/d/11-t5RWPacv5JMi30iJs-Dz9qcxrN5SXq/preview" -->
+									<!-- src="/static/assets/images/product_images_2/vdo.mp4" -->
 									{% if Sub_course.id == 37 %}
-									<iframe width="100%" height="480" src="/static/assets/images/product_images_2/vdo.mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+									<iframe width="100%" height="480" src="https://drive.google.com/file/d/11-t5RWPacv5JMi30iJs-Dz9qcxrN5SXq/preview" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 									{% else %}
 									<iframe width="100%" height="480" src="{{ Sub_course.URLGdrive }}" frameborder="0" allow="autoplay 'src'" allowfullscreen></iframe>
 									{% endif %}
@@ -148,4 +150,27 @@
 			startTimer(fiveMinutes, display);
 		};
 	</script>
-    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyBer4SxRI16TiGoHbS0uQcQtkWXUnyu6ko",
+    authDomain: "pqa-pea.firebaseapp.com",
+    databaseURL: "https://pqa-pea.firebaseio.com",
+    projectId: "pqa-pea",
+    storageBucket: "pqa-pea.appspot.com",
+    messagingSenderId: "284221948057",
+    appId: "1:284221948057:web:9d94cee2b629b58b5d7808",
+    measurementId: "G-TPY0H10EZ6"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>

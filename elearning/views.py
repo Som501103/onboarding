@@ -590,6 +590,84 @@ def evaluate(request, PK_Course_D):
 
     return render(request, 'evaluate.html',{'Profile':Profile, 'Course_item':Course_item, 'Sub_Course_item':Sub_Course_item })
 
+def evaluate_audit(request, PK_Course_D):
+    Emp_id = request.session['Emp_id']
+    Profile ={
+        'Emp_id' : request.session['Emp_id'],
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode']
+    }
+    Course_item = Course.objects.get(id = PK_Course_D)
+    Sub_Course_item = Sub_Course.objects.values('ConstructorName').filter(Link_Course = Course.objects.get(id = PK_Course_D)).annotate(dcount=Count('ConstructorName'))
+
+    if request.method == 'POST':
+        optradio1 = request.POST.get('optradio1')
+        print(optradio1)
+        optradio2 = request.POST.get('optradio2')
+        print(optradio2)
+        optradio3 = request.POST.get('optradio3')
+        print(optradio3)
+        optradio4 = request.POST.get('optradio4')
+        print(optradio4)
+        optradio5 = request.POST.get('optradio5')
+        print(optradio5)
+        optradio6 = request.POST.get('optradio6')
+        print(optradio6)
+        optradio7 = request.POST.get('optradio7')
+        print(optradio7)
+        optradio8 = request.POST.get('optradio8')
+        print(optradio8)
+        optradio9 = request.POST.get('optradio9')
+        print(optradio9)
+        if PK_Course_D == 17 :
+            Eva_update  = Evaluate_t.objects.filter(Link_course = Course.objects.get(id = PK_Course_D), Staff =Staff.objects.get(StaffID = Emp_id))
+            Usability = request.POST.get('Usability')
+            Future_Subject = request.POST.get('Future_Subject')
+            Suggestion = request.POST.get('Suggestion')
+            eve_staff_create = Evaluate_t(
+                                No_1 = optradio1,
+                                No_2 = optradio2,
+                                No_3 = optradio3,
+                                No_4 = optradio4,
+                                No_5 = optradio5,
+                                No_6 = optradio6,
+                                No_7 = optradio7,
+                                No_8 = optradio8,
+                                No_9 = optradio9,
+                                Status = 1,
+                                Usability = Usability,
+                                Future_Subject = Future_Subject,
+                                Suggestion = Suggestion,
+                                Link_course = Course.objects.get(id = PK_Course_D),
+                                Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                Staff = Staff.objects.get(StaffID = Emp_id)
+                                )
+            eve_staff_create.save()
+
+        else :
+            eve_staff_create = Evaluate_t(
+                                No_1 = optradio1,
+                                No_2 = optradio2,
+                                No_3 = optradio3,
+                                No_4 = optradio4,
+                                No_5 = optradio5,
+                                No_6 = optradio6,
+                                No_7 = optradio7,
+                                No_8 = optradio8,
+                                No_9 = optradio9,
+                                Status = 1,
+                                Link_course = Course.objects.get(id = PK_Course_D),
+                                Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                Staff = Staff.objects.get(StaffID = Emp_id)
+                                )
+            eve_staff_create.save()
+        return redirect('Course_main',PK_Course_D)
+
+    return render(request, 'evaluate_audit.html',{'Profile':Profile, 'Course_item':Course_item, 'Sub_Course_item':Sub_Course_item })
+
 def ihub_test(request):
     Emp_id = request.session['Emp_id']
     Profile ={

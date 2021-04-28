@@ -335,11 +335,19 @@
 												</button>
 											{% endif %}
 										  </td>
-										  <td>
-											<a href="{% url 'evaluate' Course_detail.id %}">แบบประเมินวิทยากร</a>
-										  </td>
-										  <td><a class="btn btn-gradient-primary" href="{% url 'evaluate' Course_detail.id %}">ประเมินวิทยากร</a></td>
-									  </tr>
+										  {% if Course_detail.id == 18 %}
+											<td>
+												<a href="{% url 'evaluate_audit' Course_detail.id %}">แบบประเมินวิทยากร</a>
+											</td>
+											<td><a class="btn btn-gradient-primary" href="{% url 'evaluate_audit' Course_detail.id %}">ประเมินวิทยากร</a></td>
+										  {% else %}
+											<td>
+												<a href="{% url 'evaluate_audit' Course_detail.id %}">แบบประเมินวิทยากร</a>
+											</td>
+											<td><a class="btn btn-gradient-primary" href="{% url 'evaluate' Course_detail.id %}">ประเมินวิทยากร</a></td>
+										
+										  {% endif %}
+										</tr>
 									  <tr>
 										  <td colspan="3" class="text-center"><a href="{% url 'home' %}" class="btn btn-gradient-primary">กลับหน้ารวมหลักสูตร</a></td>
 									  </tr>
