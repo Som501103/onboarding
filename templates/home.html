@@ -63,13 +63,18 @@
 									{% for Course_score in Course_score %}
 										{% if Course_score.Link_course.id == Course_all.Link_course__id %}
 											<ul class="product-variation">
-											{% if Course_all.Link_course__id == 9  or Course_all.Link_course__id == 4 %}
+											{% if Course_all.Link_course__id == 18 %}
+												
+											{% elif Course_all.Link_course__id == 9  or Course_all.Link_course__id == 4 %}
 												<li><a href="#">Pre : -</a></li>
+												<li><a href="#">Post : {{ Course_score.Post_Score }}</a></li>
 											{% else %}
 												<li><a href="#">Pre : {{ Course_score.Pre_Score }}</a></li>
+												<li><a href="#">Post : {{ Course_score.Post_Score }}</a></li>
 											{% endif %}
-											<li><a href="#">Post : {{ Course_score.Post_Score }}</a></li>
+											
 											</ul>
+										
 										{% endif %}
 									{% endfor %}
 									{% if Course_all.Link_course__CourseStatus == 'ON' %}

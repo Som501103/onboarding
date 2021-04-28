@@ -108,13 +108,14 @@ def home(request):
     Dept = request.session['Department']
     RegionCode = request.session['RegionCode']
     # Score = Staff_Score.objects.get(StaffID = Emp_id)
-    close_check = len(Closed_class.objects.all().filter(StaffID = Emp_id, Status = True))
+    close_check = len(Closed_class.objects.filter(StaffID = Emp_id, Status = True))
     # Course_all = Closed_class.objects.select_related('Link_course').filter(StaffID = Emp_id, Status = True)
-    # print(close_check)
-    if close_check == 1:
+    print(close_check)
+    if close_check == 1 or close_check == '1':
         Course_all = Course.objects.filter(id = 18)
-        Count_view = Staff_Vdolog.objects.filter(Link_course= 18).count()
-    elif close_check == 2 : 
+        Count_view = len(Staff_Vdolog.objects.filter(Link_course= 18))
+        print(Count_view)
+    elif close_check > 1 : 
         Course_all = Course.objects.all().order_by('id')
         Count_view = Staff_Vdolog.objects.select_related('Link_course').count().order_by('Link_course')
     else :
@@ -127,7 +128,7 @@ def home(request):
     Count_view_label = []
     Count_view_values = []
 
-    Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').exclude(Link_course__id = 11).annotate(Count('Link_course__id')).order_by('Link_course')
+    Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
     for j in Count_view :
         #print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
 
@@ -145,7 +146,7 @@ def home(request):
         'Count_view_label' : Count_view_label,
         'Count_view_values': Count_view_values
     }
-    #print(total['Name_Course'])
+    print(total['Name_Course'])
     Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_course')
     combined_results = list(zip_longest(Course_all ,Course_score))
     # print(combined_results)

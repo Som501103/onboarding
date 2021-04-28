@@ -38,10 +38,15 @@
 								<!-- https://drive.google.com/file/d/1-2DuLtzekmoTEm1qV8_xRRLMN6bwlTdS/preview -->
 								<div class="text-center table-responsive">
 									<!-- <iframe src="{{ Sub_course.URLGdrive }}" allow="autoplay" width="100%" height="480" referrerpolicy="no-referrer"></iframe> -->
-									<iframe width="100%" height="480" src="{{ Sub_course.URLGdrive }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+									{% if Sub_course.id == 37 %}
+									<iframe width="100%" height="480" src="/static/assets/images/product_images_2/vdo.mp4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+									{% else %}
+									<iframe width="100%" height="480" src="{{ Sub_course.URLGdrive }}" frameborder="0" allow="autoplay 'src'" allowfullscreen></iframe>
+									{% endif %}
 									<!-- <video controls >
 										<source src="https://drive.google.com/file/d/1-2DuLtzekmoTEm1qV8_xRRLMN6bwlTdS/preview" type="video/mp4" >
 									</video> -->
+									
 									</br>
 									<p><i class="mdi mdi-account-card-details"></i> : {{ Sub_course.ConstructorName }} ({{ Sub_course.ConstructorPosition }})</p>
 									<p><i class="mdi mdi-phone-classic"></i> : {{ Sub_course.Tel }} | <i class="mdi mdi-email"></i> : {{ Sub_course.email }}</p>

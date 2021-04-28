@@ -116,7 +116,7 @@
 										<td><a href="{% url 'pretest' Course_detail.id %}" >Pre-Test</a></td>
 										<td><a href="{% url 'pretest' Course_detail.id %}" class="btn btn-gradient-info">ทดสอบ</a></td> -->
 									  </tr>
-									  {% elif Course_detail.id == 17 %}
+									  {% elif Course_detail.id == 18 %}
 									  
 									  {% else %}
 									  <tr>
@@ -154,6 +154,7 @@
 												{% endif %}
 											{% endfor %}
 										</td>
+										
 										<td><a href="{% url 'VDO' x.id %}" >{{ x.Title }} {{ x.id }}</a></td>
 										
 										<td><a href="{% url 'VDO' x.id %}" class="btn btn-gradient-info">เข้าเรียน</a></td>
@@ -290,7 +291,7 @@
 												{% else %}
 												<td><a class="btn btn-gradient-info">ผ่านแล้ว</a></td>
 												{% endif %}
-											{% elif Course_detail.id == 17 %}
+											{% elif Course_detail.id == 18 %}
 												
 											{% else %}
 											    <td>
