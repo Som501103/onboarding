@@ -604,6 +604,26 @@ def evaluate_audit(request, PK_Course_D):
     Sub_Course_item = Sub_Course.objects.values('ConstructorName').filter(Link_Course = Course.objects.get(id = PK_Course_D)).annotate(dcount=Count('ConstructorName'))
 
     if request.method == 'POST':
+        check_eve = len(Evaluate_t.objects.filter(Staff = Staff.objects.get(StaffID=Emp_id),Link_course= Course.objects.get(id = PK_Course_D)))
+
+        KM_Gender = request.POST.get('radioG')
+        KM_Generation = request.POST.get('radioGen')
+        print(KM_Generation)
+        KM_B1 = request.POST.get('optradioA_1')
+        KM_Day = request.POST.get('KM_Day')
+        print(KM_Day)
+        KM_Training = request.POST.get('KM_Training')
+        print(KM_Training)
+        KM_Meeting = request.POST.get('KM_Meeting')
+        print(KM_Meeting)
+        KM_DDoc = request.POST.get('KM_DDoc')
+        KM_Leaflets = request.POST.get('KM_Leaflets')
+        KM_email = request.POST.get('KM_email')
+        KM_Vdo = request.POST.get('KM_Vdo')
+        KM_Social = request.POST.get('KM_Social')
+        KM_B3 = request.POST.get('optradioA_3')
+        KM_B4 = request.POST.get('radioA_4')
+        KM_B5 = request.POST.get('A_5')
         optradio1 = request.POST.get('optradio1')
         print(optradio1)
         optradio2 = request.POST.get('optradio2')
@@ -620,50 +640,43 @@ def evaluate_audit(request, PK_Course_D):
         print(optradio7)
         optradio8 = request.POST.get('optradio8')
         print(optradio8)
-        optradio9 = request.POST.get('optradio9')
-        print(optradio9)
-        if PK_Course_D == 17 :
-            Eva_update  = Evaluate_t.objects.filter(Link_course = Course.objects.get(id = PK_Course_D), Staff =Staff.objects.get(StaffID = Emp_id))
-            Usability = request.POST.get('Usability')
-            Future_Subject = request.POST.get('Future_Subject')
-            Suggestion = request.POST.get('Suggestion')
+        Suggestion = request.POST.get('Suggestion')
+        print(Suggestion)
+        
+        if check_eve == 0 :
             eve_staff_create = Evaluate_t(
-                                No_1 = optradio1,
-                                No_2 = optradio2,
-                                No_3 = optradio3,
-                                No_4 = optradio4,
-                                No_5 = optradio5,
-                                No_6 = optradio6,
-                                No_7 = optradio7,
-                                No_8 = optradio8,
-                                No_9 = optradio9,
-                                Status = 1,
-                                Usability = Usability,
-                                Future_Subject = Future_Subject,
-                                Suggestion = Suggestion,
-                                Link_course = Course.objects.get(id = PK_Course_D),
-                                Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                Staff = Staff.objects.get(StaffID = Emp_id)
-                                )
+                            KM_Gender =KM_Gender,
+                            KM_Generation=KM_Generation,
+                            KM_B1 =KM_B1,
+                            KM_Day = KM_Day,
+                            KM_Training =KM_Training,
+                            KM_Meeting=KM_Meeting,
+                            KM_DDoc = KM_DDoc,
+                            KM_Leaflets = KM_Leaflets,
+                            KM_email = KM_email,
+                            KM_Vdo = KM_Vdo,
+                            KM_Social = KM_Social,
+                            KM_B3 = KM_B3,
+                            KM_B4 = KM_B4,
+                            KM_B5 = KM_B5,
+                            No_1 = optradio1,
+                            No_2 = optradio2,
+                            No_3 = optradio3,
+                            No_4 = optradio4,
+                            No_5 = optradio5,
+                            No_6 = optradio6,
+                            No_7 = optradio7,
+                            No_8 = optradio8,
+                            Suggestion = Suggestion,
+                            Status = 1,
+                            Link_course = Course.objects.get(id = PK_Course_D),
+                            Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            Staff = Staff.objects.get(StaffID = Emp_id)
+                            )
             eve_staff_create.save()
-
-        else :
-            eve_staff_create = Evaluate_t(
-                                No_1 = optradio1,
-                                No_2 = optradio2,
-                                No_3 = optradio3,
-                                No_4 = optradio4,
-                                No_5 = optradio5,
-                                No_6 = optradio6,
-                                No_7 = optradio7,
-                                No_8 = optradio8,
-                                No_9 = optradio9,
-                                Status = 1,
-                                Link_course = Course.objects.get(id = PK_Course_D),
-                                Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                Staff = Staff.objects.get(StaffID = Emp_id)
-                                )
-            eve_staff_create.save()
+            return redirect('Course_main',PK_Course_D)
+        else:
+            print('done')
         return redirect('Course_main',PK_Course_D)
 
     return render(request, 'evaluate_audit.html',{'Profile':Profile, 'Course_item':Course_item, 'Sub_Course_item':Sub_Course_item })

@@ -88,25 +88,16 @@
 													<tr>
 														<td colspan="5">
 															<div class="form-check form-check-primary">
-																<label  class="form-check-label" for="radio1_5">
-																	<input type="radio" class="form-check-input" id="radio1_5" name="radio1" value="BabyBoomers" />พ.ศ.2489–2507 (BabyBoomers)
+																<label  class="form-check-label" for="radioGen_1_5">
+																	<input type="radio" class="form-check-input" id="radioGen_1_5" name="radioGen" value="BabyBoomers" />พ.ศ.2489–2507 (BabyBoomers)
 																</label>
 															</div>
 														</td>
 													<tr>
 														<td colspan="5">
 															<div class="form-check form-check-primary">
-																<label  class="form-check-label" for="radio1_4">
-																	<input type="radio" class="form-check-input" id="radio1_4" name="radio1" value="GenX" />พ.ศ.2508–2522 GenX)
-																</label>
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td colspan="5">
-															<div class="form-check form-check-primary">
-																<label  class="form-check-label" for="radio1_3">
-																	<input type="radio" class="form-check-input" id="radio1_3" name="radio1" value="GenY" />พ.ศ.2523–2540 (GenY)
+																<label  class="form-check-label" for="radioGen_1_4">
+																	<input type="radio" class="form-check-input" id="radioGen_1_4" name="radioGen" value="GenX" />พ.ศ.2508–2522 GenX)
 																</label>
 															</div>
 														</td>
@@ -114,8 +105,17 @@
 													<tr>
 														<td colspan="5">
 															<div class="form-check form-check-primary">
-																<label  class="form-check-label" for="radio1_2">
-																	<input type="radio" class="form-check-input" id="radio1_2" name="radio1" value="GenZ" />พ.ศ.2541 เป็นต้นไป (GenZ)
+																<label  class="form-check-label" for="radioGen_1_3">
+																	<input type="radio" class="form-check-input" id="radioGen_1_3" name="radioGen" value="GenY" />พ.ศ.2523–2540 (GenY)
+																</label>
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td colspan="5">
+															<div class="form-check form-check-primary">
+																<label  class="form-check-label" for="radioGen_1_2">
+																	<input type="radio" class="form-check-input" id="radioGen_1_2" name="radioGen" value="GenZ" />พ.ศ.2541 เป็นต้นไป (GenZ)
 																</label>
 															</div>
 														</td>
@@ -154,8 +154,21 @@
 														</td>
 													</tr>
 													<tr>
-														<td colspan="5">2.	ท่านรับรู้การสื่อสารวิสัยทัศน์ ทิศทางการดำเนินงาน นโยบายและเป้าหมายของการจัดการความรู้นวัตกรรมของผู้บริหารระดับสูง (รผก. และ ผชก.)<br/> จากช่องทางใด (เลือกได้มากกว่า 1 ข้อ)</td>
+														<td colspan="5">2.	ท่านรับรู้การสื่อสารวิสัยทัศน์ ทิศทางการดำเนินงาน นโยบายและเป้าหมายของการจัดการความรู้นวัตกรรมของผู้บริหารระดับสูง (รผก. และ ผชก.)<br/> จากช่องทางใด (เลือกได้มากกว่า 1 ข้อ)
+															<fieldset>          
+																<input type="checkbox" name="KM_Day" value="1">การเข้าร่วมกิจกรรมต่างๆ (เช่น งาน KM Day)<br>      
+																<input type="checkbox" name="KM_Training" value="1">การเข้าร่วมการอบรม/Workshop ด้านการจัดการความรู้<br>      
+																<input type="checkbox" name="KM_Meeting" value="1">การประชุมต่างๆ (เช่น การประชุมสายงาน, การประชุมคณะกรรมการ KM)<br> 
+																<input type="checkbox" name="KM_DDoc" value="1">หนังสือเวียนนโยบายด้านการจัดการความรู้ของสายงาน<br> 
+																<input type="checkbox" name="KM_Leaflets" value="1">แผ่นพับ<br>
+																<input type="checkbox" name="KM_email" value="1">E-Mail<br> 
+																<input type="checkbox" name="KM_Vdo" value="1">วีดีทัศน์<br> 
+																<input type="checkbox" name="KM_Social" value="1">Social Media (เช่น Line, Facebook)<br> 
+																
+															</fieldset>
+														</td>
 													</tr>
+													
 													<tr>
 														<td colspan="5">3.	ท่านพึงพอใจในการเข้าร่วมกิจกรรม/สื่อประชาสัมพันธ์ การสื่อสารวิสัยทัศน์ ทิศทางการดำเนินงาน<br/> นโยบายและเป้าหมายของการจัดการความรู้นวัตกรรมของผู้บริหารระดับสูง (รผก. และ ผชก.)</td>
 													</tr>
@@ -570,7 +583,7 @@
 														<td >9.	ข้อเสนอแนะเพิ่มเติม</td>
 														<td colspan="5">
 															<!-- <div class="form-check form-check-primary"> -->
-																<textarea  name="optradio9" id="optradio9" rows="5" cols="50"></textarea>
+																<textarea  name="Suggestion" id="Suggestion" rows="5" cols="50"></textarea>
 																<!-- <label  class="form-check-label" for="radio9_5">
 																	<input type="radio" class="form-check-input" id="radio9_5" name="optradio9" value="5" />&nbsp;
 																</label> -->
