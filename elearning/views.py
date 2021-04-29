@@ -236,6 +236,8 @@ def Course_main(request, PK_Course_D):
             post = Staff_score.Post_Score
         else :
             print(PK_Course_D)
+            pre = "0"
+            post = "0"
     else:
         Staff_prescore_create = Staff_Score(
                     Pre_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
