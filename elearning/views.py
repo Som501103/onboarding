@@ -110,12 +110,20 @@ def home(request):
     # Score = Staff_Score.objects.get(StaffID = Emp_id)
     close_check = len(Closed_class.objects.filter(StaffID = Emp_id, Status = True))
     # Course_all = Closed_class.objects.select_related('Link_course').filter(StaffID = Emp_id, Status = True)
+<<<<<<< HEAD
     print(close_check)
     if close_check == 1 or close_check == '1':
         Course_all = Course.objects.filter(id = 18)
         Count_view = len(Staff_Vdolog.objects.filter(Link_course= 18))
         print(Count_view)
     elif close_check > 1 : 
+=======
+    # print(close_check)
+    if close_check == 1:
+        Course_all = Course.objects.filter(id = 18)
+        Count_view = Staff_Vdolog.objects.filter(Link_course= 18).count()
+    elif close_check == 2 : 
+>>>>>>> 16a01bd241ef2e62339d77c9dfda62684da356eb
         Course_all = Course.objects.all().order_by('id')
         Count_view = Staff_Vdolog.objects.select_related('Link_course').count().order_by('Link_course')
     else :
@@ -146,7 +154,7 @@ def home(request):
         'Count_view_label' : Count_view_label,
         'Count_view_values': Count_view_values
     }
-    print(total['Name_Course'])
+    #print(total['Name_Course'])
     Course_score = Staff_Score.objects.select_related('Link_course').filter(Staff = Staff.objects.get(StaffID = Emp_id)).order_by('Link_course')
     combined_results = list(zip_longest(Course_all ,Course_score))
     # print(combined_results)
@@ -586,6 +594,7 @@ def evaluate(request, PK_Course_D):
                                 Staff = Staff.objects.get(StaffID = Emp_id)
                                 )
             eve_staff_create.save()
+<<<<<<< HEAD
         return redirect('Course_main',PK_Course_D)
 
     return render(request, 'evaluate.html',{'Profile':Profile, 'Course_item':Course_item, 'Sub_Course_item':Sub_Course_item })
@@ -677,6 +686,8 @@ def evaluate_audit(request, PK_Course_D):
             return redirect('Course_main',PK_Course_D)
         else:
             print('done')
+=======
+>>>>>>> 16a01bd241ef2e62339d77c9dfda62684da356eb
         return redirect('Course_main',PK_Course_D)
 
     return render(request, 'evaluate_audit.html',{'Profile':Profile, 'Course_item':Course_item, 'Sub_Course_item':Sub_Course_item })

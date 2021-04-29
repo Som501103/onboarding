@@ -90,6 +90,7 @@ class Evaluate_t(models.Model):
     Usability = models.CharField(default='การนำไปใช้',max_length=300,blank=True, null=True)
     Future_Subject = models.CharField(default='หัวข้อที่สนใจ',max_length=300,blank=True, null=True)
     Suggestion = models.TextField(default='ข้อเสนอแนะ',blank=True, null=True)
+<<<<<<< HEAD
     KM_Gender = models.CharField(default='-',max_length=1,blank=True, null=True)
     KM_Generation = models.CharField(default='Gen',max_length=20,blank=True, null=True)
     KM_B1 = models.IntegerField(default=0)
@@ -104,6 +105,8 @@ class Evaluate_t(models.Model):
     KM_B3 = models.IntegerField(default=0)
     KM_B4 = models.IntegerField(default=0)
     KM_B5 = models.TextField(default='ข้อเสนอแนะ',blank=True, null=True)
+=======
+>>>>>>> 16a01bd241ef2e62339d77c9dfda62684da356eb
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
     Status = models.BooleanField(default=False)
     Link_course = models.ForeignKey(Course, related_name='Course_Eva', on_delete=models.CASCADE,null= True)
