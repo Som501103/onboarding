@@ -600,7 +600,7 @@ def evaluate(request, PK_Course_D):
 
 def evaluate_audit(request, PK_Course_D):
     Emp_id = request.session['Emp_id']
-    Gender = request.session['Gender']
+    # Gender = request.session['Gender']
     Profile ={
         'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
@@ -614,7 +614,7 @@ def evaluate_audit(request, PK_Course_D):
 
     if request.method == 'POST':
         check_eve = len(Evaluate_t.objects.filter(Staff = Staff.objects.get(StaffID=Emp_id),Link_course= Course.objects.get(id = PK_Course_D)))
-        print(Gender)
+        # print(Gender)
         KM_Gender = request.POST.get('radioG')
         KM_Generation = request.POST.get('radioGen')
         print(KM_Generation)
