@@ -33,12 +33,13 @@ def login(request):
 
         # print(Emp_id,Emp_pass)
         check = Check.objects.filter(StaffID=Emp_id).count()
+
         if check == 1:
             reposeMge = 'true'
         # if Emp_id == '300109' or Emp_id == '498433' or Emp_id == '505397' or Emp_id == '495186' or  Emp_id =='510117' or Emp_id == '504636' or Emp_id == '499700' or Emp_id == '499691' or Emp_id == '499734' or Emp_id == '498610' :
         #     reposeMge = 'true'
             #มีปัญหากับการเช็คpassword ผ่านidm
-        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' :
+        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' :
              reposeMge = 'true'
         else:
             check_ID = idm_login(Emp_id,Emp_pass)
@@ -54,6 +55,7 @@ def login(request):
                 Dept = nameget['DepartmentShort']
                 Dept_code = nameget['NewOrganizationalCode']
                 RegionCode = nameget['RegionCode']
+                Gender = nameget['Gender']
                 request.session['Emp_id'] = Emp_id
                 request.session['Fullname'] = Fullname
                 request.session['Position'] = Position
@@ -61,6 +63,7 @@ def login(request):
                 request.session['Department'] = Dept
                 request.session['Dept_code'] = Dept_code
                 request.session['RegionCode'] = RegionCode 
+                request.session['Gender'] = Gender
                 # 9900
                 check_user = Staff.objects.filter(StaffID=Emp_id).count()
                 if check_user == 0 :
@@ -117,7 +120,7 @@ def home(request):
         print(Count_view)
     elif close_check > 1 : 
         Course_all = Course.objects.all().order_by('id')
-        Count_view = Staff_Vdolog.objects.select_related('Link_course').count().order_by('Link_course')
+        # Count_view = len(Staff_Vdolog.objects.select_related('Link_course').order_by('Link_course'))
     else :
         Course_all = Course.objects.all().order_by('id').exclude(id = 11)
         Count_view = Staff_Vdolog.objects.select_related('Link_course').exclude(id = 11).annotate(Count('id'))
@@ -225,11 +228,14 @@ def Course_main(request, PK_Course_D):
     
     Course_detail = Course.objects.get(id=PK_Course_D)
     Staff_score_check = Staff_Score.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D)).count
-    # print(Staff_score_check)
+    print(Staff_score_check)
     if Staff_score_check() > 0:
-        Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
-        pre = Staff_score.Pre_Score
-        post = Staff_score.Post_Score
+        if PK_Course_D != 18:
+            Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
+            pre = Staff_score.Pre_Score
+            post = Staff_score.Post_Score
+        else :
+            print(PK_Course_D)
     else:
         Staff_prescore_create = Staff_Score(
                     Pre_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -592,6 +598,7 @@ def evaluate(request, PK_Course_D):
 
 def evaluate_audit(request, PK_Course_D):
     Emp_id = request.session['Emp_id']
+    Gender = request.session['Gender']
     Profile ={
         'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
@@ -605,7 +612,7 @@ def evaluate_audit(request, PK_Course_D):
 
     if request.method == 'POST':
         check_eve = len(Evaluate_t.objects.filter(Staff = Staff.objects.get(StaffID=Emp_id),Link_course= Course.objects.get(id = PK_Course_D)))
-
+        print(Gender)
         KM_Gender = request.POST.get('radioG')
         KM_Generation = request.POST.get('radioGen')
         print(KM_Generation)
