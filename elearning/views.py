@@ -39,7 +39,7 @@ def login(request):
         # if Emp_id == '300109' or Emp_id == '498433' or Emp_id == '505397' or Emp_id == '495186' or  Emp_id =='510117' or Emp_id == '504636' or Emp_id == '499700' or Emp_id == '499691' or Emp_id == '499734' or Emp_id == '498610' :
         #     reposeMge = 'true'
             #มีปัญหากับการเช็คpassword ผ่านidm
-        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' :
+        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951':
              reposeMge = 'true'
         else:
             check_ID = idm_login(Emp_id,Emp_pass)
@@ -126,7 +126,9 @@ def home(request):
         Course_all = Course.objects.all().order_by('id').exclude(id = 11)
         Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 20).annotate(Count('Link_course__id')).order_by('Link_course')
         # print(Count_view)
-
+    if Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951':
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
+        
     # print(Course_all)
     Name_Course = []
     Count_view_label = []
