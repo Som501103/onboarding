@@ -45,7 +45,6 @@ def login(request):
             check_ID = idm_login(Emp_id,Emp_pass)
             # print(check_ID)
             reposeMge = check_ID
-        
         if reposeMge == 'true':
                 nameget = idm(Emp_id)
                 # print(nameget)
@@ -117,13 +116,15 @@ def home(request):
     if close_check == 1 or close_check == '1':
         Course_all = Course.objects.filter(id = 18)
         Count_view = len(Staff_Vdolog.objects.filter(Link_course= 18))
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
         print(Count_view)
     elif close_check > 1 : 
         Course_all = Course.objects.all().order_by('id')
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
         # Count_view = len(Staff_Vdolog.objects.select_related('Link_course').order_by('Link_course'))
     else :
         Course_all = Course.objects.all().order_by('id').exclude(id = 11)
-        Count_view = Staff_Vdolog.objects.select_related('Link_course').exclude(id = 11).annotate(Count('id'))
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 20).annotate(Count('Link_course__id')).order_by('Link_course')
         # print(Count_view)
 
     # print(Course_all)
@@ -131,7 +132,6 @@ def home(request):
     Count_view_label = []
     Count_view_values = []
 
-    Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
     for j in Count_view :
         #print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
 
@@ -154,7 +154,6 @@ def home(request):
     combined_results = list(zip_longest(Course_all ,Course_score))
     # print(combined_results)
     # Course_name = list(zip_longest(Course_all, Course_score))
-    
     Profile= {
         'Emp_id' : Emp_id,
         'Fullname' : Fullname,
