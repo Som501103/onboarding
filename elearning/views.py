@@ -110,6 +110,8 @@ def home(request):
     LevelCode = request.session['LevelCode']
     Dept = request.session['Department']
     RegionCode = request.session['RegionCode']
+    Gender = request.session['Gender']
+    print(Gender)
     # Score = Staff_Score.objects.get(StaffID = Emp_id)
     close_check = len(Closed_class.objects.filter(StaffID = Emp_id, Status = True))
     # Course_all = Closed_class.objects.select_related('Link_course').filter(StaffID = Emp_id, Status = True)
