@@ -626,6 +626,8 @@ def evaluate(request, PK_Course_D):
             op_21_2 = request.POST.get('21_optradio2')
             op_21_3 = request.POST.get('21_optradio3')
             op_21_4 = request.POST.get('21_optradio4')
+            optradio6 =0 #ซ้ำกับข้อ 3
+            optradio7 =0 #ซ้ำกับข้อ 2
             eve_staff_create = Evaluate_t(
                                 courseid21_no1_score = op_21_1,
                                 courseid21_no2_score = op_21_2,
