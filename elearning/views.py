@@ -272,14 +272,14 @@ def Course_main(request, PK_Course_D):
     Staff_score_check = Staff_Score.objects.filter(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D)).count
     print(Staff_score_check)
     if Staff_score_check() > 0:
-        if PK_Course_D != 18:
+        if PK_Course_D != 18 or PK_Course_D != 21:
             Staff_score = Staff_Score.objects.get(Staff = Staff.objects.get(StaffID = Emp_id), Link_course = Course.objects.get(id = PK_Course_D))
             pre = Staff_score.Pre_Score
             post = Staff_score.Post_Score
         else :
             print(PK_Course_D)
-            pre = "0"
-            post = "0"
+            pre = "-"
+            post = "-"
     else:
         Staff_prescore_create = Staff_Score(
                     Pre_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -612,6 +612,35 @@ def evaluate(request, PK_Course_D):
                                 Status = 1,
                                 Usability = Usability,
                                 Future_Subject = Future_Subject,
+                                Suggestion = Suggestion,
+                                Link_course = Course.objects.get(id = PK_Course_D),
+                                Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                Staff = Staff.objects.get(StaffID = Emp_id)
+                                )
+            eve_staff_create.save()
+
+        elif PK_Course_D == 21 :
+            Eva_update  = Evaluate_t.objects.filter(Link_course = Course.objects.get(id = PK_Course_D), Staff =Staff.objects.get(StaffID = Emp_id))
+            Suggestion = request.POST.get('Suggestion')
+            op_21_1 = request.POST.get('21_optradio1')
+            op_21_2 = request.POST.get('21_optradio2')
+            op_21_3 = request.POST.get('21_optradio3')
+            op_21_4 = request.POST.get('21_optradio4')
+            eve_staff_create = Evaluate_t(
+                                courseid21_no1_score = op_21_1,
+                                courseid21_no2_score = op_21_2,
+                                courseid21_no3_score = op_21_3,
+                                courseid21_no4_score = op_21_4,
+                                No_1 = optradio1,
+                                No_2 = optradio2,
+                                No_3 = optradio3,
+                                No_4 = optradio4,
+                                No_5 = optradio5,
+                                No_6 = optradio6,
+                                No_7 = optradio7,
+                                No_8 = optradio8,
+                                No_9 = optradio9,
+                                Status = 1,
                                 Suggestion = Suggestion,
                                 Link_course = Course.objects.get(id = PK_Course_D),
                                 Date_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
