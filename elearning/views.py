@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from django.http import Http404
+from django.views import View
+from django.http import Http404,JsonResponse
 import requests, xmltodict
 from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test
 import string
@@ -21,7 +22,45 @@ import xlwt
 from datetime import date
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from rest_framework import viewsets, status
+from rest_framework import permissions
+from rest_framework.response import Response
+from .serializers import request_Sub_Course
+from .serializers import request_Course
+from drf_multiple_model.views import ObjectMultipleModelAPIView
 
+class request_Sub_CourseViewSet(View):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    #.values('Link_course__CourseName','Link_course__id','Link_course__CourseBy')
+    def get(self, request):
+        querys = Sub_Course.objects.all()
+        querys_serializer = request_Sub_Course(querys, many=True)
+        ''' if querys_serializer.is_valid():
+            querys_serializer.save()
+            return Response(request_Sub_Course.data, status=status.HTTP_201_CREATED)'''
+        return JsonResponse(querys_serializer.data ,safe=False)
+    #queryset = Sub_Course.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON')
+    #serializer_class = request_Sub_Course
+    '''querylist = [
+        {'queryset': Sub_Course.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').all(), 'serializer_class': request_Sub_Course},
+        {'queryset': Course.objects.all(), 'serializer_class': request_Course},
+    ]
+    permission_classes = [permissions.IsAuthenticated]'''
+
+class request_CourseViewSet(View):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    #.values('Link_course__CourseName','Link_course__id','Link_course__CourseBy')
+    def get(self, request):
+        querys = Course.objects.all()
+        querys_serializer = request_Course(querys, many=True)
+        ''' if querys_serializer.is_valid():
+            querys_serializer.save()
+            return Response(request_Sub_Course.data, status=status.HTTP_201_CREATED)'''
+        return JsonResponse(querys_serializer.data ,safe=False)
 
 def login(request):
     mgs = {
@@ -39,13 +78,12 @@ def login(request):
         # if Emp_id == '300109' or Emp_id == '498433' or Emp_id == '505397' or Emp_id == '495186' or  Emp_id =='510117' or Emp_id == '504636' or Emp_id == '499700' or Emp_id == '499691' or Emp_id == '499734' or Emp_id == '498610' :
         #     reposeMge = 'true'
             #มีปัญหากับการเช็คpassword ผ่านidm
-        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' :
+        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951':
              reposeMge = 'true'
         else:
             check_ID = idm_login(Emp_id,Emp_pass)
             # print(check_ID)
             reposeMge = check_ID
-        
         if reposeMge == 'true':
                 nameget = idm(Emp_id)
                 # print(nameget)
@@ -119,21 +157,24 @@ def home(request):
     if close_check == 1 or close_check == '1':
         Course_all = Course.objects.filter(id = 18)
         Count_view = len(Staff_Vdolog.objects.filter(Link_course= 18))
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
         print(Count_view)
     elif close_check > 1 : 
         Course_all = Course.objects.all().order_by('id')
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
         # Count_view = len(Staff_Vdolog.objects.select_related('Link_course').order_by('Link_course'))
     else :
         Course_all = Course.objects.all().order_by('id').exclude(id = 11)
-        Count_view = Staff_Vdolog.objects.select_related('Link_course').exclude(id = 11).annotate(Count('id'))
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 21).annotate(Count('Link_course__id')).order_by('Link_course')
         # print(Count_view)
-
+    if Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951':
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
+        
     # print(Course_all)
     Name_Course = []
     Count_view_label = []
     Count_view_values = []
 
-    Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
     for j in Count_view :
         #print(j['Link_course__CourseName'],j['Link_course__id__count'],j['Link_course__Course_Pass_Score'],j['Link_course__id'])
 
@@ -156,7 +197,6 @@ def home(request):
     combined_results = list(zip_longest(Course_all ,Course_score))
     # print(combined_results)
     # Course_name = list(zip_longest(Course_all, Course_score))
-    
     Profile= {
         'Emp_id' : Emp_id,
         'Fullname' : Fullname,
