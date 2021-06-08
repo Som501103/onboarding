@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.views import View
 from django.http import Http404,JsonResponse
 import requests, xmltodict
-from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test, virtual_class
 import string
 from django.db.models import Avg
 from datetime import datetime
@@ -549,8 +549,12 @@ def virtualclass(request):
         'Dept' : request.session['Department'],
         'RegionCode' : request.session['RegionCode']
     }
-    
-    return render(request,'virtualclass.html',{'Profile':Profile})
+    data_date = {
+
+    }
+    data_date = virtual_class.objects.filter(Status = True)
+    print(data_date)
+    return render(request,'virtualclass.html',{'Profile':Profile,'data_date':data_date})
 
 def feedback(request):
     Emp_id = request.session['Emp_id']
