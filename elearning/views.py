@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.views import View
 from django.http import Http404,JsonResponse
 import requests, xmltodict
-from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test, virtual_class
 import string
 from django.db.models import Avg
 from datetime import datetime
@@ -72,7 +72,6 @@ def login(request):
 
         # print(Emp_id,Emp_pass)
         check = Check.objects.filter(StaffID=Emp_id).count()
-
         if check == 1:
             reposeMge = 'true'
         # if Emp_id == '300109' or Emp_id == '498433' or Emp_id == '505397' or Emp_id == '495186' or  Emp_id =='510117' or Emp_id == '504636' or Emp_id == '499700' or Emp_id == '499691' or Emp_id == '499734' or Emp_id == '498610' :
@@ -154,19 +153,65 @@ def home(request):
     close_check = len(Closed_class.objects.filter(StaffID = Emp_id, Status = True))
     # Course_all = Closed_class.objects.select_related('Link_course').filter(StaffID = Emp_id, Status = True)
     print(close_check)
-    if close_check == 1 or close_check == '1':
-        Course_all = Course.objects.filter(id = 18)
-        Count_view = len(Staff_Vdolog.objects.filter(Link_course= 18))
-        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
-        print(Count_view)
-    elif close_check > 1 : 
-        Course_all = Course.objects.all().order_by('id')
-        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
-        # Count_view = len(Staff_Vdolog.objects.select_related('Link_course').order_by('Link_course'))
-    else :
-        Course_all = Course.objects.all().order_by('id').exclude(id = 11)
-        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 21).annotate(Count('Link_course__id')).order_by('Link_course')
-        # print(Count_view)
+     
+    get_data = Course.objects.get(id = 21)
+    get_data2 = Course.objects.get(id = 19)
+    get_normal = Course.objects.get(id = 23)
+    new_check = len(Closed_class.objects.filter(StaffID = Emp_id, Status = True,Link_course = get_data))
+    new_check2 = len(Closed_class.objects.filter(StaffID = Emp_id, Status = True,Link_course = get_data2))
+    new_check3 = len(Closed_class.objects.filter(StaffID = Emp_id, Status = True,Link_course = get_normal))
+    print(new_check,'+',new_check2)
+    if new_check3 == 1:
+        Course_all = Course.objects.filter(id = 21)
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__Course_Type ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+        
+        if new_check == 1 and new_check2 == 1:
+            Course_all = Course.objects.filter(id = 21)
+            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON',Link_course__Course_Type ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+                
+        elif new_check == 1 or new_check2 == 1 : 
+            if new_check == 1:
+                print('test1')
+                Course_all = Course.objects.filter(id = 21)
+                Count_view = len(Staff_Vdolog.objects.filter(Link_course= 21))
+                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+            
+            if new_check2 == 1:
+                print('test2')
+                Course_all = Course.objects.filter(id = 19)
+                Count_view = len(Staff_Vdolog.objects.filter(Link_course= 19))
+                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id ='21').annotate(Count('Link_course__id')).order_by('Link_course')
+            
+        else :
+            Course_all = Course.objects.all().order_by('id').exclude(id = 11)
+            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 21).annotate(Count('Link_course__id')).order_by('Link_course')
+            # print(Count_view)
+    else:
+        Course_all = Course.objects.filter(id = 21)
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__Course_Type ='19').exclude(Link_course__Course_Type ='21').annotate(Count('Link_course__id')).order_by('Link_course')
+        
+        if new_check == 1 and new_check2 == 1:
+            Course_all = Course.objects.filter(id = 21)
+            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON',Link_course__Course_Type ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+                
+        elif new_check == 1 or new_check2 == 1 : 
+            if new_check == 1:
+                print('test1')
+                Course_all = Course.objects.filter(id = 21)
+                Count_view = len(Staff_Vdolog.objects.filter(Link_course= 21))
+                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON',Link_course__id ='21').annotate(Count('Link_course__id')).order_by('Link_course')
+            
+            if new_check2 == 1:
+                print('test2')
+                Course_all = Course.objects.filter(id = 19)
+                Count_view = len(Staff_Vdolog.objects.filter(Link_course= 19))
+                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON',Link_course__id ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+            
+        else :
+            Course_all = Course.objects.all().order_by('id').exclude(id = 11)
+            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 21).annotate(Count('Link_course__id')).order_by('Link_course')
+            # print(Count_view)
+
     if Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951':
         Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
         
@@ -536,8 +581,12 @@ def virtualclass(request):
         'Dept' : request.session['Department'],
         'RegionCode' : request.session['RegionCode']
     }
-    
-    return render(request,'virtualclass.html',{'Profile':Profile})
+    data_date = {
+
+    }
+    data_date = virtual_class.objects.filter(Status = True).order_by('Date_zoom')
+    print(data_date)
+    return render(request,'virtualclass.html',{'Profile':Profile,'data_date':data_date})
 
 def feedback(request):
     Emp_id = request.session['Emp_id']

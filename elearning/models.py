@@ -164,3 +164,13 @@ class Bu_test(models.Model):
     Status = models.CharField(default=0, null=True, max_length =1)
     Date_Created = models.DateTimeField(auto_now_add=True, null= True)
 
+class virtual_class(models.Model):
+    PK_id = models.AutoField(primary_key=True)
+    Activity_name = models.CharField(max_length=250,null=True)
+    Activity_generation = models.IntegerField(default=1)
+    Date_zoom = models.DateField()
+    Time_zoom = models.TimeField()
+    Endtime_zoom = models.TimeField(default='00:00')
+    lecturer_name = models.CharField(max_length=500 , null=True)
+    Num_people = models.IntegerField(default=0)
+    Status = models.BooleanField(default=True)#True เปิด False ปิด
