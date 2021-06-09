@@ -584,7 +584,7 @@ def virtualclass(request):
     data_date = {
 
     }
-    data_date = virtual_class.objects.filter(Status = True)
+    data_date = virtual_class.objects.filter(Status = True).order_by('Date_zoom')
     print(data_date)
     return render(request,'virtualclass.html',{'Profile':Profile,'data_date':data_date})
 
