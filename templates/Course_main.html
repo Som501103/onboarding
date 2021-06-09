@@ -341,10 +341,10 @@
 											<td>
 												<a href="{% url 'evaluate_audit' Course_detail.id %}">แบบประเมินการรับรู้และความพึงพอใจ</a>
 											</td>
-											<td><a class="btn btn-gradient-primary" href="{% url 'evaluate_audit' Course_detail.id %}">ประเมินวิทยากร</a></td>
+											<td><a class="btn btn-gradient-primary" href="{% url 'evaluate' Course_detail.id %}">ประเมินวิทยากร</a></td>
 										  {% else %}
 											<td>
-												<a href="{% url 'evaluate_audit' Course_detail.id %}">แบบประเมินวิทยากร</a>
+												<a href="{% url 'evaluate' Course_detail.id %}">แบบประเมินวิทยากร</a>
 											</td>
 											<td><a class="btn btn-gradient-primary" href="{% url 'evaluate' Course_detail.id %}">ประเมินวิทยากร</a></td>
 										
