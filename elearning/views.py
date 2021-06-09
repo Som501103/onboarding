@@ -1205,6 +1205,7 @@ def summary_healthy(request):
     return render(request, 'summary_healthy.html',{ 'total_record':total_record })
 
 def select(request):
+    Emp_id = request.session['Emp_id']
     Profile ={
         'Emp_id' : request.session['Emp_id'],
         'Fullname' : request.session['Fullname'],
