@@ -9,7 +9,7 @@ class Course(models.Model):
     Course_Pass_Score = models.IntegerField(null=True, default=0)
     Date_Created = models.DateTimeField(auto_now_add=True, null=True)
     Cover_img = models.CharField(max_length=50,null=True)
-    CourseStatus = models.CharField(null=True,max_length=3,default='OFF')
+    CourseStatus = models.CharField(null=True,max_length=3,default='OFF') #ON =เปิดให้เข้าเรียน OFF = ปิดการมองเห็น COM = เปิดการมองเห็นแต่ยังไม่เปิดให้เรียน
     Pre_Test = models.BooleanField(default=True)
     Post_Test = models.BooleanField(default=True)
     # course_type 1 = ภาคบังคับ 2 = ภาคเสรี
@@ -56,6 +56,8 @@ class Staff_Score(models.Model):
     Pre_Score = models.IntegerField(null=True, default=0)
     Post_Created = models.DateTimeField(auto_now_add=False, null= True)
     Post_Score = models.IntegerField(null=True, default=0)
+    Check_policy =  models.IntegerField(default=0,null=True) #0=ไม่ได้ยอมรับข้อกำหนด 1= ยอมรับ
+    Status = models.IntegerField(default=0,null=True) #0 = ยังเรียนไม่จบ 1 = จบแล้ว
     Staff = models.ForeignKey(Staff, related_name= 'Staff_score', on_delete= models.CASCADE,null= True)
     Link_course = models.ForeignKey(Course, related_name='Course_Score', on_delete=models.CASCADE,null= True)
 
