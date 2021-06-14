@@ -43,7 +43,7 @@ class Check(models.Model):
 class Staff(models.Model):
     StaffID = models.CharField(max_length=10, unique=True, primary_key=True)
     StaffName = models.CharField(max_length=150)
-    StaffPosition = models.CharField(max_length=10,null=True)
+    StaffPosition = models.CharField(max_length=20,null=True,default='ตำแหน่ง')
     StaffLevelcode = models.CharField(max_length=5,null=True)
     StaffDepshort = models.CharField(max_length=200)
     DeptCode = models.CharField(max_length=50)
