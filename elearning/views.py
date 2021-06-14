@@ -28,6 +28,7 @@ from rest_framework.response import Response
 from .serializers import request_Sub_Course
 from .serializers import request_Course
 from drf_multiple_model.views import ObjectMultipleModelAPIView
+from django.views.decorators.csrf import csrf_exempt
 
 class request_Sub_CourseViewSet(View):
     """
@@ -143,6 +144,7 @@ def menu(request):
     
     return render(request,'menu.html',{'Profile':Profile})
 
+@csrf_exempt
 def home(request):
     Emp_id = request.session['Emp_id']
     Fullname = request.session['Fullname']
