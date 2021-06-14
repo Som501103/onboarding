@@ -62,14 +62,12 @@
 									<p class="product-price">{{ Course_all.Link_course__CourseBy }}</p>
 									{% for Course_score in Course_score %}
 										{% if Course_score.Link_course.id == Course_all.Link_course__id %}
+											
 											<ul class="product-variation">
-											{% if Course_all.Link_course__id == 18 %}
-												
-											{% elif Course_all.Link_course__id == 9  or Course_all.Link_course__id == 4 %}
-												<li><a href="#">Pre : -</a></li>
-												<li><a href="#">Post : {{ Course_score.Post_Score }}</a></li>
-											{% else %}
+											{% if Course_all.Link_course__Pre_Test  %}
 												<li><a href="#">Pre : {{ Course_score.Pre_Score }}</a></li>
+											{% endif %}
+											{% if Course_all.Link_course__Post_Test  %}
 												<li><a href="#">Post : {{ Course_score.Post_Score }}</a></li>
 											{% endif %}
 											
@@ -86,6 +84,7 @@
 								</div>
 							  </div>
 							  {% endif %}
+							  
 							  {% endfor %}
 							  <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-12 product-item">
 								<div class="card">

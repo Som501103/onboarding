@@ -77,7 +77,7 @@ def login(request):
         # if Emp_id == '300109' or Emp_id == '498433' or Emp_id == '505397' or Emp_id == '495186' or  Emp_id =='510117' or Emp_id == '504636' or Emp_id == '499700' or Emp_id == '499691' or Emp_id == '499734' or Emp_id == '498610' :
         #     reposeMge = 'true'
             #มีปัญหากับการเช็คpassword ผ่านidm
-        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951':
+        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951' or  Emp_id =='402642':
              reposeMge = 'true'
         else:
             check_ID = idm_login(Emp_id,Emp_pass)
@@ -93,6 +93,7 @@ def login(request):
                 Dept_code = nameget['NewOrganizationalCode']
                 RegionCode = nameget['RegionCode']
                 Gender = nameget['Gender']
+                Short_Part_Dept = nameget['DepartmentShort'].split('/')[-2]
                 request.session['Emp_id'] = Emp_id
                 request.session['Fullname'] = Fullname
                 request.session['Position'] = Position
@@ -101,6 +102,7 @@ def login(request):
                 request.session['Dept_code'] = Dept_code
                 request.session['RegionCode'] = RegionCode 
                 request.session['Gender'] = Gender
+                request.session['Short_Part_Dept'] = Short_Part_Dept
                 # 9900
                 check_user = Staff.objects.filter(StaffID=Emp_id).count()
                 if check_user == 0 :
@@ -111,6 +113,7 @@ def login(request):
                         StaffLevelcode = LevelCode,
                         StaffDepshort = Dept,
                         DeptCode = Dept_code,
+                        Short_Part_Dept = Short_Part_Dept,
                         Organization = RegionCode,
                     )
                     Staff_save.save()
@@ -163,59 +166,59 @@ def home(request):
     print(new_check,'+',new_check2)
     if new_check3 == 1:
         Course_all = Course.objects.filter(id = 21)
-        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__Course_Type ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__Course_Type ='19').annotate(Count('Link_course__id')).order_by('Link_course')
         
         if new_check == 1 and new_check2 == 1:
             Course_all = Course.objects.filter(id = 21)
-            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON',Link_course__Course_Type ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON',Link_course__Course_Type ='19').annotate(Count('Link_course__id')).order_by('Link_course')
                 
         elif new_check == 1 or new_check2 == 1 : 
             if new_check == 1:
                 print('test1')
                 Course_all = Course.objects.filter(id = 21)
                 Count_view = len(Staff_Vdolog.objects.filter(Link_course= 21))
-                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id ='19').annotate(Count('Link_course__id')).order_by('Link_course')
             
             if new_check2 == 1:
                 print('test2')
                 Course_all = Course.objects.filter(id = 19)
                 Count_view = len(Staff_Vdolog.objects.filter(Link_course= 19))
-                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id ='21').annotate(Count('Link_course__id')).order_by('Link_course')
+                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id ='21').annotate(Count('Link_course__id')).order_by('Link_course')
             
         else :
             Course_all = Course.objects.all().order_by('id').exclude(id = 11)
-            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 21).annotate(Count('Link_course__id')).order_by('Link_course')
+            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 21).annotate(Count('Link_course__id')).order_by('Link_course')
             # print(Count_view)
     else:
         Course_all = Course.objects.filter(id = 21)
-        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__Course_Type ='19').exclude(Link_course__Course_Type ='21').annotate(Count('Link_course__id')).order_by('Link_course')
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__Course_Type ='19').exclude(Link_course__Course_Type ='21').annotate(Count('Link_course__id')).order_by('Link_course')
         
         if new_check == 1 and new_check2 == 1:
             Course_all = Course.objects.filter(id = 21)
-            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON',Link_course__Course_Type ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON',Link_course__Course_Type ='19').annotate(Count('Link_course__id')).order_by('Link_course')
                 
         elif new_check == 1 or new_check2 == 1 : 
             if new_check == 1:
                 print('test1')
                 Course_all = Course.objects.filter(id = 21)
                 Count_view = len(Staff_Vdolog.objects.filter(Link_course= 21))
-                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON',Link_course__id ='21').annotate(Count('Link_course__id')).order_by('Link_course')
+                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON',Link_course__id ='21').annotate(Count('Link_course__id')).order_by('Link_course')
             
             if new_check2 == 1:
                 print('test2')
                 Course_all = Course.objects.filter(id = 19)
                 Count_view = len(Staff_Vdolog.objects.filter(Link_course= 19))
-                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON',Link_course__id ='19').annotate(Count('Link_course__id')).order_by('Link_course')
+                Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON',Link_course__id ='19').annotate(Count('Link_course__id')).order_by('Link_course')
             
         else :
             Course_all = Course.objects.all().order_by('id').exclude(id = 11)
-            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 21).annotate(Count('Link_course__id')).order_by('Link_course')
+            Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 21).annotate(Count('Link_course__id')).order_by('Link_course')
             # print(Count_view)
 
     if Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951':
-        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
         
-    # print(Course_all)
+    # print(Course_all[1].Pre_Test)
     Name_Course = []
     Count_view_label = []
     Count_view_values = []
@@ -526,23 +529,36 @@ def posttest(request, PK_Course_D):
     Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
     # print(Question)
     if request.method == 'POST':
+        if Course_item.id == 22:
+            policy_check = request.POST.get('policy_check')
+        else :
+            policy_check = 0
         sum =0
         for key, value in request.POST.items():
                 # print(key)
                 # print(text_num_split(key))
-                value = request.POST[key]
-                # print(value)
+                # value = request.POST[key]
+                print(value)
                 if value == '1' :
                     value = int(value)
                     sum += value
         # print('total',sum)
-         
+        if sum >= Course_item.Course_Pass_Score :
+            status = 1
+        else:
+            status = 0
         Staff_postscore_update = Staff_Score.objects.get(Staff = Emp_id, Link_course = PK_Course_D)
         Staff_postscore_update.Post_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         Staff_postscore_update.Post_Score = sum
+        Staff_postscore_update.Check_policy = policy_check
+        Staff_postscore_update.Status = status
         Staff_postscore_update.save()
 
-        return redirect('evaluate',PK_Course_D)
+        check_eve = len(Evaluate_t.objects.filter(Staff = Emp_id, Link_course = PK_Course_D))
+        if check_eve > 0 :
+            return redirect('Course_main',PK_Course_D)
+        else :
+            return redirect('evaluate',PK_Course_D)
     return render(request, 'Posttest.html',{'Profile':Profile, 'Question': Question, 'Course_item':Course_item })
 
 def check_ans(key,value):
@@ -1116,11 +1132,11 @@ def export_users_xls(request,input_course):
     today = str(date.today())
     courseid = str(pass_Score.id)
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment;filename="Export :"'+str(courseid)+ "[" +str(today) + "]"'".xls"'
+    response['Content-Disposition'] = 'attachment;filename="Export :"'+str(courseid)+"[" +str(today) + "]"'".xls"'
 
     book = xlwt.Workbook(encoding='utf-8')
     sheet = book.add_sheet('Course'+today)
-    col_width = 256 * 20 # 20 characters wide
+    col_width = 256 * 50 # 20 characters wide
 
     try:
         for i in itertools.count():
@@ -1145,7 +1161,7 @@ def export_users_xls(request,input_course):
     font_style.alignment = aligment
     font_style.font = font
 
-    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'สังกัด', 'ตำแหน่ง','คะแนนสอบ','รหัสวิชา','ชื่อวิชา']
+    columns = ['รหัสพนักงาน', 'ชื่อ-นามสกุล', 'ตำแหน่ง', 'สังกัด','สายงาน','สถานะ','คะแนนสอบ','การรับทราบนโยบายและแนวปฏิบัติ 1= รับทราบแล้ว','ชื่อวิชา']
 
     for col_num in range(len(columns)):
         sheet.write(row_num, col_num, columns[col_num], font_style)
@@ -1158,14 +1174,24 @@ def export_users_xls(request,input_course):
     font.colour_index = 0  #  the font color 
     font_style.font = font      
                                                         # .filter(Link_course_id=input_course).filter(Post_Score__gte=pass_Score.Course_Pass_Score)
-    query_re = Staff_Score.objects.select_related('Staff').filter(Q(Link_course_id=input_course) & Q(Post_Score__gte=pass_Score.Course_Pass_Score)).order_by('Staff__DeptCode')
+    # query_re = Staff_Score.objects.select_related('Staff').filter(Q(Link_course_id=input_course) & Q(Post_Score__gte=pass_Score.Course_Pass_Score)).order_by('Staff__DeptCode')
+    query_re = Staff_Score.objects.select_related('Staff').filter(Q(Link_course_id=input_course)).order_by('Staff__DeptCode')
+    print(query_re.query)
+    StaffDepshort_G=[]
+
+    for i in query_re:
+         print(i.Staff.StaffDepshort.split('/')[-2])
+         StaffDepshort_G.append(i.Staff.StaffDepshort.split('/')[-2])
+
 
     rows = query_re.values_list('Staff__StaffID', 
                                 'Staff__StaffName', 
-                                'Staff__StaffDepshort',
                                 'Staff__StaffPosition',
+                                'Staff__StaffDepshort',
+                                'Staff__Short_Part_Dept',
+                                'Status',
                                 'Post_Score',
-                                'Link_course',
+                                'Check_policy',
                                 'Link_course__CourseName')
                                 
     for row in rows:

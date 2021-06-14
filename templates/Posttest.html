@@ -39,6 +39,7 @@
 								<div class="table-responsive">
 								<form method="POST" >
 									{% csrf_token %}
+										
 									{% for x in Question %}
 									<div class="row">
 										<div class="col-md-12">
@@ -69,9 +70,24 @@
 											</div>
 										</div>
 									{% endfor %}
+										{% if Course_item.id == 22 %}
+									    <div class="row">
+											<div class="col-md-12 text-center">
+												
+													<p class="text-middle">
+														<h4>ข้าพเจ้าได้รับทราบนโยบายการกำกับดูแลที่ดีด้านเทคโนโลยีสารสนเทศและแนวปฏิบัติประกอบนโยบายฯ <br /> ของการไฟฟ้าส่วนภูมิภาค  และจะยึดถือปฏิบัติตามอย่างเคร่งครัด</h4>
+														<div class="form-check form-check-primary text-center">
+															<label class="form-check-primary"><input type="checkbox" name="policy_check" id="policy_check" value="1" required class="form-check-input text-center" > รับทราบ และจะปฏิบัติตามอย่างเคร่งครัด</label>
+														</div>
+													</p>
+											</div>
+										</div>
+										{% endif %}
 										<div class="row">
 											<div class="col-md-12">
-												<input type="submit" class="btn btn-gradient-primary btn-rounded btn-fw" id="submit" value="ส่งคำตอบ"/>
+												
+													<input type="submit" class="btn btn-gradient-primary btn-rounded btn-fw" id="submit" value="ส่งคำตอบ"/>
+												
 											</div>
 										</div>
 								  </form>
@@ -137,9 +153,8 @@
 						
 					}else{
 						var choose = document.querySelector('input[name = optradio'+i+']:checked').value;
-						console.log(choose);
+						// console.log(choose);
 						if( choose == document.getElementById("ans"+i).value){
-							
 							document.getElementById("ch"+i).value = 1;
 						}else{
 							document.getElementById("ch"+i).value = 0;
