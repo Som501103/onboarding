@@ -121,6 +121,13 @@ def login(request):
                     return redirect('home')
                 else:
                     Staff_score = Staff.objects.get(StaffID = Emp_id)
+                    Staff_score.Short_Part_Dept = Short_Part_Dept
+                    Staff_score.StaffPosition = Position
+                    Staff_score.StaffLevelcode = LevelCode
+                    Staff_score.StaffDepshort = Dept
+                    Staff_score.DeptCode = Dept_code
+                    Staff_score.Organization = RegionCode
+                    Staff_score.save()
                     print(Staff_score)
                 return redirect('home')
         else:
