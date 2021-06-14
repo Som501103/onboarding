@@ -353,6 +353,15 @@
 									  <tr>
 										  <td colspan="3" class="text-center"><a href="{% url 'home' %}" class="btn btn-gradient-primary">กลับหน้ารวมหลักสูตร</a></td>
 									  </tr>
+									  {% if Course_detail.id == 22 %}
+									  <tr>
+										<td colspan="3" class="text-center">
+											<a href="{% url 'export_users_xls' Course_detail.id %}" class="nav-link">
+											<i class="mdi mdi-clipboard-text menu-icon"></i>
+											<span class="menu">Download รายชื่อผู้ผ่านหลักสูตร</span>
+										  </a></td>
+									  </tr>
+									  {% endif %}
 									</tbody>
 								  </table>
 								</div>
