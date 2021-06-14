@@ -47,7 +47,7 @@ class Staff(models.Model):
     StaffLevelcode = models.CharField(max_length=5,null=True)
     StaffDepshort = models.CharField(max_length=200)
     DeptCode = models.CharField(max_length=50)
-    Short_Part_Dept = models.CharField(max_length=10,default='สายงาน')
+    Short_Part_Dept = models.CharField(max_length=10,default='สายงาน',null=True)
     Organization = models.CharField(max_length=100)
     Date_Start = models.DateTimeField(auto_now_add=False, null=True)
     Status = models.CharField(max_length=12, default='on Process', null=True)
