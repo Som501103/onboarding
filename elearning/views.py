@@ -77,7 +77,7 @@ def login(request):
         # if Emp_id == '300109' or Emp_id == '498433' or Emp_id == '505397' or Emp_id == '495186' or  Emp_id =='510117' or Emp_id == '504636' or Emp_id == '499700' or Emp_id == '499691' or Emp_id == '499734' or Emp_id == '498610' :
         #     reposeMge = 'true'
             #มีปัญหากับการเช็คpassword ผ่านidm
-        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951' or  Emp_id =='402642':
+        elif Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510451' or  Emp_id =='402642':
              reposeMge = 'true'
         else:
             check_ID = idm_login(Emp_id,Emp_pass)
@@ -384,18 +384,18 @@ def Course_main(request, PK_Course_D):
     else:
         Evaluate = 0
     
-    if PK_Course_D == 9 :
-        check_Test = len(Hub_test.objects.filter(StaffID=Emp_id))
-        if check_Test == 1:
-            hub_score = Hub_test.objects.get(StaffID=Emp_id)
-            Hub_status_test = hub_score.Status
-            print('Hub_status_test',Hub_status_test)
-        else :
-            Hub_status_test = 0
-    else :
-        Hub_status_test = 0
+    # if PK_Course_D == 9 :
+    #     check_Test = len(Hub_test.objects.filter(StaffID=Emp_id))
+    #     if check_Test == 1:
+    #         hub_score = Hub_test.objects.get(StaffID=Emp_id)
+    #         Hub_status_test = hub_score.Status
+    #         print('Hub_status_test',Hub_status_test)
+    #     else :
+    #         Hub_status_test = 0
+    # else :
+    #     Hub_status_test = 0
     
-    return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate,'Hub_status_test':Hub_status_test})
+    return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate})
 
 def eva_chart(request,PK_Course_D): #, PK_Course_D
     Profile ={

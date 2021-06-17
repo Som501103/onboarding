@@ -230,7 +230,7 @@
 									  {% endfor %} -->
 									  <tr>
 											
-											{% if Course_detail.id == 9 %}
+											<!-- {% if Course_detail.id == 9 %}
 												<td>
 												{% if post == 0 or post < Course_detail.Course_Pass_Score %}
 													<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
@@ -261,9 +261,10 @@
 												<td><a class="btn btn-gradient-success">ผ่านแล้ว</a></td>
 												{% elif Hub_status_test == 4 or Hub_status_test == '4'%}
 												<td><a href="{% url 'ihub_test_alter' %}" class="btn btn-gradient-info">รอตรวจ</a></td>
-												{% endif %}
+												{% endif %} 
+											{% endif %}-->
 
-											{% elif Course_detail.id == 4 %}
+											{% if Course_detail.id == 4 %}
 												<td>
 												{% if post == 0 or post < Course_detail.Course_Pass_Score %}
 													<button type="button" class="btn btn-gradient-secondary btn-rounded btn-icon">
