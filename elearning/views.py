@@ -28,6 +28,7 @@ from rest_framework.response import Response
 from .serializers import request_Sub_Course
 from .serializers import request_Course
 from drf_multiple_model.views import ObjectMultipleModelAPIView
+from django.views.decorators.csrf import csrf_exempt
 
 class request_Sub_CourseViewSet(View):
     """
@@ -150,6 +151,7 @@ def menu(request):
     
     return render(request,'menu.html',{'Profile':Profile})
 
+@csrf_exempt
 def home(request):
     Emp_id = request.session['Emp_id']
     Fullname = request.session['Fullname']
@@ -221,7 +223,11 @@ def home(request):
             Course_all = Course.objects.all().order_by('id').exclude(id = 11)
             Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').exclude(Link_course__id = 19).exclude(Link_course__id = 21).annotate(Count('Link_course__id')).order_by('Link_course')
             # print(Count_view)
-
+    
+    if close_check == 3:
+        Course_all = Course.objects.all().order_by('id').exclude(id = 11)
+        Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
+    
     if Emp_id == '502979' or Emp_id == '509024' or Emp_id == '505330' or Emp_id == '509805' or Emp_id == '505321' or Emp_id == '501103' or Emp_id == '502041' or  Emp_id =='485284' or  Emp_id =='490750' or  Emp_id =='510951':
         Count_view = Staff_Vdolog.objects.values('Link_course__CourseName','Link_course__CourseStatus','Link_course__id','Link_course__Cover_img','Link_course__CourseBy','Link_course__Course_Pass_Score','Link_course__Post_Test','Link_course__Pre_Test').filter(Link_course__CourseStatus = 'ON').annotate(Count('Link_course__id')).order_by('Link_course')
         
