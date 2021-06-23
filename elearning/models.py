@@ -10,6 +10,9 @@ class Course(models.Model):
     Date_Created = models.DateTimeField(auto_now_add=True, null=True)
     Cover_img = models.CharField(max_length=50,null=True)
     CourseStatus = models.CharField(null=True,max_length=3,default='OFF') #ON =เปิดให้เข้าเรียน OFF = ปิดการมองเห็น COM = เปิดการมองเห็นแต่ยังไม่เปิดให้เรียน
+    Start_date = models.DateField(default='2021-06-01')
+    End_date = models.DateField(default='2021-11-30')
+    Total_people = models.IntegerField(default=838)
     Pre_Test = models.BooleanField(default=True)
     Post_Test = models.BooleanField(default=True)
     # course_type 1 = ภาคบังคับ 2 = ภาคเสรี
