@@ -176,4 +176,6 @@ class virtual_class(models.Model):
     Endtime_zoom = models.TimeField(default='00:00')
     lecturer_name = models.CharField(max_length=500 , null=True)
     Num_people = models.IntegerField(default=0)
+    Link_zoom = models.CharField(max_length=250,null=True)
+    meeting_id = models.CharField(max_length=250,null=True)
     Status = models.BooleanField(default=True)#True เปิด False ปิด
