@@ -11,4 +11,4 @@ class request_Sub_Course(serializers.ModelSerializer):
 class request_Course(serializers.ModelSerializer):
 	class Meta:
 		model = Course
-		fields = ['CourseName','CourseBy', 'CourseStatus']
+		fields = ['CourseName','CourseBy', 'CourseStatus','Couse_Sub_Total','Course_Total_QS','Course_Pass_Score','Date_Created','Cover_img','CourseStatus','Pre_Test','Post_Test']
