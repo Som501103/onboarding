@@ -182,3 +182,17 @@ class virtual_class(models.Model):
     Link_zoom = models.CharField(max_length=250,null=True)
     meeting_id = models.CharField(max_length=250,null=True)
     Status = models.BooleanField(default=True)#True เปิด False ปิด
+
+class Dept(models.Model):
+    PK_ID = models.AutoField(primary_key=True)
+    listname = models.CharField(max_length=10,null=True)
+    max_number = models.IntegerField(default=0,null=True)
+    current_number = models.IntegerField(default=0 , null=True)
+    percent_number = models.FloatField(default=0.00 , null=True,blank=True)
+
+class county(models.Model):
+    PK_ID = models.AutoField(primary_key=True)
+    county_name = models.CharField(max_length=10,null=True)
+    max_number = models.IntegerField(default=0,null=True)
+    current_number = models.IntegerField(default=0 , null=True)
+    percent_number = models.FloatField(default=0.00 , null=True,blank=True)
