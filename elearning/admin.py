@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Staff, Check, Course,virtual_class, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog, Feedback, Evaluate_t, Closed_class, Hub_test
+from .models import Staff, Check, Course,virtual_class, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog, Feedback, Evaluate_t, Closed_class, Hub_test, Dept , county
 
 # Register your models here.
 admin.site.register(Staff)
@@ -13,5 +13,7 @@ admin.site.register(Feedback)
 admin.site.register(Evaluate_t)
 admin.site.register(Closed_class)
 admin.site.register(Hub_test)
+admin.site.register(Dept)
+admin.site.register(county)
 admin.site.register(virtual_class)
 
