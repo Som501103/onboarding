@@ -351,6 +351,15 @@
 										
 										  {% endif %}
 										</tr>
+										<tr>
+										{% if Course_detail.id == 22 %}
+										<td></td>
+											<td>
+												<a href="{% url 'view_chart' Course_detail.id %}">กราฟแสดงจำนวนผู้เรียน</a>
+											</td>
+											<td><a class="btn btn-gradient-primary" href="{% url 'view_chart' Course_detail.id %}">ตรวจสอบผู้เรียน</a></td>
+										{% endif %}
+										</tr>
 									  <tr>
 										  <td colspan="3" class="text-center"><a href="{% url 'home' %}" class="btn btn-gradient-primary">กลับหน้ารวมหลักสูตร</a></td>
 									  </tr>
