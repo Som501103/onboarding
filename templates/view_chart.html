@@ -1,0 +1,222 @@
+{% load static %}
+<html lang="en">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Onboarding Program</title>
+
+    <style>
+        @font-face {
+            font-family: 'THSarabun';
+            src: url("https://suaaa.herokuapp.com/media/documents/THSarabun.ttf");
+        }
+        
+        body {
+            font-family: 'THSarabun';
+            font-weight: 200;
+            font-size: 18px;
+        }
+    </style>
+    <!-- plugins:css -->
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="/static/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="/static/assets/vendors/css/vendor.bundle.base.css">
+
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="/static/assets/vendors/jquery-bar-rating/css-stars.css">
+    <!-- End Plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="/static/assets/css/demo_3/style.css">
+    <!-- End Layout styles -->
+    <link rel="shortcut icon" href="/static/assets/images/favicon.png" />
+
+</head>
+
+
+
+
+<body>
+    <div class="container-scroller">
+        {% include "menu.html" %}
+		
+		
+		<div class="container mt-5">
+			<div class="align-middle text-center"><h2>สำนักงานใหญ่</h2></div>
+				<br>
+				<canvas id="myChart" style="width:100%;"></canvas>
+				<br>
+				<div class="align-middle text-center"><h2>การไฟฟ้าเขต</h2></div>
+				<br>
+				<canvas id="myChart2" style="width:100%;"></canvas>
+
+				<script>
+					document.getElementById('testbar').style.width =  "{{Profile.county_data}}" + "px";
+
+					$(document).ready(function() {
+						var dataeva2 = ("{{Profile.county_data}}")
+						var data2 = JSON.parse(dataeva2)
+						var ctx = document.getElementById('myChart2').getContext('2d');
+						
+						var myChart2 = new Chart(ctx, {
+							type: 'bar',
+							data: {
+								labels: ["กฟน.1","กฟน.2","กฟน.3","กฟฉ.1","กฟฉ.2","กฟฉ.3","กฟก.1","กฟก.2","กฟก.3","กฟต.1","กฟต.2","กฟต.3"],
+								datasets: [{
+									label: 'ดำเนินการแล้วทั้งหมด',
+									backgroundColor: 'rgb(255, 99, 132)',
+									borderColor: 'rgb(255, 99, 132)',
+									data: data2
+								}]
+							},
+		
+							options: {
+								"hover": {
+								"animationDuration": 0
+								},
+								"animation": {
+								"duration": 1,
+								"onComplete": function() {
+									var chartInstance = this.chart,
+									ctx = chartInstance.ctx;
+
+									ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+									ctx.textAlign = 'center';
+									ctx.textBaseline = 'bottom';
+
+									this.data.datasets.forEach(function(dataset, i) {
+									var meta = chartInstance.controller.getDatasetMeta(i);
+									meta.data.forEach(function(bar, index) {
+										var data = dataset.data[index];
+										ctx.fillText(data, bar._model.x, bar._model.y - 5);
+									});
+									});
+								}
+															},      
+								plugins: {
+									title: {
+										display: true,
+										text: 'การไฟฟ้าเขต',
+										padding: {
+											top: 10,
+											bottom: 30
+										}
+									}
+								},                                                  
+								scales: {
+									yAxes: [{
+										ticks: {
+											suggestedMin: 0,
+											suggestedMax: 100
+											
+										}
+		
+									}]
+								}
+							}
+						});
+						console.log(dataeva2)
+					});
+				</script>
+
+				<script>
+					$(document).ready(function() {
+						var dataeva = ("{{Profile.data}}")
+						var data1 = JSON.parse(dataeva)
+						var ctx = document.getElementById('myChart').getContext('2d');
+						
+						var myChart = new Chart(ctx, {
+							type: 'bar',
+							data: {
+								labels: ['ผวก.','รผก.(กบ)','รผก.(ทส)','รผก.(ธต)','รผก.(บ)','รผก.(บก)','รผก.(ป)','รผก.(ภ1)','รผก.(ภ2)','รผก.(ภ3)','รผก.(ภ4)','รผก.(ย)','รผก.(ว) ','รผก.(วศ)','รผก.(สอ)','สตภ.','สดท.'],
+								datasets: [{
+									label: 'ดำเนินการแล้วทั้งหมด',
+									backgroundColor: 'rgb(255, 99, 132)',
+									borderColor: 'rgb(255, 99, 132)',
+									data: data1
+								}]
+							},
+		
+							options: {
+								"hover": {
+								"animationDuration": 0
+								},
+								"animation": {
+								"duration": 1,
+								"onComplete": function() {
+									var chartInstance = this.chart,
+									ctx = chartInstance.ctx;
+
+									ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+									ctx.textAlign = 'center';
+									ctx.textBaseline = 'bottom';
+
+									this.data.datasets.forEach(function(dataset, i) {
+									var meta = chartInstance.controller.getDatasetMeta(i);
+									meta.data.forEach(function(bar, index) {
+										var data = dataset.data[index];
+										ctx.fillText(data, bar._model.x, bar._model.y - 5);
+									});
+									});
+								}
+								},
+								plugins: {
+									title: {
+										display: true,
+										text: 'สำนักงานใหญ่',
+										padding: {
+											top: 10,
+											bottom: 30
+										}
+									}
+								},                              
+								scales: {
+									yAxes: [{
+										ticks: {
+											suggestedMin: 0,
+											suggestedMax: 100
+											
+										}
+		
+									}]
+								}
+							}
+						});
+						console.log(dataeva)
+					});
+				</script>
+		</div>
+    </div>
+
+</body>
+
+{% block script %} {% endblock script %}
+<!-- plugins:js -->
+<script src="/static/assets/vendors/js/vendor.bundle.base.js"></script>
+
+<!-- endinject -->
+<!-- Plugin js for this page -->
+<script src="/static/assets/vendors/select2/select2.min.js"></script>
+<script src="/static/assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+<script src="/static/assets/vendors/chart.js/chart.min.js"></script>
+<!-- End plugin js for this page -->
+<!-- inject:js -->
+<script src="/static/assets/js/off-canvas.js"></script>
+<script src="/static/assets/js/hoverable-collapse.js"></script>
+<script src="/static/assets/js/misc.js"></script>
+<script src="/static/assets/js/settings.js"></script>
+<script src="/static/assets/js/todolist.js"></script>
+<script src="/static/assets/js/widgets.js"></script>
+<!-- endinject -->
+<!-- Custom js for this page -->
+<script src="/static/assets/js/file-upload.js"></script>
+<script src="/static/assets/js/typeahead.js"></script>
+<script src="/static/assets/js/select2.js"></script>
+<script src="/static/assets/js/chart.js"></script>
+<!-- End custom js for this page -->

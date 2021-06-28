@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.views import View
 from django.http import Http404,JsonResponse
 import requests, xmltodict
-from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test, virtual_class
+from .models import Staff, Check, Course, Sub_Course, Course_Pretest, Staff_Score, Staff_Vdolog , Feedback, Evaluate_t, Closed_class, Hub_test, Bu_test, virtual_class , Dept , county
 import string
 from django.db.models import Avg
 from datetime import datetime
@@ -355,7 +355,6 @@ def Course_main(request, PK_Course_D):
         pre = Staff_score.Pre_Score
         post = Staff_score.Post_Score
         
-
     Sub_course = Sub_Course.objects.filter(Link_Course = Course.objects.get(id=PK_Course_D)).order_by('id')
     # Sub_course_check = Sub_Course.objects.all().prefetch_related('SubCourse_Vdo').filter(Link_Course = Course.objects.get(id=PK_Course_D)).values()
 
@@ -402,6 +401,40 @@ def Course_main(request, PK_Course_D):
     #     Hub_status_test = 0
     
     return render(request, 'Course_main.html',{'Profile':Profile,'Course_detail': Course_detail, 'Sub_course': Sub_course,'Sub_course_check':Sub_course_check, 'pre':pre, 'post':post, 'vdo': vdo, 'B_colour': B_colour, 'combined_results':combined_results, 'Evaluate':Evaluate})
+
+def view_chart(request,PK_Course_D):
+    data = []
+    county_data = []
+    get_test = Dept.objects.get(PK_ID = 1)
+    get_test1 = float(get_test.percent_number)
+    get_test1 = round(get_test1,2)
+    test_data = get_test1
+    for i in range (1,18):
+        lasted = Dept.objects.get(PK_ID = i)
+        data_float = float(lasted.percent_number)
+        data_float = round(data_float,2)
+        data.append(data_float)
+    for i in range (1,13):
+        lasted = county.objects.get(PK_ID = i)
+        data_float = float(lasted.percent_number)
+        data_float = round(data_float,2)
+        county_data.append(data_float)
+    json.dumps(data)
+    print(data)
+    json.dumps(county_data)
+    print(county_data)
+    Profile ={
+        'Emp_id' : request.session['Emp_id'],
+        'Fullname' : request.session['Fullname'],
+        'Position' : request.session['Position'],
+        'LevelCode' : request.session['LevelCode'],
+        'Dept' : request.session['Department'],
+        'RegionCode' : request.session['RegionCode'],
+        'data':data,
+        'county_data':county_data,
+        'test_data':test_data
+    }
+    return render(request,'view_chart.html',{'Profile':Profile})
 
 def eva_chart(request,PK_Course_D): #, PK_Course_D
     Profile ={
@@ -541,11 +574,9 @@ def posttest(request, PK_Course_D):
     Course_item = Course.objects.get(id = PK_Course_D)
     Question = Course_Pretest.objects.select_related('Test_Course').filter(Test_Course = Course.objects.get(id = PK_Course_D)).order_by('?')
     # print(Question)
+    print(request.session['Department'])
+    check_status = Staff_Score.objects.get(Staff = Emp_id, Link_course = PK_Course_D)
     if request.method == 'POST':
-        if Course_item.id == 22:
-            policy_check = request.POST.get('policy_check')
-        else :
-            policy_check = 0
         sum =0
         for key, value in request.POST.items():
                 # print(key)
@@ -560,6 +591,363 @@ def posttest(request, PK_Course_D):
             status = 1
         else:
             status = 0
+
+        if Course_item.id == 22:
+            policy_check = request.POST.get('policy_check')
+            if status == 0 :
+                get_dept = request.session['Department']
+                data = get_dept.split("/")
+                data.reverse()
+                if data[0] == 'ผวก.' :
+                    data.pop(0)
+                    addnumber = Dept.objects.get(listname = data[0])
+                    addnumber.current_number = addnumber.current_number + 1
+                    addnumber.percent_number = (addnumber.current_number / addnumber.max_number ) *100
+                    addnumber.save()
+
+                if data[0] == "รผก.(ภ1)":
+                    if data[1] == 'กฟน.1':
+                        get_updata = county.objects.get(county_name = 'กฟน.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟน.2':
+                        get_updata = county.objects.get(county_name = 'กฟน.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                        print(data[0])
+                    elif data[1] == 'กฟน.3':
+                        get_updata = county.objects.get(county_name = 'กฟน.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.1':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.2':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.3':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.1':
+                        get_updata = county.objects.get(county_name = 'กฟก.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.2':
+                        get_updata = county.objects.get(county_name = 'กฟก.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.3':
+                        get_updata = county.objects.get(county_name = 'กฟก.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.1':
+                        get_updata = county.objects.get(county_name = 'กฟต.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.2':
+                        get_updata = county.objects.get(county_name = 'กฟต.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.3':
+                        get_updata = county.objects.get(county_name = 'กฟต.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    else:
+                        get_updata = county.objects.get(county_name = 'สนญ')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                
+                elif data[0] == "รผก.(ภ2)":
+                    if data[1] == 'กฟน.1':
+                        get_updata = county.objects.get(county_name = 'กฟน.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟน.2':
+                        get_updata = county.objects.get(county_name = 'กฟน.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                        print(data[0])
+                    elif data[1] == 'กฟน.3':
+                        get_updata = county.objects.get(county_name = 'กฟน.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.1':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.2':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.3':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.1':
+                        get_updata = county.objects.get(county_name = 'กฟก.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.2':
+                        get_updata = county.objects.get(county_name = 'กฟก.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.3':
+                        get_updata = county.objects.get(county_name = 'กฟก.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.1':
+                        get_updata = county.objects.get(county_name = 'กฟต.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.2':
+                        get_updata = county.objects.get(county_name = 'กฟต.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.3':
+                        get_updata = county.objects.get(county_name = 'กฟต.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    else:
+                        get_updata = county.objects.get(county_name = 'สนญ')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+
+                elif data[0] == "รผก.(ภ3)":
+                    if data[1] == 'กฟน.1':
+                        get_updata = county.objects.get(county_name = 'กฟน.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟน.2':
+                        get_updata = county.objects.get(county_name = 'กฟน.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                        print(data[0])
+                    elif data[1] == 'กฟน.3':
+                        get_updata = county.objects.get(county_name = 'กฟน.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.1':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.2':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.3':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.1':
+                        get_updata = county.objects.get(county_name = 'กฟก.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.2':
+                        get_updata = county.objects.get(county_name = 'กฟก.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.3':
+                        get_updata = county.objects.get(county_name = 'กฟก.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.1':
+                        get_updata = county.objects.get(county_name = 'กฟต.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.2':
+                        get_updata = county.objects.get(county_name = 'กฟต.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.3':
+                        get_updata = county.objects.get(county_name = 'กฟต.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    else:
+                        get_updata = county.objects.get(county_name = 'สนญ')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+
+                elif data[0] == "รผก.(ภ4)":
+                    if data[1] == 'กฟน.1':
+                        get_updata = county.objects.get(county_name = 'กฟน.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟน.2':
+                        get_updata = county.objects.get(county_name = 'กฟน.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                        print(data[0])
+                    elif data[1] == 'กฟน.3':
+                        get_updata = county.objects.get(county_name = 'กฟน.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.1':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.2':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.3':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.1':
+                        get_updata = county.objects.get(county_name = 'กฟก.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.2':
+                        get_updata = county.objects.get(county_name = 'กฟก.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.3':
+                        get_updata = county.objects.get(county_name = 'กฟก.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.1':
+                        get_updata = county.objects.get(county_name = 'กฟต.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.2':
+                        get_updata = county.objects.get(county_name = 'กฟต.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.3':
+                        get_updata = county.objects.get(county_name = 'กฟต.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    else:
+                        get_updata = county.objects.get(county_name = 'สนญ')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                
+                else:
+                    if data[1] == 'กฟน.1':
+                        get_updata = county.objects.get(county_name = 'กฟน.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟน.2':
+                        get_updata = county.objects.get(county_name = 'กฟน.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                        print(data[0])
+                    elif data[1] == 'กฟน.3':
+                        get_updata = county.objects.get(county_name = 'กฟน.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.1':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.2':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟฉ.3':
+                        get_updata = county.objects.get(county_name = 'กฟฉ.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.1':
+                        get_updata = county.objects.get(county_name = 'กฟก.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.2':
+                        get_updata = county.objects.get(county_name = 'กฟก.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟก.3':
+                        get_updata = county.objects.get(county_name = 'กฟก.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.1':
+                        get_updata = county.objects.get(county_name = 'กฟต.1')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.2':
+                        get_updata = county.objects.get(county_name = 'กฟต.2')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    elif data[1] == 'กฟต.3':
+                        get_updata = county.objects.get(county_name = 'กฟต.3')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                    else:
+                        get_updata = county.objects.get(county_name = 'สนญ')
+                        get_updata.current_number = get_updata.current_number +1
+                        get_updata.percent_number = ( get_updata.current_number / get_updata.max_number ) * 100
+                        get_updata.save()
+                
+        else :
+            policy_check = 0
+        
         Staff_postscore_update = Staff_Score.objects.get(Staff = Emp_id, Link_course = PK_Course_D)
         Staff_postscore_update.Post_Created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         Staff_postscore_update.Post_Score = sum

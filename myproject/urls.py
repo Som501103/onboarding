@@ -43,6 +43,7 @@ urlpatterns = [
     path('Posttest/<int:PK_Course_D>/', views.posttest, name='posttest'),
     path('evaluate_audit/<int:PK_Course_D>/', views.evaluate_audit, name='evaluate_audit'),
     path('evaluate/<int:PK_Course_D>/', views.evaluate, name='evaluate'),
+    path('view_chart/<int:PK_Course_D>/', views.view_chart, name='view_chart'),
     url('errorstage/',views.errorstage, name='errorstage'),
     path('export/xls/<int:input_course>/', views.export_users_xls, name='export_users_xls'),
     url('summary_admin/',views.summary,name='summary'),
